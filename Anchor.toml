@@ -1,0 +1,25 @@
+skip_local_validator = true
+
+[toolchain]
+anchor_version = "1.2.0"
+# Pinned so avm does not fall back to its tested-floor default (3.1.10). See docs/DECISIONS.md.
+solana_version = "4.3.0"
+package_manager = "pnpm"
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.localnet]
+afterbell = "AUkfc1YB8AB1BSno52xnsPvKcXYCbnHyySDxhrkmwp9x"
+
+[programs.devnet]
+afterbell = "AUkfc1YB8AB1BSno52xnsPvKcXYCbnHyySDxhrkmwp9x"
+
+[provider]
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+# Program tests are Rust + LiteSVM; no local validator needed.
+test = "cargo test -p afterbell"

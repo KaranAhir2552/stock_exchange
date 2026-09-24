@@ -1,0 +1,16 @@
+{
+  "network": "localnet",
+  "rpcUrls": ["http://127.0.0.1:8899"],
+  "wsUrls": ["ws://127.0.0.1:8900"],
+  "programId": "AUkfc1YB8AB1BSno52xnsPvKcXYCbnHyySDxhrkmwp9x",
+  "usdcMint": null,
+  "pythReceiverProgramId": "rec5EKMGg6MxZYaMdyBfgwp4d5rB9T1VQH5pJv5LtFJ",
+  "hermesUrl": "https://hermes.pyth.network",
+  "calendarProfileIds": [1],
+  "explorerCluster": "custom",
+  "features": {
+    "demoControls": true,
+    "mockOracle": true
+  },
+  "pools": []
+}

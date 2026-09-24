@@ -1,0 +1,16 @@
+{
+  "network": "devnet",
+  "rpcUrls": ["https://api.devnet.solana.com"],
+  "wsUrls": ["wss://api.devnet.solana.com"],
+  "programId": "AUkfc1YB8AB1BSno52xnsPvKcXYCbnHyySDxhrkmwp9x",
+  "usdcMint": "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU",
+  "pythReceiverProgramId": "rec5EKMGg6MxZYaMdyBfgwp4d5rB9T1VQH5pJv5LtFJ",
+  "hermesUrl": "https://hermes.pyth.network",
+  "calendarProfileIds": [1],
+  "explorerCluster": "devnet",
+  "features": {
+    "demoControls": true,
+    "mockOracle": true
+  },
+  "pools": []
+}

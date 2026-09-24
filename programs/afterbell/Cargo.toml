@@ -1,0 +1,37 @@
+[package]
+name = "afterbell"
+version = "0.1.0"
+description = "Afterbell: oracle-anchored pool that stays fair when the stock market is closed"
+edition.workspace = true
+rust-version.workspace = true
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "afterbell"
+
+[features]
+default = []
+# Mock oracle + demo controls. localnet/devnet only; never in a mainnet build.
+devnet-mock = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build"]
+anchor-debug = []
+custom-heap = []
+custom-panic = []
+
+[dependencies]
+anchor-lang = "1.2.0"
+
+[dev-dependencies]
+# litesvm 0.16 runs the Agave 4.x runtime, which knows the live SBPF v3 feature
+# (5cC3fo...). Anchor 1.2 builds v3 by default; older litesvm cannot load it.
+litesvm = "0.16.0"
+solana-message = "4.2.4"
+solana-transaction = "4.1.5"
+solana-signer = "3.0.1"
+solana-keypair = "3.1.2"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(target_os, values("solana"))'] }

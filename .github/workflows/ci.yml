@@ -1,0 +1,37 @@
+name: ci
+on: [push, pull_request]
+
+jobs:
+  ts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm check:mainnet
+      - run: pnpm build
+      - run: pnpm test
+
+  program:
+    runs-on: ubuntu-latest
+    env:
+      AGAVE_VERSION: v4.3.0
+      ANCHOR_VERSION: v1.2.0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with: { components: "rustfmt, clippy" }
+      - uses: Swatinem/rust-cache@v2
+      - name: Install Agave
+        run: |
+          sh -c "$(curl -sSfL https://release.anza.xyz/$AGAVE_VERSION/install)"
+          echo "$HOME/.local/share/solana/install/active_release/bin" >> "$GITHUB_PATH"
+      - name: Install Anchor
+        run: cargo install --git https://github.com/otter-sec/anchor --tag $ANCHOR_VERSION anchor-cli --locked
+      - run: cargo fmt --all --check
+      - run: anchor build -- --features devnet-mock
+      - run: cargo clippy --all-targets -- -D warnings
+      - run: anchor test --skip-build
