@@ -22,4 +22,4 @@ wallet = "~/.config/solana/id.json"
 
 [scripts]
 # Program tests are Rust + LiteSVM; no local validator needed.
-test = "cargo test -p afterbell"
+test = "cargo test -p afterbell --features devnet-mock"

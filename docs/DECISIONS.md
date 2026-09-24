@@ -50,6 +50,36 @@ Newest entries at the bottom of each section. Every external fact lists its sour
 7. **`usdcMint: null`** in config means "created by `scripts/create-test-mints`" and is only allowed off mainnet.
 8. **The mainnet safety check runs on raw JSON** (`pnpm check:mainnet`), so CI can enforce "no mock, no demo, no Mock pools" even while `mainnet.json` is incomplete. `loadConfig("mainnet")` also runs the full schema and fails until every field is filled.
 
+## Phase 1 decisions (2026-09-24)
+
+9. **Re-centre only on a newer oracle price.** `refresh` (shared by `update_reference`, `swap`, `deposit`, `create_pool`) sets `reference_price = pool_price = oracle` only when `publish_ts > last_oracle_publish_ts` (or when coming back to Open). Re-centring on the *same* price would let a trader move the price, call `update_reference` to snap it back, and trade again, splitting a big trade to dodge price impact. Test: `recentre_only_on_newer_oracle_price_so_repeat_calls_are_harmless`.
+10. **Older oracle data is rejected** (`StaleOracle`) when `publish_ts < last_oracle_publish_ts`. Otherwise anyone holding an old (but still owner-valid) price account could flip the pool to Paused. Test: `older_oracle_data_cannot_change_the_pool`.
+11. **`initialize_config` requires the program's upgrade authority to sign** (checked via `ProgramData`), so nobody can front-run the deploy and become admin.
+12. **Phase 1 scope guards** (fail safe, not half-built): `create_pool` rejects `UsEquity` (calendar is Phase 2) and `Pyth` (reader lands with the keeper, Phase 3). `read_oracle` errors on Pyth.
+13. **`update_reference` exists already.** It is the `refresh` step as a permissionless instruction; Phase 2 adds the calendar logic inside `refresh`.
+14. **Deposits refresh the oracle too** (they take the oracle account). The TVL cap and the Paused check then use a current price and mode. **Withdraw takes no config and no oracle account**, so nothing about market state can block it.
+15. **Protocol fee** = `floor(fee * protocol_fee_bps / 10000)`, sent straight from the trader to a treasury token account (owner = `config.treasury`, mint = input mint). That account is optional and required only when the protocol fee is > 0. `protocol_fee_bps <= 5000`.
+16. **Locked minimum liquidity** (1000 LP units) is never minted. Share maths uses `lp_mint.supply + MIN_LIQUIDITY`. If every LP withdraws (supply 0), the next deposit takes the first-deposit path and inherits the dust-sized locked remainder.
+17. **Price bounds:** pool prices <= 2^96 and oracle prices <= 2^95 (so a 50% band still fits). Together with two-sided depth, this keeps every intermediate in u128 (bounds documented at the top of `math.rs`). Anything larger fails with `MathOverflow` or `InvalidOraclePrice`, so the pool can't trade (fail safe).
+18. **Rounding:** fee rounds up; output rounds down; the derived virtual quote side rounds toward the pool for the trade direction; deposits take tokens rounded up and mint LP rounded down; withdrawals round down. Oracle-to-pool price conversion rounds down (neutral: it sets both sides of the band). The property test `swap_rounds_in_pool_favour` checks output against the exact rational constant-product result.
+19. **Parameter bounds** (`PoolParams::validate`): bands 1..=5000 bps with base <= max, fees <= 1000 bps with base <= max, depth 1..=10000 bps.
+20. **Errors added beyond the brief's list:** `ZeroAmount` and `InvalidOraclePrice`.
+21. **`MockStatus` is compiled in every build** because Anchor 1.2's IDL generator ignores `#[cfg]` on instruction argument types. It's a plain three-value enum. The `MockOracle` account and the `mock_*` instructions stay behind `devnet-mock`. Verified: the mainnet IDL has no `mock_*` instructions and no `MockOracle` account, and the mainnet `.so` has no mock instruction discriminators. CI checks the IDL.
+22. **Integration tests require `devnet-mock`** (`[[test]] required-features`); `anchor test` runs `cargo test --features devnet-mock` against the `.so` from `anchor build -- --features devnet-mock`.
+
+### Token-2022 ScaledUiAmount (brief 6.8), researched in `spl-token-2022-interface` 2.1.0
+
+- `ScaledUiAmountConfig { authority, multiplier: PodF64, new_multiplier_effective_timestamp: PodI64, new_multiplier: PodF64 }` (`src/extension/scaled_ui_amount/mod.rs`).
+- Current multiplier: `new_multiplier` once `now >= new_multiplier_effective_timestamp`, otherwise `multiplier` (`current_multiplier`). UI amount = raw amount / 10^decimals * multiplier.
+- The multipliers are raw IEEE-754 f64 bytes. We decode the bits with integer ops only (`math::f64_bytes_to_fixed`: sign/exponent/mantissa into PRICE_SCALE fixed point, rounded down) and reject zero, negative, subnormal, NaN, and infinity. No floating point runs on-chain.
+- Pool price = oracle price per share * multiplier * 10^(expo + quote_decimals - base_decimals). Test: a 2.0 multiplier doubles the reference price.
+- **Allowlisted mint extensions:** MintCloseAuthority, MetadataPointer, TokenMetadata, GroupPointer, TokenGroup, GroupMemberPointer, TokenGroupMember, ScaledUiAmount. Everything else fails with `UnsupportedMintExtension`. **Unverified:** which extensions real xStocks mints carry (compliance mints may use PermanentDelegate or Pausable, which this allowlist refuses). Check against real mints in Phase 8 before any mainnet xStocks pool.
+
+### Test harness notes
+
+- litesvm-token 0.16 `MintTo` builds classic SPL Token instructions only; the harness uses `spl_token_2022::instruction::mint_to`, which accepts either program.
+- LiteSVM deploys programs with no upgrade authority; the harness patches `ProgramData` bytes 12..45 to make the test admin the authority.
+
 ## Open questions
 
 - Pyth `pro-compatible` receiver vs default: which one carries the Hermes updates we'll post? Decide in Phase 6 from Pyth docs.

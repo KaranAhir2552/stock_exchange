@@ -32,6 +32,11 @@ jobs:
       - name: Install Anchor
         run: cargo install --git https://github.com/otter-sec/anchor --tag $ANCHOR_VERSION anchor-cli --locked
       - run: cargo fmt --all --check
-      - run: anchor build -- --features devnet-mock
+      - name: Mainnet build contains no mock instructions
+        run: |
+          anchor build
+          ! grep -q '"mock_' target/idl/afterbell.json
       - run: cargo clippy --all-targets -- -D warnings
+      - run: anchor build -- --features devnet-mock
+      - run: cargo clippy --all-targets --features devnet-mock -- -D warnings
       - run: anchor test --skip-build
