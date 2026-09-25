@@ -32,4 +32,6 @@ pub enum ErrorCode {
     ZeroAmount,
     #[msg("Oracle price is zero, negative, or out of range")]
     InvalidOraclePrice,
+    #[msg("This pool needs its market calendar account")]
+    MissingCalendar,
 }

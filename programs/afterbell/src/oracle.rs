@@ -1,7 +1,6 @@
 use crate::errors::ErrorCode;
-use crate::events::{ModeChanged, ReferenceUpdated};
 use crate::math;
-use crate::state::{MarketProfile, Mode, OracleKind, Pool, PRICE_SCALE};
+use crate::state::{OracleKind, Pool, PRICE_SCALE};
 use anchor_lang::prelude::*;
 use anchor_spl::token_2022::spl_token_2022::{
     extension::{
@@ -123,58 +122,5 @@ pub fn check_mint_extensions(mint: &AccountInfo) -> Result<()> {
             ErrorCode::UnsupportedMintExtension
         );
     }
-    Ok(())
-}
-
-/// Recomputes the pool's mode from the oracle and re-centres on a *newer* oracle price.
-/// Re-centring only on a newer publish time is what makes repeated calls harmless: resetting
-/// `pool_price` on the same oracle price would let traders skip price impact (DECISIONS.md).
-pub fn refresh(
-    pool: &mut Pool,
-    pool_key: Pubkey,
-    global_pause: bool,
-    oracle: &OraclePrice,
-    now: i64,
-) -> Result<()> {
-    // Older data than we've already seen can't change anything (stops griefing with stale accounts).
-    require!(
-        oracle.publish_ts >= pool.last_oracle_publish_ts,
-        ErrorCode::StaleOracle
-    );
-    let new_mode =
-        if global_pause || pool.halted || oracle.status_hint == Some(OracleStatus::Halted) {
-            Mode::Paused
-        } else {
-            match pool.profile {
-                MarketProfile::AlwaysOpen if oracle.is_valid(pool, now) => Mode::Open,
-                MarketProfile::AlwaysOpen => Mode::Paused,
-                // ponytail: calendar-driven Open/Closed lands in Phase 2; create_pool rejects UsEquity until then.
-                MarketProfile::UsEquity => Mode::Paused,
-            }
-        };
-
-    if new_mode == Mode::Open
-        && (pool.mode != Mode::Open || oracle.publish_ts > pool.last_oracle_publish_ts)
-    {
-        pool.reference_price = oracle.price;
-        pool.pool_price = oracle.price;
-        pool.last_oracle_publish_ts = oracle.publish_ts;
-        emit!(ReferenceUpdated {
-            pool: pool_key,
-            reference_price: oracle.price,
-            pool_price: oracle.price,
-            oracle_publish_ts: oracle.publish_ts,
-        });
-    }
-    if new_mode != pool.mode {
-        emit!(ModeChanged {
-            pool: pool_key,
-            from: pool.mode,
-            to: new_mode,
-            ts: now,
-        });
-        pool.mode = new_mode;
-    }
-    pool.last_update_ts = now;
     Ok(())
 }

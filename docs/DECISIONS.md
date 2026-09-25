@@ -80,6 +80,35 @@ Newest entries at the bottom of each section. Every external fact lists its sour
 - litesvm-token 0.16 `MintTo` builds classic SPL Token instructions only; the harness uses `spl_token_2022::instruction::mint_to`, which accepts either program.
 - LiteSVM deploys programs with no upgrade authority; the harness patches `ProgramData` bytes 12..45 to make the test admin the authority.
 
+## Phase 2 decisions (2026-09-25)
+
+23. **The guardian can only make things safer.** It can halt a pool or turn on global pause. Lifting either needs the admin (`Unauthorized` otherwise). This follows the brief's "can only make things safer, never move funds."
+24. **A halt takes effect immediately** (`set_halt(true)` sets the pool to Paused and emits `ModeChanged`). Lifting it leaves the pool Paused until the next refresh confirms a trusted price.
+25. **`close_ts` = min(last trusted oracle publish time, most recent session close)** whenever a pool enters Closed from any other mode. One rule covers Friday close (last price before 16:00), a halt that runs over the close (band clock starts at the last trusted price), and a pause lifted over the weekend (same close_ts as before, test `halt_over_the_close_keeps_the_weekend_clock`). An earlier close_ts means a wider band: the band models how far the price may have drifted since the last trusted price.
+26. **Oracle prices published while Closed are ignored.** The calendar is the only authority on market hours, so extended-hours or overnight prices can't move the reference. The mock's `Closed` status is likewise ignored; only `Halted` matters.
+27. **A never-priced pool can't be Closed** (it becomes Paused). A `UsEquity` pool created on a weekend has no reference price to anchor a band to, so swaps and deposits wait for the first trusted in-session price.
+28. **Closed band and fee grow continuously** (seconds, not whole hours; decision #5). The band rounds down (tighter) and the fee rounds up. Size fee = `size_fee_bps_per_1pct_depth * ceil(amount_in / virtual input reserve * 100)` in bps; base + size is capped at `closed_max_fee_bps`.
+29. **A missing or wrong calendar on a `UsEquity` pool is an error** (`MissingCalendar`, a new error code), never a fallback. Pool instructions take the calendar as an optional account constrained to `pool.calendar`; `AlwaysOpen` pools pass none.
+30. **`MarketCalendar` holds up to 48 sessions** (~9.5 weeks of US sessions). A `set_sessions` call with all 48 fits in one transaction (tested). `set_sessions` replaces the whole list; sessions must satisfy `open < close`, be sorted and non-overlapping, and `valid_until` must be in the future (`CalendarExpired`). A new calendar starts empty and expired, which means Closed.
+31. **Profile ids:** `UsEquity` = 1 (matches `calendarProfileIds: [1]` in config); `AlwaysOpen` has no calendar.
+32. **Decision #2 is superseded:** swaps always refresh first, so a "stale Open" state can't be traded on.
+33. **New events:** `GlobalPauseSet` (in addition to the brief's `ParamsUpdated` and `HaltSet`). `Swapped` also carries `fee_bps`.
+34. **Proposal for Phase 4 (not implemented):** the 60-second demo can use a compressed calendar (sessions seconds apart) and demo parameters (fast band growth) instead of an on-chain simulated clock. That way no time-offset code exists anywhere.
+
+### Brief 6.11 coverage
+
+| Requirement | Test(s) |
+|---|---|
+| Swap math, fees retained, rounding, extremes | `math::tests::*` (incl. 3 proptests), `swap_matches_math_and_keeps_fees_in_pool` |
+| Every 6.4 mode case and transition | `friday_close_weekend_news_and_monday_recenter`, `halt_*`, `global_pause_*`, `stale_oracle_in_session_*`, `always_open_*`, `oracle_halt_status_*` |
+| Friday close, weekend, holiday, Monday open | `friday_close_*`, `thanksgiving_holiday_and_early_close` |
+| Band grows and caps; outside band fails; Monday re-centre with no trade | `band_and_fee_grow_then_cap`, `friday_close_*`, `swap_outside_band_is_rejected` |
+| Paused blocks swaps and deposits, withdrawals work | `halt_*`, `global_pause_*`, `stale_oracle_*` (both files) |
+| Stale oracle in session -> Paused; expired calendar -> Closed | `stale_oracle_in_session_pauses_and_expired_calendar_closes` |
+| Wrong feed / wrong owner rejected | `wrong_feed_and_wrong_owner_are_rejected` |
+| `update_reference` twice is harmless | `recentre_only_on_newer_*`, `friday_close_*` (while Closed) |
+| AlwaysOpen behaves 24/7 | `always_open_pool_trades_through_the_weekend` |
+
 ## Open questions
 
 - Pyth `pro-compatible` receiver vs default: which one carries the Hermes updates we'll post? Decide in Phase 6 from Pyth docs.

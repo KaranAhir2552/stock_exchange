@@ -1,6 +1,7 @@
 use crate::errors::ErrorCode;
 use crate::events::PoolCreated;
-use crate::oracle::{check_mint_extensions, read_oracle, refresh};
+use crate::mode::{cal, refresh};
+use crate::oracle::{check_mint_extensions, read_oracle};
 use crate::state::*;
 use anchor_lang::prelude::*;
 use anchor_spl::token::Token;
@@ -86,6 +87,8 @@ pub struct CreatePool<'info> {
     pub lp_mint: Box<InterfaceAccount<'info, Mint>>,
     /// CHECK: validated by `read_oracle` (owner, discriminator, feed id).
     pub oracle: UncheckedAccount<'info>,
+    /// Required for profiles with market hours; checked against the profile id in the handler.
+    pub calendar: Option<Box<Account<'info, MarketCalendar>>>,
     pub base_token_program: Interface<'info, TokenInterface>,
     pub quote_token_program: Interface<'info, TokenInterface>,
     pub lp_token_program: Program<'info, Token>,
@@ -106,11 +109,19 @@ pub fn handle_create_pool(ctx: Context<CreatePool>, args: CreatePoolArgs) -> Res
         args.max_staleness_secs > 0 && args.max_conf_bps as u128 <= BPS,
         ErrorCode::InvalidParams
     );
-    // ponytail: Phase 1 scope. UsEquity needs the calendar (Phase 2); Pyth needs the reader (Phase 3).
+    // ponytail: Pyth reader lands with the keeper in Phase 3; until then only Mock pools.
     require!(
-        args.profile == MarketProfile::AlwaysOpen && args.oracle_kind == OracleKind::Mock,
+        args.oracle_kind == OracleKind::Mock,
         ErrorCode::InvalidParams
     );
+    let calendar = match args.profile.calendar_profile_id() {
+        Some(id) => {
+            let cal = a.calendar.as_ref().ok_or(ErrorCode::MissingCalendar)?;
+            require!(cal.profile_id == id, ErrorCode::MissingCalendar);
+            cal.key()
+        }
+        None => Pubkey::default(),
+    };
 
     let pool_key = a.pool.key();
     a.pool.set_inner(Pool {
@@ -124,7 +135,7 @@ pub fn handle_create_pool(ctx: Context<CreatePool>, args: CreatePoolArgs) -> Res
         base_decimals: a.base_mint.decimals,
         quote_decimals: a.quote_mint.decimals,
         profile: args.profile,
-        calendar: Pubkey::default(),
+        calendar,
         oracle_kind: args.oracle_kind,
         feed_id: args.feed_id,
         max_staleness_secs: args.max_staleness_secs,
@@ -146,7 +157,14 @@ pub fn handle_create_pool(ctx: Context<CreatePool>, args: CreatePoolArgs) -> Res
 
     let now = Clock::get()?.unix_timestamp;
     let oracle = read_oracle(&a.pool, &a.oracle, &a.base_mint.to_account_info(), now)?;
-    refresh(&mut a.pool, pool_key, a.config.global_pause, &oracle, now)?;
+    refresh(
+        &mut a.pool,
+        pool_key,
+        a.config.global_pause,
+        cal(&a.calendar),
+        &oracle,
+        now,
+    )?;
 
     emit!(PoolCreated {
         pool: pool_key,
@@ -169,6 +187,8 @@ pub struct UpdateReference<'info> {
     pub base_mint: Box<InterfaceAccount<'info, Mint>>,
     /// CHECK: validated by `read_oracle`.
     pub oracle: UncheckedAccount<'info>,
+    #[account(address = pool.calendar @ ErrorCode::MissingCalendar)]
+    pub calendar: Option<Box<Account<'info, MarketCalendar>>>,
 }
 
 pub fn handle_update_reference(ctx: Context<UpdateReference>) -> Result<()> {
@@ -176,5 +196,12 @@ pub fn handle_update_reference(ctx: Context<UpdateReference>) -> Result<()> {
     let now = Clock::get()?.unix_timestamp;
     let oracle = read_oracle(&a.pool, &a.oracle, &a.base_mint.to_account_info(), now)?;
     let key = a.pool.key();
-    refresh(&mut a.pool, key, a.config.global_pause, &oracle, now)
+    refresh(
+        &mut a.pool,
+        key,
+        a.config.global_pause,
+        cal(&a.calendar),
+        &oracle,
+        now,
+    )
 }

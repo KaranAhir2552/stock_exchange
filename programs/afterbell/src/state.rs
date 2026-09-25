@@ -15,6 +15,10 @@ pub const POOL_SEED: &[u8] = b"pool";
 pub const VAULT_SEED: &[u8] = b"vault";
 pub const LP_SEED: &[u8] = b"lp";
 pub const MOCK_ORACLE_SEED: &[u8] = b"mock_oracle";
+pub const CALENDAR_SEED: &[u8] = b"calendar";
+
+/// ~9.5 weeks of US sessions; a `set_sessions` call with all of them still fits in one transaction.
+pub const MAX_SESSIONS: usize = 48;
 
 /// Parameter bounds enforced by `PoolParams::validate`.
 pub const MAX_BAND_BPS: u16 = 5_000;
@@ -125,6 +129,63 @@ pub struct Pool {
     pub base_vault_bump: u8,
     pub quote_vault_bump: u8,
     pub lp_mint_bump: u8,
+}
+
+#[derive(
+    AnchorSerialize, AnchorDeserialize, Clone, Copy, PartialEq, Eq, Debug, Default, InitSpace,
+)]
+pub struct Session {
+    /// UTC seconds, inclusive.
+    pub open_ts: i64,
+    /// UTC seconds, exclusive.
+    pub close_ts: i64,
+}
+
+/// Explicit trading sessions for one market profile. No timezone logic on-chain: holidays, early
+/// closes, and daylight saving are baked into the timestamps by `scripts/update-calendar`.
+#[account]
+#[derive(InitSpace)]
+pub struct MarketCalendar {
+    pub profile_id: u8,
+    pub sessions: [Session; MAX_SESSIONS],
+    pub session_count: u16,
+    /// After this time the calendar is expired and the market counts as Closed.
+    pub valid_until: i64,
+    pub bump: u8,
+}
+
+impl MarketCalendar {
+    pub fn active(&self) -> &[Session] {
+        &self.sessions[..(self.session_count as usize).min(MAX_SESSIONS)]
+    }
+
+    /// True only while the calendar is unexpired and `now` is inside a session.
+    pub fn in_session(&self, now: i64) -> bool {
+        now < self.valid_until
+            && self
+                .active()
+                .iter()
+                .any(|s| s.open_ts <= now && now < s.close_ts)
+    }
+
+    /// Close time of the most recent session that has already ended.
+    pub fn last_close(&self, now: i64) -> Option<i64> {
+        self.active()
+            .iter()
+            .rev()
+            .map(|s| s.close_ts)
+            .find(|&c| c <= now)
+    }
+}
+
+impl MarketProfile {
+    /// Calendar profile id, or None for profiles that never close.
+    pub fn calendar_profile_id(self) -> Option<u8> {
+        match self {
+            MarketProfile::AlwaysOpen => None,
+            MarketProfile::UsEquity => Some(1),
+        }
+    }
 }
 
 /// Plain data, compiled in every build only because Anchor's IDL generator ignores `#[cfg]` on

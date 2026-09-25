@@ -4,6 +4,7 @@ pub mod errors;
 pub mod events;
 pub mod instructions;
 pub mod math;
+pub mod mode;
 pub mod oracle;
 pub mod state;
 
@@ -65,6 +66,30 @@ pub mod afterbell {
         direction: Direction,
     ) -> Result<()> {
         instructions::swap::handle_swap(ctx, amount_in, min_amount_out, direction)
+    }
+
+    pub fn create_calendar(ctx: Context<CreateCalendar>, profile_id: u8) -> Result<()> {
+        instructions::governance::handle_create_calendar(ctx, profile_id)
+    }
+
+    pub fn set_sessions(
+        ctx: Context<SetSessions>,
+        sessions: Vec<Session>,
+        valid_until: i64,
+    ) -> Result<()> {
+        instructions::governance::handle_set_sessions(ctx, sessions, valid_until)
+    }
+
+    pub fn set_params(ctx: Context<SetParams>, params: PoolParams) -> Result<()> {
+        instructions::governance::handle_set_params(ctx, params)
+    }
+
+    pub fn set_halt(ctx: Context<SetHalt>, halted: bool) -> Result<()> {
+        instructions::governance::handle_set_halt(ctx, halted)
+    }
+
+    pub fn set_global_pause(ctx: Context<SetGlobalPause>, paused: bool) -> Result<()> {
+        instructions::governance::handle_set_global_pause(ctx, paused)
     }
 
     #[cfg(feature = "devnet-mock")]

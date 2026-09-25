@@ -1,10 +1,12 @@
 pub mod admin;
+pub mod governance;
 pub mod liquidity;
 #[cfg(feature = "devnet-mock")]
 pub mod mock;
 pub mod swap;
 
 pub use admin::*;
+pub use governance::*;
 pub use liquidity::*;
 #[cfg(feature = "devnet-mock")]
 pub use mock::*;

@@ -43,6 +43,17 @@ pub const QUOTE_DECIMALS: u8 = 6;
 /// $100 per share, base 8 decimals, quote 6 decimals -> 1 quote atom per base atom.
 pub const P100: u128 = PRICE_SCALE;
 pub const START_TS: i64 = 1_760_000_000;
+pub const US_EQUITY: u8 = 1;
+
+/// Unix seconds for a UTC date-time (proleptic Gregorian; days-from-civil algorithm).
+pub fn utc(y: i64, m: i64, d: i64, hh: i64, mm: i64) -> i64 {
+    let y = if m <= 2 { y - 1 } else { y };
+    let era = y.div_euclid(400);
+    let yoe = y - era * 400;
+    let doy = (153 * (if m > 2 { m - 3 } else { m + 9 }) + 2) / 5 + d - 1;
+    let doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;
+    (era * 146_097 + doe - 719_468) * 86_400 + hh * 3_600 + mm * 60
+}
 
 pub type TxResult = Result<TransactionMetadata, FailedTransactionMetadata>;
 
@@ -89,10 +100,13 @@ pub struct H {
     pub admin: Keypair,
     pub user: Keypair,
     pub treasury: Keypair,
+    pub guardian: Keypair,
     pub base_mint: Pubkey,
     pub quote_mint: Pubkey,
     pub base_prog: Pubkey,
     pub quote_prog: Pubkey,
+    /// Set once a calendar exists; passed to every pool instruction that refreshes the mode.
+    pub calendar: Option<Pubkey>,
 }
 
 pub fn pda(seeds: &[&[u8]]) -> Pubkey {
@@ -111,8 +125,13 @@ impl H {
             )),
         )
         .unwrap();
-        let (admin, user, treasury) = (Keypair::new(), Keypair::new(), Keypair::new());
-        for k in [&admin, &user, &treasury] {
+        let (admin, user, treasury, guardian) = (
+            Keypair::new(),
+            Keypair::new(),
+            Keypair::new(),
+            Keypair::new(),
+        );
+        for k in [&admin, &user, &treasury, &guardian] {
             svm.airdrop(&k.pubkey(), 100_000_000_000).unwrap();
         }
         // LiteSVM deploys with no upgrade authority; make admin the authority.
@@ -129,10 +148,12 @@ impl H {
             admin,
             user,
             treasury,
+            guardian,
             base_mint: Pubkey::default(),
             quote_mint: Pubkey::default(),
             base_prog: TOKEN_ID,
             quote_prog: TOKEN_ID,
+            calendar: None,
         };
         h.set_time(START_TS);
         h
@@ -311,6 +332,98 @@ impl H {
 
     // ---------- instructions ----------
 
+    pub fn admin_ix(&mut self, ix: Instruction) -> TxResult {
+        let admin = self.admin.insecure_clone();
+        self.send(&[ix], &[&admin])
+    }
+
+    pub fn create_calendar(&mut self) -> TxResult {
+        let calendar = pda(&[CALENDAR_SEED, &[US_EQUITY]]);
+        self.calendar = Some(calendar);
+        let ix = Instruction::new_with_bytes(
+            afterbell::ID,
+            &afterbell::instruction::CreateCalendar {
+                profile_id: US_EQUITY,
+            }
+            .data(),
+            afterbell::accounts::CreateCalendar {
+                admin: self.admin.pubkey(),
+                config: self.config(),
+                calendar,
+                system_program: system_program::ID,
+            }
+            .to_account_metas(None),
+        );
+        self.admin_ix(ix)
+    }
+
+    pub fn set_sessions(&mut self, sessions: Vec<Session>, valid_until: i64) -> TxResult {
+        let ix = Instruction::new_with_bytes(
+            afterbell::ID,
+            &afterbell::instruction::SetSessions {
+                sessions,
+                valid_until,
+            }
+            .data(),
+            afterbell::accounts::SetSessions {
+                admin: self.admin.pubkey(),
+                config: self.config(),
+                calendar: pda(&[CALENDAR_SEED, &[US_EQUITY]]),
+            }
+            .to_account_metas(None),
+        );
+        self.admin_ix(ix)
+    }
+
+    pub fn set_params(&mut self, params: PoolParams) -> TxResult {
+        let admin = self.admin.insecure_clone();
+        self.set_params_as(&admin, params)
+    }
+
+    pub fn set_params_as(&mut self, signer: &Keypair, params: PoolParams) -> TxResult {
+        let ix = Instruction::new_with_bytes(
+            afterbell::ID,
+            &afterbell::instruction::SetParams { params }.data(),
+            afterbell::accounts::SetParams {
+                admin: signer.pubkey(),
+                config: self.config(),
+                pool: self.pool(),
+            }
+            .to_account_metas(None),
+        );
+        let signer = signer.insecure_clone();
+        self.send(&[ix], &[&signer])
+    }
+
+    pub fn set_halt_as(&mut self, signer: &Keypair, halted: bool) -> TxResult {
+        let ix = Instruction::new_with_bytes(
+            afterbell::ID,
+            &afterbell::instruction::SetHalt { halted }.data(),
+            afterbell::accounts::SetHalt {
+                authority: signer.pubkey(),
+                config: self.config(),
+                pool: self.pool(),
+            }
+            .to_account_metas(None),
+        );
+        let signer = signer.insecure_clone();
+        self.send(&[ix], &[&signer])
+    }
+
+    pub fn set_global_pause_as(&mut self, signer: &Keypair, paused: bool) -> TxResult {
+        let ix = Instruction::new_with_bytes(
+            afterbell::ID,
+            &afterbell::instruction::SetGlobalPause { paused }.data(),
+            afterbell::accounts::SetGlobalPause {
+                authority: signer.pubkey(),
+                config: self.config(),
+            }
+            .to_account_metas(None),
+        );
+        let signer = signer.insecure_clone();
+        self.send(&[ix], &[&signer])
+    }
+
     pub fn init_config_as(&mut self, payer: &Keypair, protocol_fee_bps: u16) -> TxResult {
         let pd =
             Pubkey::find_program_address(&[afterbell::ID.as_ref()], &bpf_loader_upgradeable::ID).0;
@@ -318,7 +431,7 @@ impl H {
             afterbell::ID,
             &afterbell::instruction::InitializeConfig {
                 admin: self.admin.pubkey(),
-                guardian: self.admin.pubkey(),
+                guardian: self.guardian.pubkey(),
                 treasury: self.treasury.pubkey(),
                 protocol_fee_bps,
             }
@@ -401,6 +514,7 @@ impl H {
                 quote_vault: self.vault(&self.quote_mint),
                 lp_mint: self.lp_mint(),
                 oracle,
+                calendar: self.calendar,
                 base_token_program: self.base_prog,
                 quote_token_program: self.quote_prog,
                 lp_token_program: TOKEN_ID,
@@ -426,6 +540,7 @@ impl H {
                 pool: self.pool(),
                 base_mint: self.base_mint,
                 oracle,
+                calendar: self.calendar,
             }
             .to_account_metas(None),
         );
@@ -467,6 +582,7 @@ impl H {
                 user_quote: atas.1,
                 user_lp: atas.2,
                 oracle: self.oracle(),
+                calendar: self.calendar,
                 base_token_program: self.base_prog,
                 quote_token_program: self.quote_prog,
                 lp_token_program: TOKEN_ID,
@@ -541,6 +657,7 @@ impl H {
                 user_base: atas.0,
                 user_quote: atas.1,
                 oracle,
+                calendar: self.calendar,
                 treasury_token,
                 base_token_program: self.base_prog,
                 quote_token_program: self.quote_prog,

@@ -1,4 +1,4 @@
-use crate::state::{Direction, MarketProfile, Mode, OracleKind};
+use crate::state::{Direction, MarketProfile, Mode, OracleKind, PoolParams};
 use anchor_lang::prelude::*;
 
 #[event]
@@ -19,6 +19,7 @@ pub struct Swapped {
     pub amount_in: u64,
     pub amount_out: u64,
     pub fee: u64,
+    pub fee_bps: u16,
     pub protocol_fee: u64,
     pub mode: Mode,
     pub price_before: u128,
@@ -59,4 +60,23 @@ pub struct ModeChanged {
     pub from: Mode,
     pub to: Mode,
     pub ts: i64,
+}
+
+#[event]
+pub struct ParamsUpdated {
+    pub pool: Pubkey,
+    pub params: PoolParams,
+}
+
+#[event]
+pub struct HaltSet {
+    pub pool: Pubkey,
+    pub halted: bool,
+    pub by: Pubkey,
+}
+
+#[event]
+pub struct GlobalPauseSet {
+    pub paused: bool,
+    pub by: Pubkey,
 }

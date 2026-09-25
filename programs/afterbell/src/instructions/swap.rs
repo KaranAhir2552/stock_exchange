@@ -2,7 +2,8 @@ use super::transfer;
 use crate::errors::ErrorCode;
 use crate::events::Swapped;
 use crate::math;
-use crate::oracle::{read_oracle, refresh};
+use crate::mode::{cal, refresh, trading_terms};
+use crate::oracle::read_oracle;
 use crate::state::*;
 use anchor_lang::prelude::*;
 use anchor_spl::token_interface::{Mint, TokenAccount, TokenInterface};
@@ -30,6 +31,8 @@ pub struct Swap<'info> {
     pub user_quote: Box<InterfaceAccount<'info, TokenAccount>>,
     /// CHECK: validated by `read_oracle`.
     pub oracle: UncheckedAccount<'info>,
+    #[account(address = pool.calendar @ ErrorCode::MissingCalendar)]
+    pub calendar: Option<Box<Account<'info, MarketCalendar>>>,
     /// Treasury's token account for the input mint. Required only when protocol_fee_bps > 0.
     #[account(mut, token::authority = config.treasury)]
     pub treasury_token: Option<Box<InterfaceAccount<'info, TokenAccount>>>,
@@ -47,19 +50,23 @@ pub fn handle_swap(
     let now = Clock::get()?.unix_timestamp;
     let oracle = read_oracle(&a.pool, &a.oracle, &a.base_mint.to_account_info(), now)?;
     let pool_key = a.pool.key();
-    refresh(&mut a.pool, pool_key, a.config.global_pause, &oracle, now)?;
-    // ponytail: Closed-mode band/fee rules land in Phase 2; until then only Open trades.
-    require!(a.pool.mode == Mode::Open, ErrorCode::PoolPaused);
-
+    refresh(
+        &mut a.pool,
+        pool_key,
+        a.config.global_pause,
+        cal(&a.calendar),
+        &oracle,
+        now,
+    )?;
+    let (fee_rule, band_bps) = trading_terms(&a.pool, now)?;
     let p = &a.pool.params;
-    let (fee_bps, band_bps) = (p.open_fee_bps, p.open_band_bps);
     let price_before = a.pool.pool_price;
     let q = math::quote_swap(
         a.base_vault.amount,
         a.quote_vault.amount,
         price_before,
         p.depth_bps,
-        fee_bps,
+        fee_rule,
         amount_in,
         direction,
     )?;
@@ -149,6 +156,7 @@ pub fn handle_swap(
         amount_in,
         amount_out: q.amount_out,
         fee: q.fee,
+        fee_bps: q.fee_bps,
         protocol_fee,
         mode: a.pool.mode,
         price_before,

@@ -55,10 +55,10 @@ fn create_pool_validation() {
     bad.closed_base_band_bps = 2_000; // > closed_max_band_bps
     assert_err(h.create_pool(pool_args(bad)), ErrorCode::InvalidParams);
 
-    // Phase 1 scope: UsEquity (needs calendar) and Pyth (needs reader) are refused, not half-supported.
+    // UsEquity without its calendar is refused; Pyth is refused until its reader exists (Phase 3).
     let mut a = pool_args(default_params());
     a.profile = MarketProfile::UsEquity;
-    assert_err(h.create_pool(a), ErrorCode::InvalidParams);
+    assert_err(h.create_pool(a), ErrorCode::MissingCalendar);
     let mut a = pool_args(default_params());
     a.oracle_kind = OracleKind::Pyth;
     assert_err(h.create_pool(a), ErrorCode::InvalidParams);
@@ -170,7 +170,7 @@ fn swap_matches_math_and_keeps_fees_in_pool() {
         h.balance(&vq),
         before.pool_price,
         before.params.depth_bps,
-        before.params.open_fee_bps,
+        math::FeeRule::flat(before.params.open_fee_bps),
         1_000,
         B2Q,
     )

@@ -2,7 +2,8 @@ use super::transfer;
 use crate::errors::ErrorCode;
 use crate::events::{LiquidityAdded, LiquidityRemoved};
 use crate::math;
-use crate::oracle::{read_oracle, refresh};
+use crate::mode::{cal, refresh};
+use crate::oracle::read_oracle;
 use crate::state::*;
 use anchor_lang::prelude::*;
 use anchor_spl::token::Token;
@@ -35,6 +36,8 @@ pub struct Deposit<'info> {
     pub user_lp: Box<InterfaceAccount<'info, TokenAccount>>,
     /// CHECK: validated by `read_oracle`.
     pub oracle: UncheckedAccount<'info>,
+    #[account(address = pool.calendar @ ErrorCode::MissingCalendar)]
+    pub calendar: Option<Box<Account<'info, MarketCalendar>>>,
     pub base_token_program: Interface<'info, TokenInterface>,
     pub quote_token_program: Interface<'info, TokenInterface>,
     pub lp_token_program: Program<'info, Token>,
@@ -50,7 +53,14 @@ pub fn handle_deposit(
     let now = Clock::get()?.unix_timestamp;
     let oracle = read_oracle(&a.pool, &a.oracle, &a.base_mint.to_account_info(), now)?;
     let pool_key = a.pool.key();
-    refresh(&mut a.pool, pool_key, a.config.global_pause, &oracle, now)?;
+    refresh(
+        &mut a.pool,
+        pool_key,
+        a.config.global_pause,
+        cal(&a.calendar),
+        &oracle,
+        now,
+    )?;
     require!(a.pool.mode != Mode::Paused, ErrorCode::PoolPaused);
 
     let (b, q) = (a.base_vault.amount, a.quote_vault.amount);

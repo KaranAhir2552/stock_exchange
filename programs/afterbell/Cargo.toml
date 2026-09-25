@@ -42,5 +42,9 @@ solana-keypair = "3.1.2"
 name = "pool"
 required-features = ["devnet-mock"]
 
+[[test]]
+name = "modes"
+required-features = ["devnet-mock"]
+
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(target_os, values("solana"))'] }

@@ -64,6 +64,7 @@ pub fn virtual_reserves(
 pub struct SwapQuote {
     pub amount_out: u64,
     pub fee: u64,
+    pub fee_bps: u16,
     pub new_price: u128,
 }
 
@@ -73,14 +74,19 @@ pub fn quote_swap(
     quote_reserve: u64,
     price: u128,
     depth_bps: u16,
-    fee_bps: u16,
+    fee_rule: FeeRule,
     amount_in: u64,
     direction: Direction,
 ) -> Result<SwapQuote> {
     require!(amount_in > 0, ErrorCode::ZeroAmount);
+    let (vb, vq) = virtual_reserves(base_reserve, quote_reserve, price, depth_bps, direction)?;
+    let virtual_in = match direction {
+        Direction::BaseToQuote => vb,
+        Direction::QuoteToBase => vq,
+    };
+    let fee_bps = fee_rule.fee_bps(amount_in, virtual_in)?;
     let fee = mul_div(amount_in as u128, fee_bps as u128, BPS, true)?;
     let net = (amount_in as u128).checked_sub(fee).ok_or_else(overflow)?;
-    let (vb, vq) = virtual_reserves(base_reserve, quote_reserve, price, depth_bps, direction)?;
 
     let (out, new_vb, new_vq, out_reserve) = match direction {
         Direction::BaseToQuote => {
@@ -98,8 +104,53 @@ pub fn quote_swap(
     Ok(SwapQuote {
         amount_out: to_u64(out)?,
         fee: to_u64(fee)?,
+        fee_bps,
         new_price: mul_div(new_vq, PRICE_SCALE, new_vb, false)?,
     })
+}
+
+/// Fee in bps: `base_bps` plus `size_bps_per_pct` per 1% of the virtual input reserve the trade
+/// consumes (rounded up), capped at `cap_bps`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct FeeRule {
+    pub base_bps: u16,
+    pub size_bps_per_pct: u16,
+    pub cap_bps: u16,
+}
+
+impl FeeRule {
+    pub fn flat(bps: u16) -> Self {
+        FeeRule {
+            base_bps: bps,
+            size_bps_per_pct: 0,
+            cap_bps: bps,
+        }
+    }
+
+    pub fn fee_bps(&self, amount_in: u64, virtual_in: u128) -> Result<u16> {
+        // size_bps_per_pct * (amount_in / virtual_in * 100)
+        let size = mul_div(
+            self.size_bps_per_pct as u128 * 100,
+            amount_in as u128,
+            virtual_in.max(1),
+            true,
+        )?;
+        Ok((self.base_bps as u128 + size).min(self.cap_bps as u128) as u16)
+    }
+}
+
+/// `base + per_hour * elapsed / 1h`, capped. Continuous in seconds (no hourly steps).
+/// `round_up` rounds the growth term up (fees) or down (bands: tighter is safer).
+pub fn grow_bps(
+    base: u16,
+    per_hour: u16,
+    cap: u16,
+    elapsed_secs: i64,
+    round_up: bool,
+) -> Result<u16> {
+    let elapsed = elapsed_secs.max(0) as u128;
+    let growth = mul_div(per_hour as u128, elapsed, 3_600, round_up)?;
+    Ok((base as u128).saturating_add(growth).min(cap as u128) as u16)
 }
 
 /// |price - reference| / reference <= band_bps.
@@ -245,15 +296,23 @@ mod tests {
     const P1: u128 = PRICE_SCALE; // 1 quote atom per base atom
 
     fn b2q(b: u64, q: u64, p: u128, amt: u64) -> Result<SwapQuote> {
-        quote_swap(b, q, p, 10_000, 30, amt, Direction::BaseToQuote)
+        quote_swap(
+            b,
+            q,
+            p,
+            10_000,
+            FeeRule::flat(30),
+            amt,
+            Direction::BaseToQuote,
+        )
     }
 
     #[test]
     fn swap_matches_constant_product_and_keeps_fee() {
         // 1M/1M reserves at price 1, full depth, 30 bps fee, sell 1000 base.
         let q = b2q(1_000_000, 1_000_000, P1, 1_000).unwrap();
-        assert_eq!(q.fee, 3); // ceil(1000 * 0.003)
-                              // net 997: out = 1_000_000 * 997 / 1_000_997 = 996.00...
+        // fee = ceil(1000 * 0.003) = 3; net 997: out = 1_000_000 * 997 / 1_000_997 = 996.00...
+        assert_eq!(q.fee, 3);
         assert_eq!(q.amount_out, 996);
         assert!(q.new_price < P1);
     }
@@ -267,7 +326,7 @@ mod tests {
             1_000_000,
             P1,
             10_000,
-            30,
+            FeeRule::flat(30),
             334,
             Direction::BaseToQuote,
         )
@@ -294,12 +353,56 @@ mod tests {
             1_000,
             P1,
             10_000,
-            0,
+            FeeRule::flat(0),
             u64::MAX / 2,
             Direction::BaseToQuote,
         )
         .unwrap();
         assert!(q.amount_out < 1_000);
+    }
+
+    #[test]
+    fn closed_fee_rule_adds_size_fee_and_caps() {
+        let rule = FeeRule {
+            base_bps: 60,
+            size_bps_per_pct: 5,
+            cap_bps: 300,
+        };
+        // 1% of a 1M virtual reserve -> +5 bps; 0.5% -> +3 bps (2.5 rounded up).
+        assert_eq!(rule.fee_bps(10_000, 1_000_000).unwrap(), 65);
+        assert_eq!(rule.fee_bps(5_000, 1_000_000).unwrap(), 63);
+        // 100% of depth would be +500 bps; capped at 300.
+        assert_eq!(rule.fee_bps(1_000_000, 1_000_000).unwrap(), 300);
+        assert_eq!(FeeRule::flat(30).fee_bps(u64::MAX, 1).unwrap(), 30);
+        // The size fee is applied in quote_swap against the input side's virtual reserve.
+        let q = quote_swap(
+            1_000_000,
+            1_000_000,
+            P1,
+            10_000,
+            rule,
+            10_000,
+            Direction::BaseToQuote,
+        )
+        .unwrap();
+        assert_eq!((q.fee_bps, q.fee), (65, 65));
+    }
+
+    #[test]
+    fn time_growth_is_continuous_and_capped() {
+        // 200 bps + 10 bps/hour, cap 1000.
+        assert_eq!(grow_bps(200, 10, 1_000, 0, false).unwrap(), 200);
+        assert_eq!(grow_bps(200, 10, 1_000, 1_800, false).unwrap(), 205); // half an hour
+        assert_eq!(grow_bps(200, 10, 1_000, 65 * 3_600, false).unwrap(), 850); // a weekend
+        assert_eq!(
+            grow_bps(200, 10, 1_000, 1_000 * 3_600, false).unwrap(),
+            1_000
+        ); // capped
+        assert_eq!(grow_bps(200, 10, 1_000, -50, false).unwrap(), 200); // clock skew
+                                                                        // Bands round down (tighter), fees round up.
+        assert_eq!(grow_bps(60, 1, 300, 1, false).unwrap(), 60);
+        assert_eq!(grow_bps(60, 1, 300, 1, true).unwrap(), 61);
+        assert_eq!(grow_bps(200, 10, 1_000, i64::MAX, false).unwrap(), 1_000);
     }
 
     #[test]
@@ -389,7 +492,7 @@ mod tests {
             depth in 1u16..=10_000, fee in 0u16..=1_000, amt in 1u64..1u64 << 24, b2q in any::<bool>(),
         ) {
             let dir = if b2q { Direction::BaseToQuote } else { Direction::QuoteToBase };
-            if let Ok(r) = quote_swap(b, q, p, depth, fee, amt, dir) {
+            if let Ok(r) = quote_swap(b, q, p, depth, FeeRule::flat(fee), amt, dir) {
                 let (vb, _) = virtual_reserves(b, q, p, depth, dir).unwrap();
                 let net = amt as u128 - r.fee as u128;
                 let out = r.amount_out as u128;
@@ -425,7 +528,7 @@ mod tests {
             depth in any::<u16>(), fee in 0u16..=10_000, amt in any::<u64>(), b2q in any::<bool>(),
         ) {
             let dir = if b2q { Direction::BaseToQuote } else { Direction::QuoteToBase };
-            let _ = quote_swap(b, q, p, depth, fee, amt, dir);
+            let _ = quote_swap(b, q, p, depth, FeeRule::flat(fee), amt, dir);
             let _ = tvl_quote(b, q, p.min(MAX_PRICE));
             let _ = within_band(p, p / 2 + 1, depth);
             let _ = proportional_deposit(b, q, b, q, amt);
