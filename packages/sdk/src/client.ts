@@ -53,6 +53,48 @@ const enumArg = (v: string) => ({ [v[0].toLowerCase() + v.slice(1)]: {} }) as ne
 const big = (x: BN | number) => BigInt(x.toString());
 const bn = (x: bigint | number) => new BN(x.toString());
 
+/**
+ * SDK PoolParams <-> the IDL's field names. Explicit on purpose: Anchor camel-cases
+ * `size_fee_bps_per_1pct_depth` as `sizeFeeBpsPer1pctDepth`, and its encoder silently writes 0
+ * for a missing field. Every field is checked, so a mismatch throws instead of zeroing a parameter.
+ */
+export function toIdlParams(p: PoolParams) {
+  const out = {
+    openBandBps: p.openBandBps,
+    closedBaseBandBps: p.closedBaseBandBps,
+    closedBandGrowthBpsPerHour: p.closedBandGrowthBpsPerHour,
+    closedMaxBandBps: p.closedMaxBandBps,
+    openFeeBps: p.openFeeBps,
+    closedBaseFeeBps: p.closedBaseFeeBps,
+    closedFeeGrowthBpsPerHour: p.closedFeeGrowthBpsPerHour,
+    closedMaxFeeBps: p.closedMaxFeeBps,
+    sizeFeeBpsPer1pctDepth: p.sizeFeeBpsPer1PctDepth,
+    depthBps: p.depthBps,
+  };
+  for (const [k, v] of Object.entries(out)) {
+    if (!Number.isInteger(v) || v < 0 || v > 65_535) throw new Error(`pool param ${k} must be a u16, got ${v}`);
+  }
+  if (typeof p.maxTvlQuote !== "bigint" || p.maxTvlQuote < 0n)
+    throw new Error("pool param maxTvlQuote must be a u64 bigint");
+  return { ...out, maxTvlQuote: bn(p.maxTvlQuote) };
+}
+
+export function fromIdlParams(raw: ReturnType<typeof toIdlParams>): PoolParams {
+  return {
+    openBandBps: raw.openBandBps,
+    closedBaseBandBps: raw.closedBaseBandBps,
+    closedBandGrowthBpsPerHour: raw.closedBandGrowthBpsPerHour,
+    closedMaxBandBps: raw.closedMaxBandBps,
+    openFeeBps: raw.openFeeBps,
+    closedBaseFeeBps: raw.closedBaseFeeBps,
+    closedFeeGrowthBpsPerHour: raw.closedFeeGrowthBpsPerHour,
+    closedMaxFeeBps: raw.closedMaxFeeBps,
+    sizeFeeBpsPer1PctDepth: raw.sizeFeeBpsPer1pctDepth,
+    depthBps: raw.depthBps,
+    maxTvlQuote: big(raw.maxTvlQuote),
+  };
+}
+
 /** Addresses a pool instruction needs, from the decoded Pool account. */
 export interface PoolAccounts {
   address: PublicKey;
@@ -103,9 +145,7 @@ export class AfterbellClient {
 
   async fetchPool(address: PublicKey): Promise<PoolInfo> {
     const p = await this.program.account.pool.fetch(address);
-    const params = Object.fromEntries(
-      Object.entries(p.params).map(([k, v]) => [k, k === "maxTvlQuote" ? big(v as BN) : Number(v)]),
-    ) as unknown as PoolParams;
+    const params = fromIdlParams(p.params);
     return {
       accounts: {
         address,
@@ -247,7 +287,6 @@ export class AfterbellClient {
     },
   ) {
     const pool = poolPda(this.programId, a.baseMint, a.quoteMint);
-    const { maxTvlQuote, ...rest } = a.params;
     return this.m()
       .createPool({
         profile: enumArg(a.profile),
@@ -255,7 +294,7 @@ export class AfterbellClient {
         feedId: Array.from(a.feedId),
         maxStalenessSecs: a.maxStalenessSecs,
         maxConfBps: a.maxConfBps,
-        params: { ...rest, maxTvlQuote: bn(maxTvlQuote) },
+        params: toIdlParams(a.params),
       })
       .accountsPartial({
         admin,
@@ -371,11 +410,7 @@ export class AfterbellClient {
   }
 
   setParams(admin: PublicKey, pool: PublicKey, params: PoolParams) {
-    const { maxTvlQuote, ...rest } = params;
-    return this.m()
-      .setParams({ ...rest, maxTvlQuote: bn(maxTvlQuote) })
-      .accountsPartial({ admin, config: this.config, pool })
-      .instruction();
+    return this.m().setParams(toIdlParams(params)).accountsPartial({ admin, config: this.config, pool }).instruction();
   }
 
   setHalt(authority: PublicKey, pool: PublicKey, halted: boolean) {

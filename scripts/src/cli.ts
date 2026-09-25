@@ -8,10 +8,15 @@ import { mintAddress, NETWORKS, type Network } from "@afterbell/config";
 import {
   calendarPda,
   feedIdBytes,
+  getBand,
+  getCurrentFee,
+  hoursSinceClose,
   lpMintPda,
   mockOraclePda,
+  type OracleStatus,
   poolPda,
   quoteSwap,
+  targetMode,
   toUiPrice,
   US_EQUITY_PROFILE_ID,
 } from "@afterbell/sdk";
@@ -33,6 +38,12 @@ const { values, positionals } = parseArgs({
     mode: { type: "string", default: "nyse" },
     hours: { type: "string", default: "72" },
     "seed-usd": { type: "string", default: "40000" },
+    pool: { type: "string" },
+    price: { type: "string" },
+    status: { type: "string" },
+    on: { type: "string" },
+    "open-in": { type: "string", default: "0" },
+    length: { type: "string", default: "3600" },
   },
 });
 const command = positionals[0];
@@ -73,6 +84,10 @@ async function deploy(ctx: Ctx) {
     ],
     { stdio: "inherit" },
   );
+  // A (re)deployed program only becomes callable from the next slot; wait so the next command doesn't
+  // hit "Program is not deployed".
+  const deployedAt = await ctx.connection.getSlot("confirmed");
+  while ((await ctx.connection.getSlot("confirmed")) < deployedAt + 2) await new Promise((r) => setTimeout(r, 400));
 }
 
 async function initConfig(ctx: Ctx) {
@@ -234,6 +249,117 @@ async function smoke(ctx: Ctx) {
   }
 }
 
+// ---------- operator commands (the Phase 4 demo panel calls the same instructions) ----------
+
+/** Config pool by name or base symbol (`--pool TSLAx`). */
+async function pickPool(ctx: Ctx) {
+  const want = values.pool;
+  const p = ctx.cfg.pools.find((x) => x.name === want || x.base === want);
+  if (!p) throw new Error(`--pool must be one of: ${ctx.cfg.pools.map((x) => x.base).join(", ")}`);
+  const address = poolPda(
+    ctx.client.programId,
+    new PublicKey(mintAddress(ctx.cfg, p.base)),
+    new PublicKey(mintAddress(ctx.cfg, p.quote)),
+  );
+  return { cfgPool: p, info: await ctx.client.fetchPool(address) };
+}
+
+const onOff = () => {
+  if (values.on !== "true" && values.on !== "false") throw new Error("--on must be true or false");
+  return values.on === "true";
+};
+
+async function status(ctx: Ctx) {
+  const pid = ctx.client.programId;
+  for (const p of ctx.cfg.pools) {
+    const address = poolPda(
+      pid,
+      new PublicKey(mintAddress(ctx.cfg, p.base)),
+      new PublicKey(mintAddress(ctx.cfg, p.quote)),
+    );
+    const info = await ctx.client.fetchPool(address);
+    const s = info.state;
+    const [market, reserves] = await Promise.all([
+      ctx.client.mockMarketContext(info),
+      ctx.client.reserves(info.accounts),
+    ]);
+    const ui = (x: bigint) => Number(toUiPrice(x, s.baseDecimals, s.quoteDecimals).toFixed(4));
+    const band = getBand(s, market.now);
+    log(p.name, {
+      mode: s.mode,
+      modeAfterRefresh: targetMode(s, market),
+      poolPrice: ui(s.poolPrice),
+      referencePrice: ui(s.referencePrice),
+      band: band && { bps: band.bandBps, low: ui(band.low), high: ui(band.high) },
+      feeBps: getCurrentFee(s, market.now),
+      hoursSinceClose: Number(hoursSinceClose(s, market.now).toFixed(3)),
+      oraclePrice: ui(market.oracle.price),
+      oracleAgeSecs: market.now - market.oracle.publishTs,
+      oracleStatus: market.oracle.statusHint,
+      halted: s.halted,
+      reserves,
+    });
+  }
+}
+
+async function mockPrice(ctx: Ctx) {
+  const { info } = await pickPool(ctx);
+  const price = BigInt(Math.round(Number(values.price) * 1e8));
+  if (!(price > 0n)) throw new Error("--price must be a positive number (USD)");
+  await send(ctx, [ctx.client.mockSetPrice(ctx.admin.publicKey, info.accounts.feedId, price, 0n, EXPO)]);
+  log("mock price set", { pool: values.pool, price: values.price });
+}
+
+async function mockStatus(ctx: Ctx) {
+  const { info } = await pickPool(ctx);
+  const st = values.status as OracleStatus;
+  if (!["Trading", "Halted", "Closed"].includes(st)) throw new Error("--status must be Trading, Halted or Closed");
+  await send(ctx, [ctx.client.mockSetStatus(ctx.admin.publicKey, info.accounts.feedId, st)]);
+  log("mock status set", { pool: values.pool, status: st });
+}
+
+async function halt(ctx: Ctx) {
+  const { info } = await pickPool(ctx);
+  await send(ctx, [ctx.client.setHalt(ctx.admin.publicKey, info.accounts.address, onOff())]);
+  log("halt set", { pool: values.pool, halted: values.on });
+}
+
+async function globalPause(ctx: Ctx) {
+  await send(ctx, [ctx.client.setGlobalPause(ctx.admin.publicKey, onOff())]);
+  log("global pause set", { paused: values.on });
+}
+
+/** Pushes the config's params to every existing pool (validated on-chain by set_params). */
+async function setParams(ctx: Ctx) {
+  const pid = ctx.client.programId;
+  for (const p of ctx.cfg.pools) {
+    const address = poolPda(
+      pid,
+      new PublicKey(mintAddress(ctx.cfg, p.base)),
+      new PublicKey(mintAddress(ctx.cfg, p.quote)),
+    );
+    const { maxTvlQuote, ...rest } = p.params;
+    const params = { ...rest, maxTvlQuote: BigInt(maxTvlQuote) };
+    await send(ctx, [ctx.client.setParams(ctx.admin.publicKey, address, params)]);
+    const onchain = (await ctx.client.fetchPool(address)).state.params;
+    log("params set", {
+      pool: p.name,
+      sizeFeeBpsPer1PctDepth: onchain.sizeFeeBpsPer1PctDepth,
+      depthBps: onchain.depthBps,
+    });
+  }
+}
+
+/** One session relative to chain time: `--open-in -60 --length 90` = opened a minute ago, closes in 30s. */
+async function calendarDemo(ctx: Ctx) {
+  if (!testNetwork) throw new Error("calendar-demo is for localnet/devnet only");
+  const now = await ctx.client.chainTime();
+  const openTs = now + BigInt(values["open-in"] as string);
+  const closeTs = openTs + BigInt(values.length as string);
+  await send(ctx, [ctx.client.setSessions(ctx.admin.publicKey, [{ openTs, closeTs }], closeTs)]);
+  log("demo calendar set", { openInSecs: Number(openTs - now), closeInSecs: Number(closeTs - now) });
+}
+
 async function airdropIfLocal(ctx: Ctx) {
   if (network !== "localnet") return;
   const sig = await ctx.connection.requestAirdrop(ctx.admin.publicKey, 100 * LAMPORTS_PER_SOL);
@@ -249,6 +375,13 @@ const commands: Record<string, (ctx: Ctx) => Promise<unknown>> = {
   "create-pool": createPools,
   "seed-liquidity": seedLiquidity,
   smoke,
+  status,
+  "mock-price": mockPrice,
+  "mock-status": mockStatus,
+  halt,
+  "global-pause": globalPause,
+  "calendar-demo": calendarDemo,
+  "set-params": setParams,
   async setup(ctx) {
     await airdropIfLocal(ctx);
     await deploy(ctx);

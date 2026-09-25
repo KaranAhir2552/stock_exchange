@@ -1,6 +1,6 @@
 # Afterbell
 
-An oracle-anchored swap pool on Solana that keeps tokenized-stock trading fair for traders and safe for LPs when the real market is closed. See [CLAUDE.md](CLAUDE.md) for the full brief and [docs/DECISIONS.md](docs/DECISIONS.md) for versions and design decisions.
+An oracle-anchored swap pool on Solana that keeps tokenized-stock trading fair for traders and safe for LPs when the real market is closed: the price is anchored to an oracle, a widening band and rising fees apply while the market is closed, halts pause trading (withdrawals always work), and the pool jumps straight to the new price at the open. See [CLAUDE.md](CLAUDE.md) for the full brief and [docs/DECISIONS.md](docs/DECISIONS.md) for versions, verified facts and design decisions.
 
 ## Prerequisites
 
@@ -10,20 +10,68 @@ An oracle-anchored swap pool on Solana that keeps tokenized-stock trading fair f
 - Anchor 1.2.0 via avm:
   ```sh
   cargo install --git https://github.com/otter-sec/anchor --tag v1.2.0 avm --locked
-  avm install 1.2.0 --from-source   # prebuilt binary needs glibc 2.39
+  avm install 1.2.0 --from-source   # the prebuilt binary needs glibc 2.39
   avm use 1.2.0
   ```
+- A local keypair: `solana-keygen new -o ~/.config/solana/id.json` (skip if you have one)
 
-## Commands
+## Build and test
 
 ```sh
 pnpm install
-pnpm lint && pnpm build && pnpm test         # TypeScript packages
-pnpm check:mainnet                           # mainnet config must have no mock/demo paths
-
-anchor build -- --features devnet-mock       # localnet/devnet build (mock oracle + demo controls)
-anchor build                                 # mainnet build (no mock)
-anchor test --skip-build                     # Rust + LiteSVM program tests
+anchor build -- --features devnet-mock   # localnet/devnet build (mock oracle + demo controls)
+anchor test --skip-build                 # Rust + LiteSVM program tests (incl. clock-warped weekends)
+pnpm build && pnpm test                  # config, SDK (incl. program parity vectors), scripts, keeper
+pnpm lint
 ```
 
-Services read `NETWORK` (`localnet` | `devnet` | `mainnet`) and load `config/<NETWORK>.json` through `@afterbell/config`. Secrets go in `.env.<network>` (see `.env.example`).
+`anchor build` without features is the mainnet build (no mock code; the deploy script refuses the wrong build for a network).
+
+## Run everything locally
+
+Three terminals:
+
+```sh
+# 1. local validator
+scripts/localnet.sh
+
+# 2. deploy + config + calendar + test mints + both pools + $40k liquidity per side
+node scripts/src/cli.ts setup --network localnet --mode demo --hours 72
+#    then keep both pools fresh (re-posts the mock price, calls update_reference every 5s)
+NETWORK=localnet KEEPER_INTERVAL_SECS=5 KEEPER_MOCK_HEARTBEAT=true node services/keeper/src/main.ts
+
+# 3. look and play
+node scripts/src/cli.ts status --network localnet            # mode, prices, band, fee per pool
+node scripts/src/cli.ts smoke --network localnet             # SDK quote vs a real swap
+curl localhost:9464/health
+```
+
+The weekend story, by hand (use `--open-in=-60` with `=` for negative values):
+
+```sh
+cli() { node scripts/src/cli.ts "$@" --network localnet; }
+cli calendar-demo --open-in=-60 --length 70     # Friday close in ~10s
+cli mock-price --pool TSLAx --price 225         # weekend news: ignored while Closed
+cli mock-status --pool TSLAx --status Halted    # trading halt -> Paused (withdrawals still work)
+cli mock-status --pool TSLAx --status Trading   # halt ends -> Closed again
+cli calendar-demo --open-in 0 --length 3600     # Monday open: pool jumps to the oracle, no trade
+cli status
+```
+
+`setup` writes the new test-mint addresses into `config/localnet.json`; they change on every validator reset, so don't commit them (`git checkout config/localnet.json`).
+
+## Networks
+
+Every tool reads `NETWORK` / `--network` (`localnet` | `devnet` | `mainnet`) and loads `config/<network>.json` through `@afterbell/config` (zod-validated, fails fast). Secrets and per-machine settings go in `.env.<network>`; see [.env.example](.env.example). `pnpm check:mainnet` fails if the mainnet config enables any mock or demo path.
+
+| Command | What it does |
+|---|---|
+| `setup` | `deploy`, `init-config`, `create-calendar`, `update-calendar`, `create-test-mints`, `create-pool`, `seed-liquidity` (each idempotent) |
+| `update-calendar` | Real NYSE sessions (default; data from nyse.com in `scripts/src/nyse-calendar.json`) or `--mode demo --hours N` |
+| `set-params` | Pushes `config/<network>.json` pool params to the chain |
+| `status`, `smoke` | Read pool state through the SDK; live SDK-vs-chain swap check |
+| `mock-price`, `mock-status`, `halt`, `global-pause`, `calendar-demo` | Operator/demo controls (mock ones are localnet/devnet only) |
+
+## Layout
+
+`programs/afterbell` (Anchor program) · `packages/config` · `packages/sdk` (client + exact TS mirror of the on-chain math) · `scripts` · `services/keeper` · `docs`
