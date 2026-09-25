@@ -1,0 +1,757 @@
+{
+  "generatedAt": "2026-09-25T12:19:36+00:00",
+  "source": "Yahoo Finance daily bars via yfinance (split/dividend adjusted)",
+  "period": {
+    "start": "2021-01-01",
+    "end": "2026-09-25"
+  },
+  "tickers": [
+    "AAPL",
+    "MSFT",
+    "NVDA",
+    "AMZN",
+    "GOOGL",
+    "META",
+    "TSLA",
+    "AMD",
+    "NFLX",
+    "AVGO",
+    "JPM",
+    "COIN",
+    "PLTR",
+    "MSTR",
+    "INTC",
+    "BA"
+  ],
+  "tvlUsd": 80000,
+  "weekendHours": 65.5,
+  "params": {
+    "source": "config/devnet.json (TSLAx-test/USDC)",
+    "openBandBps": 100,
+    "closedBaseBandBps": 200,
+    "closedBandGrowthBpsPerHour": 10,
+    "closedMaxBandBps": 1000,
+    "openFeeBps": 30,
+    "closedBaseFeeBps": 60,
+    "closedFeeGrowthBpsPerHour": 1,
+    "closedMaxFeeBps": 300,
+    "sizeFeeBpsPer1PctDepth": 5,
+    "depthBps": 10000,
+    "maxTvlQuote": "100000000000"
+  },
+  "plainPool": {
+    "feeBps": 30,
+    "model": "x*y=k, fee kept in reserves"
+  },
+  "summary": {
+    "plain": {
+      "totalLpVsHodlUsd": -6513.45,
+      "meanLpVsHodlPct": -0.4233,
+      "worstLpVsHodlPct": -1.2432,
+      "totalFeesUsd": 188.09,
+      "totalStaleLossUsd": 6701.52
+    },
+    "afterbell": {
+      "totalLpVsHodlUsd": -4072.54,
+      "meanLpVsHodlPct": -0.2648,
+      "worstLpVsHodlPct": -0.5902,
+      "totalFeesUsd": 274.91,
+      "totalStaleLossUsd": 4347.49
+    },
+    "lossReductionPct": 37.47
+  },
+  "sensitivity": [
+    {
+      "variant": "devnet (2% +0.10%/h, cap 10%)",
+      "changes": {},
+      "totalLossUsd": 4072.57,
+      "lossReductionVsPlainPct": 37.47
+    },
+    {
+      "variant": "slower band (2% +0.05%/h)",
+      "changes": {
+        "closed_band_growth_bps_per_hour": 5
+      },
+      "totalLossUsd": 2852.15,
+      "lossReductionVsPlainPct": 56.21
+    },
+    {
+      "variant": "flat 5% band",
+      "changes": {
+        "closed_base_band_bps": 500,
+        "closed_band_growth_bps_per_hour": 0,
+        "closed_max_band_bps": 500
+      },
+      "totalLossUsd": 2774.17,
+      "lossReductionVsPlainPct": 57.41
+    },
+    {
+      "variant": "flat 2% band",
+      "changes": {
+        "closed_band_growth_bps_per_hour": 0,
+        "closed_max_band_bps": 200
+      },
+      "totalLossUsd": 1222.33,
+      "lossReductionVsPlainPct": 81.23
+    },
+    {
+      "variant": "devnet band, 1.5% base fee",
+      "changes": {
+        "closed_base_fee_bps": 150
+      },
+      "totalLossUsd": 3782.4,
+      "lossReductionVsPlainPct": 41.93
+    },
+    {
+      "variant": "wider band (2% +0.30%/h, cap 20%)",
+      "changes": {
+        "closed_band_growth_bps_per_hour": 30,
+        "closed_max_band_bps": 2000
+      },
+      "totalLossUsd": 5881.39,
+      "lossReductionVsPlainPct": 9.7
+    }
+  ],
+  "events": [
+    {
+      "ticker": "AMD",
+      "friday": "2025-10-03",
+      "monday": "2025-10-06",
+      "fridayClose": 164.67,
+      "mondayOpen": 226.45,
+      "gapPct": 37.517,
+      "plain": {
+        "lpUsd": 93834.95,
+        "hodlUsd": 95006.98,
+        "lpVsHodlUsd": -1172.04,
+        "lpVsHodlPct": -1.2336,
+        "feesUsd": 20.57,
+        "staleLossUsd": 1192.61,
+        "traderProfitUsd": 1172.04,
+        "trades": 1,
+        "endPrice": 225.7706
+      },
+      "afterbell": {
+        "lpUsd": 94487.21,
+        "hodlUsd": 95006.98,
+        "lpVsHodlUsd": -519.78,
+        "lpVsHodlPct": -0.5471,
+        "feesUsd": 14.5,
+        "staleLossUsd": 534.28,
+        "traderProfitUsd": 519.78,
+        "trades": 2386,
+        "endPrice": 178.6999,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    },
+    {
+      "ticker": "MSTR",
+      "friday": "2024-08-02",
+      "monday": "2024-08-05",
+      "fridayClose": 144.799,
+      "mondayOpen": 105.165,
+      "gapPct": -27.372,
+      "plain": {
+        "lpUsd": 68192.86,
+        "hodlUsd": 69051.31,
+        "lpVsHodlUsd": -858.45,
+        "lpVsHodlPct": -1.2432,
+        "feesUsd": 15.0,
+        "staleLossUsd": 873.45,
+        "traderProfitUsd": 858.45,
+        "trades": 1,
+        "endPrice": 105.4814
+      },
+      "afterbell": {
+        "lpUsd": 68643.75,
+        "hodlUsd": 69051.31,
+        "lpVsHodlUsd": -407.55,
+        "lpVsHodlPct": -0.5902,
+        "feesUsd": 11.64,
+        "staleLossUsd": 419.19,
+        "traderProfitUsd": 407.55,
+        "trades": 2582,
+        "endPrice": 132.4621,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    },
+    {
+      "ticker": "MSTR",
+      "friday": "2022-06-10",
+      "monday": "2022-06-13",
+      "fridayClose": 20.336,
+      "mondayOpen": 14.931,
+      "gapPct": -26.578,
+      "plain": {
+        "lpUsd": 68563.77,
+        "hodlUsd": 69368.61,
+        "lpVsHodlUsd": -804.84,
+        "lpVsHodlPct": -1.1602,
+        "feesUsd": 14.61,
+        "staleLossUsd": 819.44,
+        "traderProfitUsd": 804.84,
+        "trades": 1,
+        "endPrice": 14.9759
+      },
+      "afterbell": {
+        "lpUsd": 68975.62,
+        "hodlUsd": 69368.61,
+        "lpVsHodlUsd": -392.98,
+        "lpVsHodlPct": -0.5665,
+        "feesUsd": 11.76,
+        "staleLossUsd": 404.74,
+        "traderProfitUsd": 392.98,
+        "trades": 2621,
+        "endPrice": 18.6034,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    },
+    {
+      "ticker": "COIN",
+      "friday": "2022-06-10",
+      "monday": "2022-06-13",
+      "fridayClose": 58.71,
+      "mondayOpen": 46.18,
+      "gapPct": -21.342,
+      "plain": {
+        "lpUsd": 70963.39,
+        "hodlUsd": 71463.12,
+        "lpVsHodlUsd": -499.74,
+        "lpVsHodlPct": -0.6993,
+        "feesUsd": 11.91,
+        "staleLossUsd": 511.65,
+        "traderProfitUsd": 499.74,
+        "trades": 1,
+        "endPrice": 46.319
+      },
+      "afterbell": {
+        "lpUsd": 71166.35,
+        "hodlUsd": 71463.12,
+        "lpVsHodlUsd": -296.78,
+        "lpVsHodlPct": -0.4153,
+        "feesUsd": 12.6,
+        "staleLossUsd": 309.38,
+        "traderProfitUsd": 296.78,
+        "trades": 2558,
+        "endPrice": 53.7079,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    },
+    {
+      "ticker": "COIN",
+      "friday": "2024-08-02",
+      "monday": "2024-08-05",
+      "fridayClose": 204.44,
+      "mondayOpen": 162.01,
+      "gapPct": -20.754,
+      "plain": {
+        "lpUsd": 71227.75,
+        "hodlUsd": 71698.3,
+        "lpVsHodlUsd": -470.55,
+        "lpVsHodlPct": -0.6563,
+        "feesUsd": 11.6,
+        "staleLossUsd": 482.15,
+        "traderProfitUsd": 470.55,
+        "trades": 1,
+        "endPrice": 162.4975
+      },
+      "afterbell": {
+        "lpUsd": 71412.32,
+        "hodlUsd": 71698.3,
+        "lpVsHodlUsd": -285.97,
+        "lpVsHodlPct": -0.3989,
+        "feesUsd": 12.7,
+        "staleLossUsd": 298.67,
+        "traderProfitUsd": 285.97,
+        "trades": 2434,
+        "endPrice": 187.0217,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    },
+    {
+      "ticker": "PLTR",
+      "friday": "2022-05-06",
+      "monday": "2022-05-09",
+      "fridayClose": 9.48,
+      "mondayOpen": 7.78,
+      "gapPct": -17.932,
+      "plain": {
+        "lpUsd": 72483.08,
+        "hodlUsd": 72827.01,
+        "lpVsHodlUsd": -343.93,
+        "lpVsHodlPct": -0.4723,
+        "feesUsd": 10.1,
+        "staleLossUsd": 354.03,
+        "traderProfitUsd": 343.93,
+        "trades": 1,
+        "endPrice": 7.8034
+      },
+      "afterbell": {
+        "lpUsd": 72592.87,
+        "hodlUsd": 72827.01,
+        "lpVsHodlUsd": -234.13,
+        "lpVsHodlPct": -0.3215,
+        "feesUsd": 13.15,
+        "staleLossUsd": 247.28,
+        "traderProfitUsd": 234.13,
+        "trades": 2568,
+        "endPrice": 8.6723,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    },
+    {
+      "ticker": "MSTR",
+      "friday": "2021-07-23",
+      "monday": "2021-07-26",
+      "fridayClose": 53.971,
+      "mondayOpen": 62.1,
+      "gapPct": 15.062,
+      "plain": {
+        "lpUsd": 85822.14,
+        "hodlUsd": 86024.72,
+        "lpVsHodlUsd": -202.58,
+        "lpVsHodlPct": -0.2355,
+        "feesUsd": 8.55,
+        "staleLossUsd": 211.13,
+        "traderProfitUsd": 202.58,
+        "trades": 1,
+        "endPrice": 61.9137
+      },
+      "afterbell": {
+        "lpUsd": 85864.74,
+        "hodlUsd": 86024.72,
+        "lpVsHodlUsd": -159.97,
+        "lpVsHodlPct": -0.186,
+        "feesUsd": 14.5,
+        "staleLossUsd": 174.47,
+        "traderProfitUsd": 159.97,
+        "trades": 2256,
+        "endPrice": 58.5693,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    },
+    {
+      "ticker": "MSTR",
+      "friday": "2022-01-21",
+      "monday": "2022-01-24",
+      "fridayClose": 37.589,
+      "mondayOpen": 32.0,
+      "gapPct": -14.869,
+      "plain": {
+        "lpUsd": 73821.8,
+        "hodlUsd": 74052.51,
+        "lpVsHodlUsd": -230.72,
+        "lpVsHodlPct": -0.3116,
+        "feesUsd": 8.42,
+        "staleLossUsd": 239.14,
+        "traderProfitUsd": 230.72,
+        "trades": 1,
+        "endPrice": 32.0963
+      },
+      "afterbell": {
+        "lpUsd": 73874.67,
+        "hodlUsd": 74052.51,
+        "lpVsHodlUsd": -177.84,
+        "lpVsHodlPct": -0.2402,
+        "feesUsd": 13.64,
+        "staleLossUsd": 191.48,
+        "traderProfitUsd": 177.84,
+        "trades": 2471,
+        "endPrice": 34.3864,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    },
+    {
+      "ticker": "MSTR",
+      "friday": "2021-02-05",
+      "monday": "2021-02-08",
+      "fridayClose": 80.6,
+      "mondayOpen": 92.583,
+      "gapPct": 14.867,
+      "plain": {
+        "lpUsd": 85749.45,
+        "hodlUsd": 85946.9,
+        "lpVsHodlUsd": -197.45,
+        "lpVsHodlPct": -0.2297,
+        "feesUsd": 8.44,
+        "staleLossUsd": 205.89,
+        "traderProfitUsd": 197.45,
+        "trades": 1,
+        "endPrice": 92.3053
+      },
+      "afterbell": {
+        "lpUsd": 85790.05,
+        "hodlUsd": 85946.9,
+        "lpVsHodlUsd": -156.85,
+        "lpVsHodlPct": -0.1825,
+        "feesUsd": 14.5,
+        "staleLossUsd": 171.36,
+        "traderProfitUsd": 156.85,
+        "trades": 2209,
+        "endPrice": 87.4671,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    },
+    {
+      "ticker": "MSTR",
+      "friday": "2025-02-28",
+      "monday": "2025-03-03",
+      "fridayClose": 255.43,
+      "mondayOpen": 293.15,
+      "gapPct": 14.767,
+      "plain": {
+        "lpUsd": 85712.07,
+        "hodlUsd": 85906.9,
+        "lpVsHodlUsd": -194.83,
+        "lpVsHodlPct": -0.2268,
+        "feesUsd": 8.39,
+        "staleLossUsd": 203.22,
+        "traderProfitUsd": 194.83,
+        "trades": 1,
+        "endPrice": 292.2705
+      },
+      "afterbell": {
+        "lpUsd": 85751.65,
+        "hodlUsd": 85906.9,
+        "lpVsHodlUsd": -155.25,
+        "lpVsHodlPct": -0.1807,
+        "feesUsd": 14.5,
+        "staleLossUsd": 169.75,
+        "traderProfitUsd": 155.25,
+        "trades": 2167,
+        "endPrice": 277.1926,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    },
+    {
+      "ticker": "PLTR",
+      "friday": "2022-08-05",
+      "monday": "2022-08-08",
+      "fridayClose": 11.45,
+      "mondayOpen": 9.77,
+      "gapPct": -14.672,
+      "plain": {
+        "lpUsd": 73906.71,
+        "hodlUsd": 74131.01,
+        "lpVsHodlUsd": -224.29,
+        "lpVsHodlPct": -0.3026,
+        "feesUsd": 8.31,
+        "staleLossUsd": 232.61,
+        "traderProfitUsd": 224.29,
+        "trades": 1,
+        "endPrice": 9.7994
+      },
+      "afterbell": {
+        "lpUsd": 73956.77,
+        "hodlUsd": 74131.01,
+        "lpVsHodlUsd": -174.24,
+        "lpVsHodlPct": -0.235,
+        "feesUsd": 13.67,
+        "staleLossUsd": 187.91,
+        "traderProfitUsd": 174.24,
+        "trades": 2542,
+        "endPrice": 10.4745,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    },
+    {
+      "ticker": "NVDA",
+      "friday": "2024-08-02",
+      "monday": "2024-08-05",
+      "fridayClose": 106.9738,
+      "mondayOpen": 91.8058,
+      "gapPct": -14.179,
+      "plain": {
+        "lpUsd": 74119.74,
+        "hodlUsd": 74328.33,
+        "lpVsHodlUsd": -208.58,
+        "lpVsHodlPct": -0.2806,
+        "feesUsd": 8.04,
+        "staleLossUsd": 216.62,
+        "traderProfitUsd": 208.58,
+        "trades": 1,
+        "endPrice": 92.082
+      },
+      "afterbell": {
+        "lpUsd": 74163.15,
+        "hodlUsd": 74328.33,
+        "lpVsHodlUsd": -165.17,
+        "lpVsHodlPct": -0.2222,
+        "feesUsd": 13.75,
+        "staleLossUsd": 178.92,
+        "traderProfitUsd": 165.17,
+        "trades": 2417,
+        "endPrice": 97.8596,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    },
+    {
+      "ticker": "AVGO",
+      "friday": "2025-01-24",
+      "monday": "2025-01-27",
+      "fridayClose": 241.1794,
+      "mondayOpen": 210.3297,
+      "gapPct": -12.791,
+      "plain": {
+        "lpUsd": 74715.88,
+        "hodlUsd": 74883.53,
+        "lpVsHodlUsd": -167.65,
+        "lpVsHodlPct": -0.2239,
+        "feesUsd": 7.27,
+        "staleLossUsd": 174.91,
+        "traderProfitUsd": 167.65,
+        "trades": 1,
+        "endPrice": 210.9626
+      },
+      "afterbell": {
+        "lpUsd": 74743.86,
+        "hodlUsd": 74883.53,
+        "lpVsHodlUsd": -139.67,
+        "lpVsHodlPct": -0.1865,
+        "feesUsd": 13.97,
+        "staleLossUsd": 153.64,
+        "traderProfitUsd": 139.67,
+        "trades": 2299,
+        "endPrice": 220.6309,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    },
+    {
+      "ticker": "NVDA",
+      "friday": "2025-01-24",
+      "monday": "2025-01-27",
+      "fridayClose": 142.2481,
+      "mondayOpen": 124.4746,
+      "gapPct": -12.495,
+      "plain": {
+        "lpUsd": 74842.58,
+        "hodlUsd": 75002.11,
+        "lpVsHodlUsd": -159.52,
+        "lpVsHodlPct": -0.2127,
+        "feesUsd": 7.1,
+        "staleLossUsd": 166.62,
+        "traderProfitUsd": 159.52,
+        "trades": 1,
+        "endPrice": 124.8491
+      },
+      "afterbell": {
+        "lpUsd": 74867.88,
+        "hodlUsd": 75002.11,
+        "lpVsHodlUsd": -134.22,
+        "lpVsHodlPct": -0.179,
+        "feesUsd": 14.02,
+        "staleLossUsd": 148.25,
+        "traderProfitUsd": 134.22,
+        "trades": 2341,
+        "endPrice": 130.1286,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    },
+    {
+      "ticker": "PLTR",
+      "friday": "2024-08-02",
+      "monday": "2024-08-05",
+      "fridayClose": 24.74,
+      "mondayOpen": 21.74,
+      "gapPct": -12.126,
+      "plain": {
+        "lpUsd": 74999.84,
+        "hodlUsd": 75149.56,
+        "lpVsHodlUsd": -149.72,
+        "lpVsHodlPct": -0.1992,
+        "feesUsd": 6.89,
+        "staleLossUsd": 156.61,
+        "traderProfitUsd": 149.72,
+        "trades": 1,
+        "endPrice": 21.8054
+      },
+      "afterbell": {
+        "lpUsd": 75022.1,
+        "hodlUsd": 75149.56,
+        "lpVsHodlUsd": -127.45,
+        "lpVsHodlPct": -0.1696,
+        "feesUsd": 14.08,
+        "staleLossUsd": 141.53,
+        "traderProfitUsd": 127.45,
+        "trades": 2443,
+        "endPrice": 22.6322,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    },
+    {
+      "ticker": "TSLA",
+      "friday": "2024-04-26",
+      "monday": "2024-04-29",
+      "fridayClose": 168.29,
+      "mondayOpen": 188.42,
+      "gapPct": 11.961,
+      "plain": {
+        "lpUsd": 84656.39,
+        "hodlUsd": 84784.6,
+        "lpVsHodlUsd": -128.21,
+        "lpVsHodlPct": -0.1512,
+        "feesUsd": 6.8,
+        "staleLossUsd": 135.02,
+        "traderProfitUsd": 128.21,
+        "trades": 1,
+        "endPrice": 187.8547
+      },
+      "afterbell": {
+        "lpUsd": 84674.31,
+        "hodlUsd": 84784.6,
+        "lpVsHodlUsd": -110.29,
+        "lpVsHodlPct": -0.1301,
+        "feesUsd": 14.5,
+        "staleLossUsd": 124.79,
+        "traderProfitUsd": 110.29,
+        "trades": 2147,
+        "endPrice": 182.6283,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    },
+    {
+      "ticker": "INTC",
+      "friday": "2026-06-05",
+      "monday": "2026-06-08",
+      "fridayClose": 99.17,
+      "mondayOpen": 111.0,
+      "gapPct": 11.929,
+      "plain": {
+        "lpUsd": 84644.09,
+        "hodlUsd": 84771.61,
+        "lpVsHodlUsd": -127.52,
+        "lpVsHodlPct": -0.1504,
+        "feesUsd": 6.79,
+        "staleLossUsd": 134.3,
+        "traderProfitUsd": 127.52,
+        "trades": 1,
+        "endPrice": 110.667
+      },
+      "afterbell": {
+        "lpUsd": 84661.83,
+        "hodlUsd": 84771.61,
+        "lpVsHodlUsd": -109.77,
+        "lpVsHodlPct": -0.1295,
+        "feesUsd": 14.5,
+        "staleLossUsd": 124.28,
+        "traderProfitUsd": 109.77,
+        "trades": 2136,
+        "endPrice": 107.6193,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    },
+    {
+      "ticker": "MSTR",
+      "friday": "2025-04-04",
+      "monday": "2025-04-07",
+      "fridayClose": 293.61,
+      "mondayOpen": 260.14,
+      "gapPct": -11.399,
+      "plain": {
+        "lpUsd": 75308.85,
+        "hodlUsd": 75440.21,
+        "lpVsHodlUsd": -131.36,
+        "lpVsHodlPct": -0.1741,
+        "feesUsd": 6.48,
+        "staleLossUsd": 137.84,
+        "traderProfitUsd": 131.36,
+        "trades": 1,
+        "endPrice": 260.9228
+      },
+      "afterbell": {
+        "lpUsd": 75326.11,
+        "hodlUsd": 75440.21,
+        "lpVsHodlUsd": -114.1,
+        "lpVsHodlPct": -0.1512,
+        "feesUsd": 14.2,
+        "staleLossUsd": 128.3,
+        "traderProfitUsd": 114.1,
+        "trades": 2243,
+        "endPrice": 268.5944,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    },
+    {
+      "ticker": "MSTR",
+      "friday": "2024-04-05",
+      "monday": "2024-04-08",
+      "fridayClose": 143.9,
+      "mondayOpen": 160.21,
+      "gapPct": 11.334,
+      "plain": {
+        "lpUsd": 84418.59,
+        "hodlUsd": 84533.71,
+        "lpVsHodlUsd": -115.12,
+        "lpVsHodlPct": -0.1362,
+        "feesUsd": 6.45,
+        "staleLossUsd": 121.57,
+        "traderProfitUsd": 115.12,
+        "trades": 1,
+        "endPrice": 159.7294
+      },
+      "afterbell": {
+        "lpUsd": 84433.46,
+        "hodlUsd": 84533.71,
+        "lpVsHodlUsd": -100.24,
+        "lpVsHodlPct": -0.1186,
+        "feesUsd": 14.5,
+        "staleLossUsd": 114.75,
+        "traderProfitUsd": 100.24,
+        "trades": 2134,
+        "endPrice": 156.1603,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    },
+    {
+      "ticker": "MSTR",
+      "friday": "2021-01-08",
+      "monday": "2021-01-11",
+      "fridayClose": 53.164,
+      "mondayOpen": 47.214,
+      "gapPct": -11.192,
+      "plain": {
+        "lpUsd": 75396.94,
+        "hodlUsd": 75523.29,
+        "lpVsHodlUsd": -126.35,
+        "lpVsHodlPct": -0.1673,
+        "feesUsd": 6.37,
+        "staleLossUsd": 132.71,
+        "traderProfitUsd": 126.35,
+        "trades": 1,
+        "endPrice": 47.3561
+      },
+      "afterbell": {
+        "lpUsd": 75413.0,
+        "hodlUsd": 75523.29,
+        "lpVsHodlUsd": -110.29,
+        "lpVsHodlPct": -0.146,
+        "feesUsd": 14.23,
+        "staleLossUsd": 124.52,
+        "traderProfitUsd": 110.29,
+        "trades": 2385,
+        "endPrice": 48.6344,
+        "bandAtOpenBps": 855,
+        "baseFeeAtOpenBps": 126
+      }
+    }
+  ]
+}

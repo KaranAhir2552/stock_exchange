@@ -1,0 +1,14 @@
+[project]
+name = "afterbell-backtest"
+version = "0.1.0"
+description = "Weekend-gap backtest: plain constant-product pool vs Afterbell"
+requires-python = ">=3.13"
+dependencies = [
+  "pandas==3.0.6",
+  "numpy==2.5.3",
+  "matplotlib==3.11.2",
+  "yfinance==1.7.0",
+]
+
+[tool.uv]
+package = false

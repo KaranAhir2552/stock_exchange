@@ -46,3 +46,12 @@ jobs:
           cp target/idl/afterbell.json packages/sdk/src/idl/afterbell.json
           cp target/types/afterbell.ts packages/sdk/src/idl/afterbell.ts
           git diff --exit-code packages/sdk/src/idl packages/sdk/test/vectors.json
+
+  backtest-parity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Python port of the program math matches the program vectors
+        working-directory: backtest
+        run: uv run python test_parity.py

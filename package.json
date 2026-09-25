@@ -11,7 +11,8 @@
     "test": "pnpm -r test",
     "lint": "biome check .",
     "format": "biome format --write .",
-    "check:mainnet": "node packages/config/src/check-mainnet.ts"
+    "check:mainnet": "node packages/config/src/check-mainnet.ts",
+    "backtest": "cd backtest && uv run python test_parity.py && uv run python run.py"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.14",

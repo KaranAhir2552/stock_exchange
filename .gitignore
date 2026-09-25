@@ -7,3 +7,6 @@ test-ledger/
 .env*
 !.env.example
 .DS_Store
+backtest/.venv/
+backtest/data/
+__pycache__/

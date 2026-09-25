@@ -132,7 +132,17 @@ Newest entries at the bottom of each section. Every external fact lists its sour
 51. **CLI negative values need `=`** (`--open-in=-60`), because Node's `parseArgs` reads `-60` as a flag.
 52. **Live localnet run of the weekend story** (validator + keeper + CLI): Open, then Closed at the session end (band 200 bps, fee 61 bps), weekend news ignored (reference 225 while the oracle said 202.50), halt Paused, halt lifted back to Closed with the weekend clock preserved, then the open jumped straight to 202.50 with no trade. The keeper ran with 0 failures throughout.
 
+## Phase 5 decisions (2026-09-25)
+
+53. **Python 3.13 via uv 0.12.19**, because the system Python is 3.10 and the current pandas 3.0.6 (>=3.11), NumPy 2.5.3 (>=3.12) and matplotlib 3.11.2 (>=3.11) don't support it. uv lives in `~/.local/bin` (its installer defaulted to a VS Code-snap path, which I moved). yfinance 1.7.0. The pins are in `backtest/pyproject.toml` and `uv.lock`.
+54. **The backtest simulates Afterbell with a Python port of the program's math**, checked against the same 120 program vectors as the SDK (checked by mutation; a CI job runs it). The backtest measures our actual pricing, not a model of it.
+55. **Headline:** with devnet params, Afterbell LPs lose 37% less than normal-pool LPs over the 20 largest weekend gaps (2021 to 2026). The band (±8.55% by Monday) binds on every event, and the first 8.55% of a move is where most of the informed trader's profit is. Sensitivity: 56% with half the band growth, 81% with a flat 2% band, 10% with a looser band. Fees barely matter. **The band is a product decision**: the backtest has no benign flow, so it can't measure what a tighter band costs in lost weekend volume.
+56. **Design finding: the size fee is easy to dodge.** It's per trade and rounds up, so a trader who splits trades pays about 1 bps no matter how much depth they consume in total. If the size fee is meant to matter, it should depend on the cumulative move since the close, not on each trade's size. Logged as an open question.
+57. **Price data isn't committed** (`backtest/data/` is git-ignored because of Yahoo's terms); the derived `output/results.json` and PNGs are committed for the web page.
+
 ## Open questions
+
+- Band width and growth for mainnet (see #55), and whether the size fee should be based on the cumulative move since the close rather than each trade (#56).
 
 - Pyth `pro-compatible` receiver vs default: which one carries the Hermes updates we'll post? Decide in Phase 6 from Pyth docs.
 - Do Pyth US-equity feeds publish outside regular hours? The calendar decides the mode regardless, but it affects staleness tuning. Phase 6.
