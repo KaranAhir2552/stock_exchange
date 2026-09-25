@@ -2,3 +2,9 @@ packages:
   - packages/*
   - services/*
   - apps/*
+# Optional native accelerators pulled in by @solana/web3.js; the pure-JS fallbacks are fine.
+# Keeping their install scripts off is the safer default.
+allowBuilds:
+  bigint-buffer: false
+  bufferutil: false
+  utf-8-validate: false

@@ -4,62 +4,11 @@
 mod common;
 
 use afterbell::{errors::ErrorCode, math, mode::trading_terms, state::*};
-use anchor_spl::token::ID as TOKEN_ID;
 use common::*;
 
 const B2Q: Direction = Direction::BaseToQuote;
 const PRICE_90: i64 = 9_000_000_000;
 const P90: u128 = P100 * 9 / 10;
-
-type Atas = (
-    anchor_lang::prelude::Pubkey,
-    anchor_lang::prelude::Pubkey,
-    anchor_lang::prelude::Pubkey,
-);
-
-fn s(open: i64, close: i64) -> Session {
-    Session {
-        open_ts: open,
-        close_ts: close,
-    }
-}
-
-/// Thu Oct 1, Fri Oct 2, Mon Oct 5, Tue Oct 6 2026, 9:30-16:00 EDT.
-fn october() -> Vec<Session> {
-    [(10, 1), (10, 2), (10, 5), (10, 6)]
-        .iter()
-        .map(|&(m, d)| s(utc(2026, m, d, 13, 30), utc(2026, m, d, 20, 0)))
-        .collect()
-}
-
-/// Thanksgiving week 2026 (EST): Wed normal, Thu closed, Fri early close 13:00 ET, Mon normal.
-fn thanksgiving() -> Vec<Session> {
-    vec![
-        s(utc(2026, 11, 25, 14, 30), utc(2026, 11, 25, 21, 0)),
-        s(utc(2026, 11, 27, 14, 30), utc(2026, 11, 27, 18, 0)),
-        s(utc(2026, 11, 30, 14, 30), utc(2026, 11, 30, 21, 0)),
-    ]
-}
-
-/// UsEquity pool created at `now` (price published at `now`), seeded with 1M/1M when it opens.
-fn equity(now: i64, sessions: Vec<Session>, valid_until: i64) -> (H, Atas) {
-    let mut h = H::bare();
-    h.set_time(now);
-    h.init_config(0).unwrap();
-    h.create_calendar().unwrap();
-    h.set_sessions(sessions, valid_until).unwrap();
-    h.set_price(PRICE_100, 0).unwrap();
-    h.base_mint = h.spl_mint(BASE_DECIMALS, TOKEN_ID);
-    h.quote_mint = h.spl_mint(QUOTE_DECIMALS, TOKEN_ID);
-    let mut args = pool_args(default_params());
-    args.profile = MarketProfile::UsEquity;
-    h.create_pool(args).unwrap();
-    let atas = h.fund_user(10_000_000, 10_000_000);
-    if h.pool_state().mode == Mode::Open {
-        h.deposit(atas, 1_000_000, 1_000_000, 0).unwrap();
-    }
-    (h, atas)
-}
 
 fn mode(h: &H) -> Mode {
     h.pool_state().mode

@@ -26,8 +26,8 @@ test("mainnet rejects mock oracle, demo controls and Mock pools", () => {
   const devnet = readRawConfig("devnet") as Record<string, unknown>;
   const pool = {
     name: "TSLAx/USDC",
-    baseMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-    quoteMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    base: "TSLAx",
+    quote: "USDC",
     profile: "UsEquity",
     oracleKind: "Mock",
     feedId: "11".repeat(32),
@@ -50,7 +50,10 @@ test("mainnet rejects mock oracle, demo controls and Mock pools", () => {
   const bad = {
     ...devnet,
     network: "mainnet",
-    usdcMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    mints: {
+      USDC: { address: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", decimals: 6 },
+      TSLAx: { address: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", decimals: 8 },
+    },
     features: { demoControls: true, mockOracle: true },
     pools: [pool],
   };
@@ -62,4 +65,12 @@ test("mainnet rejects mock oracle, demo controls and Mock pools", () => {
     pools: [{ ...pool, oracleKind: "Pyth" }],
   };
   assert.equal(parseConfig(good).network, "mainnet");
+});
+
+test("mainnet needs every mint address; pools must reference known mints", () => {
+  const raw = readRawConfig("mainnet") as Record<string, unknown>;
+  assert.match(mainnetSafetyErrors({ ...raw, mints: { USDC: { address: null } } }).join(), /mints.USDC.address/);
+  const devnet = readRawConfig("devnet") as { pools: { base: string }[] };
+  devnet.pools[0].base = "NOPE";
+  assert.throws(() => parseConfig(devnet), /unknown mint NOPE/);
 });

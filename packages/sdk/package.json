@@ -1,0 +1,22 @@
+{
+  "name": "@afterbell/sdk",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "sync-idl": "cp ../../target/idl/afterbell.json src/idl/afterbell.json && cp ../../target/types/afterbell.ts src/idl/afterbell.ts",
+    "build": "tsc -p . && cp src/idl/afterbell.json dist/idl/afterbell.json",
+    "test": "node --test test/*.test.ts"
+  },
+  "dependencies": {
+    "@anchor-lang/core": "1.2.0",
+    "@solana/spl-token": "0.4.15",
+    "@solana/web3.js": "1.99.0"
+  }
+}

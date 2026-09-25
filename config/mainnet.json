@@ -3,7 +3,12 @@
   "rpcUrls": ["https://api.mainnet-beta.solana.com"],
   "wsUrls": ["wss://api.mainnet-beta.solana.com"],
   "programId": "",
-  "usdcMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "mints": {
+    "USDC": {
+      "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "decimals": 6
+    }
+  },
   "pythReceiverProgramId": "rec5EKMGg6MxZYaMdyBfgwp4d5rB9T1VQH5pJv5LtFJ",
   "hermesUrl": "https://hermes.pyth.network",
   "calendarProfileIds": [1],

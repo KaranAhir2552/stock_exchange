@@ -3,7 +3,20 @@
   "rpcUrls": ["http://127.0.0.1:8899"],
   "wsUrls": ["ws://127.0.0.1:8900"],
   "programId": "AUkfc1YB8AB1BSno52xnsPvKcXYCbnHyySDxhrkmwp9x",
-  "usdcMint": null,
+  "mints": {
+    "USDC": {
+      "address": null,
+      "decimals": 6
+    },
+    "TSLAx": {
+      "address": null,
+      "decimals": 8
+    },
+    "SOL": {
+      "address": null,
+      "decimals": 9
+    }
+  },
   "pythReceiverProgramId": "rec5EKMGg6MxZYaMdyBfgwp4d5rB9T1VQH5pJv5LtFJ",
   "hermesUrl": "https://hermes.pyth.network",
   "calendarProfileIds": [1],
@@ -12,5 +25,52 @@
     "demoControls": true,
     "mockOracle": true
   },
-  "pools": []
+  "pools": [
+    {
+      "name": "TSLAx-test/USDC",
+      "base": "TSLAx",
+      "quote": "USDC",
+      "profile": "UsEquity",
+      "oracleKind": "Mock",
+      "feedId": "0x57a2c58098e0fe18e13e3b3e2c49062af69f104020f5b3d38965aac859e06f11",
+      "maxStalenessSecs": 120,
+      "maxConfBps": 100,
+      "params": {
+        "openBandBps": 100,
+        "closedBaseBandBps": 200,
+        "closedBandGrowthBpsPerHour": 10,
+        "closedMaxBandBps": 1000,
+        "openFeeBps": 30,
+        "closedBaseFeeBps": 60,
+        "closedFeeGrowthBpsPerHour": 1,
+        "closedMaxFeeBps": 300,
+        "sizeFeeBpsPer1PctDepth": 5,
+        "depthBps": 10000,
+        "maxTvlQuote": "100000000000"
+      }
+    },
+    {
+      "name": "SOL-test/USDC",
+      "base": "SOL",
+      "quote": "USDC",
+      "profile": "AlwaysOpen",
+      "oracleKind": "Mock",
+      "feedId": "0xcbc66920cf647fc93735a4fcf7afdb0090a28df0390d602be01a03bd100a50e2",
+      "maxStalenessSecs": 120,
+      "maxConfBps": 100,
+      "params": {
+        "openBandBps": 100,
+        "closedBaseBandBps": 200,
+        "closedBandGrowthBpsPerHour": 10,
+        "closedMaxBandBps": 1000,
+        "openFeeBps": 30,
+        "closedBaseFeeBps": 60,
+        "closedFeeGrowthBpsPerHour": 1,
+        "closedMaxFeeBps": 300,
+        "sizeFeeBpsPer1PctDepth": 5,
+        "depthBps": 10000,
+        "maxTvlQuote": "100000000000"
+      }
+    }
+  ]
 }

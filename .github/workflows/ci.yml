@@ -40,3 +40,8 @@ jobs:
       - run: anchor build -- --features devnet-mock
       - run: cargo clippy --all-targets --features devnet-mock -- -D warnings
       - run: anchor test --skip-build
+      - name: SDK IDL and parity vectors match the program
+        run: |
+          cp target/idl/afterbell.json packages/sdk/src/idl/afterbell.json
+          cp target/types/afterbell.ts packages/sdk/src/idl/afterbell.ts
+          git diff --exit-code packages/sdk/src/idl packages/sdk/test/vectors.json
