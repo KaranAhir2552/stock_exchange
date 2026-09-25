@@ -64,7 +64,7 @@ Newest entries at the bottom of each section. Every external fact lists its sour
 18. **Rounding:** fee rounds up; output rounds down; the derived virtual quote side rounds toward the pool for the trade direction; deposits take tokens rounded up and mint LP rounded down; withdrawals round down. Oracle-to-pool price conversion rounds down (neutral: it sets both sides of the band). The property test `swap_rounds_in_pool_favour` checks output against the exact rational constant-product result.
 19. **Parameter bounds** (`PoolParams::validate`): bands 1..=5000 bps with base <= max, fees <= 1000 bps with base <= max, depth 1..=10000 bps.
 20. **Errors added beyond the brief's list:** `ZeroAmount` and `InvalidOraclePrice`.
-21. **`MockStatus` is compiled in every build** because Anchor 1.2's IDL generator ignores `#[cfg]` on instruction argument types. It's a plain three-value enum. The `MockOracle` account and the `mock_*` instructions stay behind `devnet-mock`. Verified: the mainnet IDL has no `mock_*` instructions and no `MockOracle` account, and the mainnet `.so` has no mock instruction discriminators. CI checks the IDL.
+21. **`MockStatus` is compiled in every build** because Anchor 1.2's IDL generator ignores `#[cfg]` on instruction argument types. It's a plain three-value enum. The `MockOracle` account and the `mock_*` instructions stay behind `devnet-mock`. Verified: the mainnet IDL has no `mock_*` instructions and no `MockOracle` account, and the mainnet `.so` doesn't contain Anchor's `Instruction: MockSetPrice` log string, which the devnet `.so` does. CI checks both. *Correction (Phase 3):* an earlier version of this entry cited missing discriminator bytes as evidence. That check was invalid: discriminators aren't stored contiguously, so the devnet build lacks them too.
 22. **Integration tests require `devnet-mock`** (`[[test]] required-features`); `anchor test` runs `cargo test --features devnet-mock` against the `.so` from `anchor build -- --features devnet-mock`.
 
 ### Token-2022 ScaledUiAmount (brief 6.8), researched in `spl-token-2022-interface` 2.1.0
@@ -108,6 +108,20 @@ Newest entries at the bottom of each section. Every external fact lists its sour
 | Wrong feed / wrong owner rejected | `wrong_feed_and_wrong_owner_are_rejected` |
 | `update_reference` twice is harmless | `recentre_only_on_newer_*`, `friday_close_*` (while Closed) |
 | AlwaysOpen behaves 24/7 | `always_open_pool_trades_through_the_weekend` |
+
+## Phase 3 decisions (2026-09-25)
+
+35. **Config `mints` map replaces `usdcMint`** (a change to brief section 7). `mints: { SYMBOL: { address, decimals } }`, and pools reference mints by symbol (`base`, `quote`). `address: null` means "not created yet" and is filled in by `create-test-mints` (never allowed on mainnet; the safety check requires every mainnet address). Devnet pools use our own test USDC, because we can't mint Circle's devnet USDC to seed liquidity.
+36. **Mock feed ids** are `sha256("afterbell:mock:<symbol>")`: labels for our mock oracle accounts, not Pyth feeds.
+37. **SDK/program parity** is enforced with recorded vectors rather than a hand-maintained duplicate test suite. `tests/vectors.rs` runs 120 randomized swaps on the SBPF program (Open, re-centre on a newer price, first swap after close, stale oracle, AlwaysOpen) and writes `packages/sdk/test/vectors.json`; the SDK replays them exactly. CI regenerates both the IDL copy and the vectors and fails on any diff. A mutation check (flipping one rounding and one re-centre comparison in the SDK) made the test fail, as it should. The live `smoke` command repeats the check against a real validator (localnet, then devnet).
+38. **NYSE calendar data** (`scripts/src/nyse-calendar.json`) comes from https://www.nyse.com/markets/hours-calendars (fetched 2026-09-25): core session 9:30 a.m. to 4:00 p.m. ET, 2026 to 2028 holidays, early closes at 1:00 p.m. ET (Nov 27 2026, Dec 24 2026, Nov 26 2027, Jul 3 2028, Nov 24 2028). Daylight saving comes from the system tz database via `Intl` (America/New_York). The generated UTC times match the Rust test fixtures, which I computed independently.
+39. **`update-calendar --mode demo --hours N`** (localnet/devnet only) sets one session from now, so stock pools can be exercised at any hour. The default mode is the real NYSE calendar, starting a week back so the last close is known after weekends.
+40. **Keeper mock heartbeat** (`KEEPER_MOCK_HEARTBEAT=true`, localnet/devnet only, refused unless `features.mockOracle`): each round the keeper re-posts the *current* mock price with a fresh timestamp, then calls `update_reference`, so demo pools don't go Paused from staleness. It needs the admin key. It is never available on mainnet (no mock instructions exist there).
+41. **Keeper duplicates:** two keepers with the same key can produce byte-identical transactions in the same block; "already processed" is treated as success, not an RPC failure.
+42. **The deploy guard** refuses a `.so` whose mock-ness doesn't match the network (mock required on localnet/devnet, forbidden on mainnet), detected by Anchor's `Instruction: MockSetPrice` log string.
+43. **pnpm `allowBuilds`:** install scripts are off for `bigint-buffer`, `bufferutil`, `utf-8-validate` (optional native accelerators from `@solana/web3.js`; the pure-JS fallbacks work).
+44. **Node runs TypeScript directly** (type stripping), so the code avoids non-erasable syntax (no enums, no constructor parameter properties). `tsc --noEmit` type-checks scripts and the keeper in `pnpm build`.
+45. **Localnet mint addresses** get written into `config/localnet.json` by `setup`. They change on every validator reset, so don't commit them (`git checkout config/localnet.json`).
 
 ## Open questions
 

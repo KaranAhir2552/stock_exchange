@@ -36,6 +36,7 @@ jobs:
         run: |
           anchor build
           ! grep -q '"mock_' target/idl/afterbell.json
+          ! grep -qa 'Instruction: MockSetPrice' target/deploy/afterbell.so
       - run: cargo clippy --all-targets -- -D warnings
       - run: anchor build -- --features devnet-mock
       - run: cargo clippy --all-targets --features devnet-mock -- -D warnings
