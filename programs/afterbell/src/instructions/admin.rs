@@ -109,11 +109,6 @@ pub fn handle_create_pool(ctx: Context<CreatePool>, args: CreatePoolArgs) -> Res
         args.max_staleness_secs > 0 && args.max_conf_bps as u128 <= BPS,
         ErrorCode::InvalidParams
     );
-    // ponytail: Pyth reader lands with the keeper in Phase 3; until then only Mock pools.
-    require!(
-        args.oracle_kind == OracleKind::Mock,
-        ErrorCode::InvalidParams
-    );
     let calendar = match args.profile.calendar_profile_id() {
         Some(id) => {
             let cal = a.calendar.as_ref().ok_or(ErrorCode::MissingCalendar)?;

@@ -55,6 +55,29 @@ pub fn utc(y: i64, m: i64, d: i64, hh: i64, mm: i64) -> i64 {
     (era * 146_097 + doe - 719_468) * 86_400 + hh * 3_600 + mm * 60
 }
 
+pub struct PythUpdate {
+    pub feed: [u8; 32],
+    pub price: i64,
+    pub conf: u64,
+    pub publish_ts: i64,
+    pub full: bool,
+    pub owner: Pubkey,
+}
+
+impl PythUpdate {
+    /// A fully verified update for FEED at `price`, published at `publish_ts`, owned by the receiver.
+    pub fn new(price: i64, publish_ts: i64) -> Self {
+        PythUpdate {
+            feed: FEED,
+            price,
+            conf: 0,
+            publish_ts,
+            full: true,
+            owner: pyth_solana_receiver_sdk::ID,
+        }
+    }
+}
+
 pub type TxResult = Result<TransactionMetadata, FailedTransactionMetadata>;
 
 pub fn default_params() -> PoolParams {
@@ -107,6 +130,8 @@ pub struct H {
     pub quote_prog: Pubkey,
     /// Set once a calendar exists; passed to every pool instruction that refreshes the mode.
     pub calendar: Option<Pubkey>,
+    /// Pyth price account to pass instead of the mock oracle.
+    pub pyth: Option<Pubkey>,
 }
 
 pub fn pda(seeds: &[&[u8]]) -> Pubkey {
@@ -154,6 +179,7 @@ impl H {
             base_prog: TOKEN_ID,
             quote_prog: TOKEN_ID,
             calendar: None,
+            pyth: None,
         };
         h.set_time(START_TS);
         h
@@ -208,7 +234,7 @@ impl H {
         pda(&[CONFIG_SEED])
     }
     pub fn oracle(&self) -> Pubkey {
-        self.oracle_for(FEED)
+        self.pyth.unwrap_or_else(|| self.oracle_for(FEED))
     }
     pub fn oracle_for(&self, feed: [u8; 32]) -> Pubkey {
         pda(&[MOCK_ORACLE_SEED, feed.as_ref()])
@@ -287,6 +313,46 @@ impl H {
             )
             .unwrap();
         mint
+    }
+
+    /// Writes a Pyth `PriceUpdateV2` account (as the receiver program would) and returns its address.
+    pub fn post_pyth(&mut self, u: PythUpdate) -> Pubkey {
+        use anchor_lang::{AnchorSerialize, Discriminator};
+        use pyth_solana_receiver_sdk::price_update::{
+            PriceFeedMessage, PriceUpdateV2, VerificationLevel,
+        };
+        let update = PriceUpdateV2 {
+            write_authority: self.admin.pubkey(),
+            verification_level: if u.full {
+                VerificationLevel::Full
+            } else {
+                VerificationLevel::Partial { num_signatures: 5 }
+            },
+            price_message: PriceFeedMessage {
+                feed_id: u.feed,
+                price: u.price,
+                conf: u.conf,
+                exponent: EXPO,
+                publish_time: u.publish_ts,
+                prev_publish_time: u.publish_ts - 1,
+                ema_price: u.price,
+                ema_conf: u.conf,
+            },
+            posted_slot: 1,
+        };
+        let mut data = PriceUpdateV2::DISCRIMINATOR.to_vec();
+        update.serialize(&mut data).unwrap();
+        let key = Keypair::new().pubkey();
+        let lamports = self.svm.minimum_balance_for_rent_exemption(data.len());
+        let account = solana_account::Account {
+            lamports,
+            data,
+            owner: u.owner,
+            executable: false,
+            rent_epoch: 0,
+        };
+        self.svm.set_account(key, account).unwrap();
+        key
     }
 
     /// Creates `owner`'s ATA for `mint` and mints `amount` into it.

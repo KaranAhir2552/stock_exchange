@@ -123,6 +123,10 @@ Newest entries at the bottom of each section. Every external fact lists its sour
 44. **Node runs TypeScript directly** (type stripping), so the code avoids non-erasable syntax (no enums, no constructor parameter properties). `tsc --noEmit` type-checks scripts and the keeper in `pnpm build`.
 45. **Localnet mint addresses** get written into `config/localnet.json` by `setup`. They change on every validator reset, so don't commit them (`git checkout config/localnet.json`).
 
+46. **The Pyth reader requires fully verified updates.** The owner must be the receiver program (`pyth_solana_receiver_sdk::ID`, `rec5EKMG...`), the discriminator must be `PriceUpdateV2`, and `feed_id` must equal the pool's. `verification_level` must be `Full`; a `Partial` update carries fewer Wormhole guardian signatures and is rejected with a new error, `OracleNotVerified`. Staleness and confidence use the same rules as the mock (they lead to Paused, not an error). Pyth updates carry no market-status field, so `status_hint` is None and the calendar decides market hours. Fields researched in `pyth-solana-receiver-sdk` 2.0.0 `src/price_update.rs` and `pythnet-sdk` 3.0.0 `src/messages.rs`.
+47. **Any fresh receiver-owned update account is accepted** (not only one fixed address), since keepers post updates to accounts of their choosing. This is safe because of the owner, discriminator, feed and verification checks, and because older updates can't move the pool (#10, test `newer_update_in_a_new_account_recentres_and_older_is_refused`).
+48. **The keeper's Pyth path (Hermes fetch, post, `update_reference` in one transaction) is deferred to Phase 6.** Hermes now requires an API key (HTTP 401 without one), so that path can't be run or verified without it, and I'd rather not ship untested code. Until then the keeper skips Pyth pools with a warning. The on-chain side is fully tested.
+
 ## Open questions
 
 - Pyth `pro-compatible` receiver vs default: which one carries the Hermes updates we'll post? Decide in Phase 6 from Pyth docs.

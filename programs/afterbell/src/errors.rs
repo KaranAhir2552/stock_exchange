@@ -34,4 +34,6 @@ pub enum ErrorCode {
     InvalidOraclePrice,
     #[msg("This pool needs its market calendar account")]
     MissingCalendar,
+    #[msg("Oracle price update is not fully verified")]
+    OracleNotVerified,
 }

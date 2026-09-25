@@ -1398,6 +1398,11 @@
       "code": 6015,
       "name": "MissingCalendar",
       "msg": "This pool needs its market calendar account"
+    },
+    {
+      "code": 6016,
+      "name": "OracleNotVerified",
+      "msg": "Oracle price update is not fully verified"
     }
   ],
   "types": [

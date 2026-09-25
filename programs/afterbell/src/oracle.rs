@@ -44,9 +44,41 @@ pub fn read_oracle(
     let multiplier = ui_multiplier(base_mint, now)?;
     match pool.oracle_kind {
         OracleKind::Mock => read_mock(pool, oracle, multiplier),
-        // ponytail: Pyth PriceUpdateV2 reader lands with the keeper in Phase 3; create_pool rejects Pyth until then.
-        OracleKind::Pyth => err!(ErrorCode::WrongFeed),
+        OracleKind::Pyth => read_pyth(pool, oracle, multiplier),
     }
+}
+
+/// Pyth pull oracle: a `PriceUpdateV2` account posted through the Pyth Solana receiver.
+fn read_pyth(pool: &Pool, oracle: &AccountInfo, multiplier: u128) -> Result<OraclePrice> {
+    use pyth_solana_receiver_sdk::price_update::{PriceUpdateV2, VerificationLevel};
+    // Owner = the receiver program, plus the account discriminator: only the receiver can write these.
+    require_keys_eq!(
+        *oracle.owner,
+        pyth_solana_receiver_sdk::ID,
+        ErrorCode::WrongFeed
+    );
+    let u = PriceUpdateV2::try_deserialize(&mut &oracle.try_borrow_data()?[..])
+        .map_err(|_| error!(ErrorCode::WrongFeed))?;
+    // Partially verified updates carry fewer Wormhole guardian signatures; only trust fully verified ones.
+    require!(
+        u.verification_level.gte(VerificationLevel::Full),
+        ErrorCode::OracleNotVerified
+    );
+    let m = &u.price_message;
+    require!(m.feed_id == pool.feed_id, ErrorCode::WrongFeed);
+    Ok(OraclePrice {
+        price: math::oracle_to_pool_price(
+            m.price,
+            m.exponent,
+            pool.base_decimals,
+            pool.quote_decimals,
+            multiplier,
+        )?,
+        conf_bps: math::conf_bps(m.conf, m.price)?,
+        publish_ts: m.publish_time,
+        // Pyth price updates carry no market-status field; the calendar decides market hours.
+        status_hint: None,
+    })
 }
 
 #[cfg(feature = "devnet-mock")]

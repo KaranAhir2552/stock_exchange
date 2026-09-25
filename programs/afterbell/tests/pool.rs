@@ -55,13 +55,13 @@ fn create_pool_validation() {
     bad.closed_base_band_bps = 2_000; // > closed_max_band_bps
     assert_err(h.create_pool(pool_args(bad)), ErrorCode::InvalidParams);
 
-    // UsEquity without its calendar is refused; Pyth is refused until its reader exists (Phase 3).
+    // UsEquity without its calendar is refused; a Pyth pool must be given a real Pyth price account.
     let mut a = pool_args(default_params());
     a.profile = MarketProfile::UsEquity;
     assert_err(h.create_pool(a), ErrorCode::MissingCalendar);
     let mut a = pool_args(default_params());
     a.oracle_kind = OracleKind::Pyth;
-    assert_err(h.create_pool(a), ErrorCode::InvalidParams);
+    assert_err(h.create_pool(a), ErrorCode::WrongFeed); // a mock account is not a Pyth price update
 
     h.create_pool(pool_args(default_params())).unwrap();
 }

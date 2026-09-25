@@ -1404,6 +1404,11 @@ export type Afterbell = {
       "code": 6015,
       "name": "missingCalendar",
       "msg": "This pool needs its market calendar account"
+    },
+    {
+      "code": 6016,
+      "name": "oracleNotVerified",
+      "msg": "Oracle price update is not fully verified"
     }
   ],
   "types": [
