@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+/* Design tokens from Figma (docs/design/README.md). */
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --color-ink: #0f172a; /* text/primary */
+  --color-ink-2: #64748b; /* text/secondary */
+  --color-muted: #94a3b8; /* text/muted */
+  --color-brand: #4346e0; /* brand/primary */
+  --color-page: #f4f6fb; /* bg/page */
+  --color-surface: #ffffff; /* bg/surface */
+  --color-subtle: #f1f3f9; /* bg/subtle */
+  --color-brand-subtle: #eef0ff; /* bg/brand-subtle */
+  --color-line: #e6e9f2; /* border/default */
+  --color-positive: #10a37f;
+  --color-positive-subtle: #e8f7f1;
+  --color-closed: #c7cbf5; /* status/closed */
+  --color-warning: #d97706;
+  --color-warning-subtle: #fef4e4;
+  --color-negative: #e5484d;
+  --color-neutral: #8b93a5; /* chart/neutral */
+  --color-band: #daddfb; /* chart/band */
+  --shadow-card: 0 4px 8px rgba(15, 23, 51, 0.06);
+}
+
+body {
+  background: var(--color-page);
+  color: var(--color-ink);
+}
+
+/* Wallet adapter modal: match the brand. */
+.wallet-adapter-modal-wrapper {
+  font-family: var(--font-sans);
+}

@@ -4,6 +4,8 @@
     "includes": [
       "**",
       "!**/dist",
+      "!**/.next",
+      "!**/next-env.d.ts",
       "!**/target",
       "!**/node_modules",
       "!**/.anchor",
@@ -13,6 +15,16 @@
       "!backtest"
     ]
   },
-  "formatter": { "indentStyle": "space", "lineWidth": 120 },
-  "linter": { "enabled": true }
+  "formatter": {
+    "indentStyle": "space",
+    "lineWidth": 120
+  },
+  "linter": {
+    "enabled": true
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  }
 }
