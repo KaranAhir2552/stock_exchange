@@ -4,10 +4,11 @@ const n = (digits: number) =>
   new Intl.NumberFormat("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits });
 const n2 = n(2);
 
-/** $1,234.56 (compact above a million: $1.84M). */
+/** $1,234.56; compact from $100K up ($160.0K, $1.84M) so headline figures fit their cards. */
 export function usd(v: number): string {
   if (!Number.isFinite(v)) return "—";
   if (Math.abs(v) >= 1e6) return `$${(v / 1e6).toFixed(2)}M`;
+  if (Math.abs(v) >= 1e5) return `$${(v / 1e3).toFixed(1)}K`;
   return `${v < 0 ? "-" : ""}$${n2.format(Math.abs(v))}`;
 }
 

@@ -1,16 +1,18 @@
 // Usage: NETWORK=devnet node services/keeper/src/main.ts
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { createServer } from "node:http";
 import { homedir } from "node:os";
-import { join } from "node:path";
-import { CONFIG_DIR, loadConfig } from "@afterbell/config";
+import { loadConfig } from "@afterbell/config";
 import { Keypair } from "@solana/web3.js";
 import { Keeper, log, metrics } from "./keeper.ts";
 
+// @solana/web3.js can reject internal promises (e.g. its confirmation polling hitting a network timeout)
+// that no caller can catch. One flaky RPC request must not kill the keeper: our own calls are retried and
+// failed over per pool, and a pool with no successful update still raises the 5-minute alert.
+process.on("unhandledRejection", (e) => log("error", "unhandled rejection (keeper keeps running)", { err: String(e) }));
+
 const network = process.env.NETWORK;
-const envFile = join(CONFIG_DIR, "..", `.env.${network}`);
-if (existsSync(envFile)) process.loadEnvFile(envFile);
-const cfg = loadConfig(network);
+const cfg = loadConfig(network); // also loads the git-ignored .env.<network>
 
 const keyPath = (process.env.KEEPER_KEYPAIR_PATH ?? "~/.config/solana/id.json").replace(/^~/, homedir());
 const payer = Keypair.fromSecretKey(Uint8Array.from(JSON.parse(readFileSync(keyPath, "utf8"))));
