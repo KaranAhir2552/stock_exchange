@@ -332,3 +332,12 @@ export const X = ({ size = 20, ...p }: P) => (
     <path d="M5 5L15 15M15 5L5 15" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
   </svg>
 );
+
+export const MoonLarge = ({ size = 26, ...p }: P) => (
+  <svg width={size} height={size} viewBox="0 0 26 26" fill="none" aria-hidden {...p}>
+    <path
+      d="M10.8262 3.07812C10.299 4.10425 10 5.26701 10 6.5C10 10.6421 13.3579 14 17.5 14C18.7328 14 19.8949 13.6999 20.9209 13.1729C20.3459 17.5891 16.5729 21 12 21C7.02944 21 3 16.9706 3 12C3 7.42737 6.41038 3.65344 10.8262 3.07812Z"
+      fill="currentColor"
+    />
+  </svg>
+);
