@@ -140,6 +140,8 @@ Newest entries at the bottom of each section. Every external fact lists its sour
 56. **Design finding: the size fee is easy to dodge.** It's per trade and rounds up, so a trader who splits trades pays about 1 bps no matter how much depth they consume in total. If the size fee is meant to matter, it should depend on the cumulative move since the close, not on each trade's size. Logged as an open question.
 57. **Price data isn't committed** (`backtest/data/` is git-ignored because of Yahoo's terms); the derived `output/results.json` and PNGs are committed for the web page.
 
+58. **Devnet deployed (2026-09-28).** Program `AUkfc1YB8AB1BSno52xnsPvKcXYCbnHyySDxhrkmwp9x` (upgrade authority `3TVDWras…`), test mints committed in `config/devnet.json`, both pools seeded with $40k a side, demo calendar (one 72-hour session). The keeper ran 4 rounds on each pool with 0 failures, and `smoke` matched SDK quotes to on-chain swaps on both pools. Two things to know: the public devnet RPC rate-limits (HTTP 429) during `setup`, which stopped it at `seed-liquidity`; re-running that step alone finished it. And `smoke` reports a false mismatch if a keeper round re-centres the pool between the swap and the read (expected Open behaviour), so run it with the keeper stopped. A private devnet RPC in `rpcUrls` avoids the 429s.
+
 ## Open questions
 
 - Band width and growth for mainnet (see #55), and whether the size fee should be based on the cumulative move since the close rather than each trade (#56).
