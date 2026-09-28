@@ -119,8 +119,14 @@ export function Chart({
             </text>
           </g>
         ))}
-        {xt.map((t) => (
-          <text key={t} x={X(t)} y={height - 12} textAnchor="middle" className="fill-muted text-[11px]">
+        {xt.map((t, i) => (
+          <text
+            key={t}
+            x={X(t)}
+            y={height - 12}
+            textAnchor={i === 0 ? "start" : i === xt.length - 1 ? "end" : "middle"}
+            className="fill-muted text-[11px]"
+          >
             {xFmt(t)}
           </text>
         ))}

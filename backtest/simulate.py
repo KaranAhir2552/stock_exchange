@@ -75,7 +75,11 @@ def afterbell(p0: float, p1: float, params: m.Params, quote_usd: float) -> Outco
     pool = m.Pool("UsEquity", "Closed", False, ref, ref, 0, 0, 120, 100, BASE_DECIMALS, QUOTE_DECIMALS, params)
     buy = target > ref  # trader buys base (quote in) when Monday opens higher
     fees_value = trades = 0  # fee atoms valued at P1, in quote atoms
+    hodl = usd(b0, q0, target)
+    path = []  # (hours since close, LP vs holding %, valued at Monday's open) once per hour
     for now in range(0, WEEKEND_SECS, STEP_SECS):
+        if now % 3600 == 0:
+            path.append((now / 3600, 100 * (usd(base, quote, target) - hodl) / hodl))
         vb, vq = m.virtual_reserves(base, quote, pool.pool_price, params.depth_bps, not buy)
         chunk = max((vq if buy else vb) * CHUNK_BPS_OF_DEPTH // 10_000, 1)
         while chunk >= 1:
@@ -100,7 +104,7 @@ def afterbell(p0: float, p1: float, params: m.Params, quote_usd: float) -> Outco
                 fees_value += m.mul_price(q.fee, target, False)
             pool, trades = nxt, trades + 1
     lp = usd(base, quote, target)
-    hodl = usd(b0, q0, target)
+    path.append((WEEKEND_SECS / 3600, 100 * (lp - hodl) / hodl))
     fees = fees_value / 10**QUOTE_DECIMALS
     rule, band = m.trading_terms(pool, WEEKEND_SECS)
     ui = lambda x: x / m.PRICE_SCALE * 10 ** (BASE_DECIMALS - QUOTE_DECIMALS)  # noqa: E731
@@ -110,5 +114,10 @@ def afterbell(p0: float, p1: float, params: m.Params, quote_usd: float) -> Outco
         fees,
         trader_profit_usd=hodl - lp,  # the LP's shortfall vs holding is exactly the trader's net profit
         trades=trades,
-        detail={"endPrice": ui(pool.pool_price), "bandAtOpenBps": band, "baseFeeAtOpenBps": rule.base_bps},
+        detail={
+            "endPrice": ui(pool.pool_price),
+            "bandAtOpenBps": band,
+            "baseFeeAtOpenBps": rule.base_bps,
+            "path": [[h, round(x, 4)] for h, x in path],
+        },
     )
