@@ -11,7 +11,7 @@
   },
   "scripts": {
     "sync-idl": "cp ../../target/idl/afterbell.json src/idl/afterbell.json && cp ../../target/types/afterbell.ts src/idl/afterbell.ts",
-    "build": "tsc -p . && cp src/idl/afterbell.json dist/idl/afterbell.json",
+    "build": "tsc -p . && cp src/idl/afterbell.json dist/idl/afterbell.json && cp src/nyse-calendar.json dist/nyse-calendar.json",
     "test": "node --test test/*.test.ts"
   },
   "dependencies": {

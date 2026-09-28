@@ -13,6 +13,8 @@ import {
   hoursSinceClose,
   lpMintPda,
   mockOraclePda,
+  nyDate,
+  nyseSessions,
   type OracleStatus,
   poolPda,
   quoteSwap,
@@ -28,7 +30,7 @@ import {
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
-import { nyDate, nyseSessions } from "./calendar.ts";
+
 import { type Ctx, context, exists, keypairPath, log, ROOT, saveMintAddress, send } from "./lib.ts";
 
 const { values, positionals } = parseArgs({
