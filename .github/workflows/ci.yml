@@ -14,6 +14,13 @@ jobs:
       - run: pnpm check:mainnet
       - run: pnpm build
       - run: pnpm test
+      - name: Web build without demo controls ships no demo code
+        run: |
+          sed -i 's/"demoControls": true/"demoControls": false/' config/devnet.json
+          NETWORK=devnet pnpm --filter @afterbell/web build
+          ! grep -rq 'Load the devnet admin key' apps/web/.next
+          ! grep -rq 'label:"Demo"' apps/web/.next
+          git checkout config/devnet.json
 
   program:
     runs-on: ubuntu-latest

@@ -44,7 +44,7 @@ export function WeekTimeline({ market }: { market?: Market | null }) {
 
   return (
     <Card className="px-6 pt-5 pb-[18px]" aria-label="This week's market hours">
-      <div className="flex gap-2 overflow-x-auto pt-9">
+      <div className="flex gap-2 overflow-x-auto overflow-y-hidden pt-9">
         {days.map((d, i) => {
           const span = Number(d.end - d.start);
           const segs = cal.sessions

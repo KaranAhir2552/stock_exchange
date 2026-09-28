@@ -44,7 +44,8 @@ export default function DemoPanel() {
   const [keyError, setKeyError] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [newsPct, setNewsPct] = useState<-10 | 10>(-10);
-  const [startPrice, setStartPrice] = useState("");
+  // Same as the pool's creation price (scripts/src/cli.ts DEMO_PRICE), so repeated -10% weeks don't drift down.
+  const [startPrice, setStartPrice] = useState("250.00");
   const [log, setLog] = useState<LogRow[]>([]);
   const [pts, setPts] = useState<Pt[]>([]);
   const [autoScroll, setAutoScroll] = useState(true);
@@ -56,9 +57,6 @@ export default function DemoPanel() {
   const t: DemoTimeline | null = cal && isDemoWeek(cal.sessions) ? demoTimeline(cal.sessions) : null;
   const step = v && m ? demoStep(t, v.now, m.info.state.halted) : 0;
 
-  useEffect(() => {
-    if (v && !startPrice) setStartPrice(v.oraclePrice?.toFixed(2) ?? "");
-  }, [v, startPrice]);
   // biome-ignore lint/correctness/useExhaustiveDependencies: scroll when a row is added
   useEffect(() => {
     if (autoScroll) logRef.current?.scrollTo({ top: logRef.current.scrollHeight, behavior: "smooth" });
