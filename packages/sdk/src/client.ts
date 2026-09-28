@@ -12,6 +12,7 @@ import type { Afterbell } from "./idl/afterbell.ts";
 import type { Direction } from "./math.ts";
 import type { Calendar, MarketContext, MarketProfile, Mode, OracleStatus, PoolParams, PoolState } from "./mode.ts";
 import { mockOraclePrice, refresh } from "./mode.ts";
+import { pythFeedAccount, pythOraclePrice } from "./pyth.ts";
 
 export const SEEDS = {
   config: "config",
@@ -132,18 +133,26 @@ export interface MarketSnapshot {
   lpSupply: bigint;
   chainNow: bigint;
   mock: MockOracleState | null;
-  /** Mock-oracle pools only (Pyth context needs a posted price update). `ctx.now` is the pool's clock. */
+  /** What `refresh` would read now (mock oracle, or the Pyth feed account). `ctx.now` is the pool's clock. */
   ctx: MarketContext | null;
   /** The pool as the program would see it after `refresh` right now (on-chain state if `ctx` is null). */
   live: PoolState;
 }
 
+/** Pyth program addresses from config (`pythPushOracleProgramId`, `pythReceiverProgramId`). */
+export interface PythPrograms {
+  pushOracle: PublicKey;
+  receiver: PublicKey;
+}
+
 export class AfterbellClient {
   readonly program: Program<Afterbell>;
+  readonly pyth: PythPrograms | null;
 
-  /** `provider` only needs a connection for reads; builders never sign. */
-  constructor(provider: Provider, programId: PublicKey) {
+  /** `provider` only needs a connection for reads; builders never sign. `pyth` is needed for Pyth pools. */
+  constructor(provider: Provider, programId: PublicKey, pyth: PythPrograms | null = null) {
     this.program = new Program<Afterbell>({ ...(idlJson as Afterbell), address: programId.toBase58() }, provider);
+    this.pyth = pyth;
   }
 
   get programId(): PublicKey {
@@ -253,7 +262,7 @@ export class AfterbellClient {
       p.accounts.baseVault,
       p.accounts.quoteVault,
       p.accounts.lpMint,
-      p.accounts.oracleKind === "Mock" ? this.mockOracle(p.accounts) : p.accounts.baseVault,
+      p.accounts.oracleKind === "Mock" || this.pyth ? this.oracleFor(p.accounts) : p.accounts.baseVault,
       p.accounts.calendar ?? p.accounts.baseVault,
     ]);
     const second = await this.connection.getMultipleAccountsInfo(extra);
@@ -262,17 +271,25 @@ export class AfterbellClient {
       const amount = (a: typeof bv) => (a ? a.data.readBigUInt64LE(64) : 0n);
       const reserves = { base: amount(bv), quote: amount(qv) };
       const lpSupply = lp ? lp.data.readBigUInt64LE(36) : 0n;
-      if (info.accounts.oracleKind !== "Mock" || !oracleAcc) {
-        return { info, reserves, lpSupply, chainNow, mock: null, ctx: null, live: info.state };
+      const calendar = info.accounts.calendar && calAcc ? this.decodeCalendar(calAcc.data) : null;
+      const onChain = { info, reserves, lpSupply, chainNow, mock: null, ctx: null, live: info.state };
+      if (!oracleAcc) return onChain;
+      if (info.accounts.oracleKind === "Mock") {
+        const mock = this.decodeMockOracle(oracleAcc.data);
+        const ctx: MarketContext = {
+          globalPause,
+          calendar,
+          oracle: mockOraclePrice(info.state, mock),
+          now: chainNow + mock.clockOffset,
+        };
+        return { ...onChain, mock, ctx, live: refresh(info.state, ctx) };
       }
-      const mock = this.decodeMockOracle(oracleAcc.data);
-      const ctx: MarketContext = {
-        globalPause,
-        calendar: info.accounts.calendar && calAcc ? this.decodeCalendar(calAcc.data) : null,
-        oracle: mockOraclePrice(info.state, mock),
-        now: chainNow + mock.clockOffset,
-      };
-      return { info, reserves, lpSupply, chainNow, mock, ctx, live: refresh(info.state, ctx) };
+      if (!this.pyth) return onChain;
+      // An account `read_pyth` would reject means the next refresh errors; show the on-chain state then.
+      const oracle = pythOraclePrice(info.state, info.accounts.feedId, oracleAcc, this.pyth.receiver);
+      if (!oracle || oracle.publishTs < info.state.lastOraclePublishTs) return onChain;
+      const ctx: MarketContext = { globalPause, calendar, oracle, now: chainNow };
+      return { ...onChain, ctx, live: refresh(info.state, ctx) };
     });
   }
 
@@ -297,6 +314,13 @@ export class AfterbellClient {
 
   mockOracle(pool: PoolAccounts): PublicKey {
     return mockOraclePda(this.programId, pool.feedId);
+  }
+
+  /** The oracle account a pool instruction reads: the mock oracle, or the Pyth push-oracle feed account. */
+  oracleFor(pool: PoolAccounts): PublicKey {
+    if (pool.oracleKind === "Mock") return this.mockOracle(pool);
+    if (!this.pyth) throw new Error("Pyth pool: construct AfterbellClient with the Pyth program addresses");
+    return pythFeedAccount(this.pyth.pushOracle, pool.feedId);
   }
 
   /** Everything `refresh` reads, for mock-oracle pools. `now` is the pool's clock (chain time + offset). */
@@ -395,7 +419,7 @@ export class AfterbellClient {
       .instruction();
   }
 
-  updateReference(pool: PoolAccounts, oracle: PublicKey = this.mockOracle(pool)) {
+  updateReference(pool: PoolAccounts, oracle: PublicKey = this.oracleFor(pool)) {
     return this.m()
       .updateReference()
       .accountsPartial({
@@ -435,7 +459,7 @@ export class AfterbellClient {
     maxBase: bigint,
     maxQuote: bigint,
     minLp: bigint,
-    oracle = this.mockOracle(pool),
+    oracle = this.oracleFor(pool),
   ) {
     return this.m()
       .deposit(bn(maxBase), bn(maxQuote), bn(minLp))
@@ -482,7 +506,7 @@ export class AfterbellClient {
         ...this.poolCommon(pool),
         userBase,
         userQuote,
-        oracle: opts.oracle ?? this.mockOracle(pool),
+        oracle: opts.oracle ?? this.oracleFor(pool),
         calendar: pool.calendar,
         treasuryToken: opts.treasuryToken ?? null,
       })

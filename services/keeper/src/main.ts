@@ -23,6 +23,7 @@ const keeper = new Keeper(cfg, payer, {
   maxPriorityMicroLamports: Number(process.env.KEEPER_MAX_PRIORITY_MICROLAMPORTS ?? 100_000),
   alertAfterMs: Number(process.env.KEEPER_ALERT_AFTER_SECS ?? 300) * 1000,
   webhookUrl: process.env.KEEPER_ALERT_WEBHOOK || undefined,
+  hermesApiKey: process.env.HERMES_API_KEY || undefined,
 });
 await keeper.init();
 

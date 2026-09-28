@@ -56,6 +56,14 @@ test("mock heartbeat is refused when the network has no mock oracle", () => {
   );
 });
 
+test("Pyth pools need a Hermes API key", () => {
+  const cfg = loadConfig("devnet");
+  assert.ok(cfg.pools.some((p) => p.oracleKind === "Pyth"));
+  const opts = { intervalMs: 1, mockHeartbeat: false, maxPriorityMicroLamports: 0, alertAfterMs: 1 };
+  assert.throws(() => new Keeper(cfg, Keypair.generate(), opts), /HERMES_API_KEY/);
+  assert.doesNotThrow(() => new Keeper(cfg, Keypair.generate(), { ...opts, hermesApiKey: "k" }));
+});
+
 test("metrics are Prometheus text", () => {
   const text = metrics([pool(1_000)]);
   assert.match(text, /afterbell_keeper_failures_total\{pool="P"\} 3/);

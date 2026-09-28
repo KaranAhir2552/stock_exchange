@@ -24,7 +24,7 @@ custom-panic = []
 [dependencies]
 anchor-lang = { version = "1.2.0", features = ["init-if-needed"] }
 anchor-spl = { version = "1.2.0", default-features = false, features = ["token", "token_2022", "token_2022_extensions"] }
-pyth-solana-receiver-sdk = "2.0.0"
+pyth-solana-receiver-sdk = { version = "2.0.0", features = ["pro-compatible"] } # upgraded Pyth Core receiver (DECISIONS #71)
 
 [dev-dependencies]
 # litesvm 0.16 runs the Agave 4.x runtime, which knows the live SBPF v3 feature

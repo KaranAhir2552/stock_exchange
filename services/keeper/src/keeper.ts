@@ -3,6 +3,7 @@
 
 import { type AfterbellConfig, mintAddress, redactUrl } from "@afterbell/config";
 import { AfterbellClient, feedIdBytes, type PoolAccounts, poolPda } from "@afterbell/sdk";
+import { buildPythPush, type PythPushConfig, sendInOrder } from "@afterbell/sdk/pyth-push";
 import { AnchorProvider, Wallet } from "@anchor-lang/core";
 import {
   ComputeBudgetProgram,
@@ -20,6 +21,8 @@ export interface KeeperOptions {
   maxPriorityMicroLamports: number;
   alertAfterMs: number;
   webhookUrl?: string;
+  /** Hermes API key (https://pythdata.app); required when any configured pool uses the Pyth oracle. */
+  hermesApiKey?: string;
 }
 
 export interface PoolHealth {
@@ -40,7 +43,7 @@ export const log = (level: "info" | "warn" | "error", msg: string, extra: Record
 export class Keeper {
   readonly health = new Map<string, PoolHealth>();
   private rpcIndex = 0;
-  private pools: { name: string; accounts: PoolAccounts; feedId: Uint8Array; mock: boolean }[] = [];
+  private pools: { name: string; accounts: PoolAccounts; feedId: Uint8Array; feedHex: string; mock: boolean }[] = [];
 
   private readonly cfg: AfterbellConfig;
   private readonly payer: Keypair;
@@ -53,12 +56,31 @@ export class Keeper {
     if (opts.mockHeartbeat && !cfg.features.mockOracle) {
       throw new Error("mock heartbeat requires features.mockOracle (localnet/devnet only)");
     }
+    if (cfg.pools.some((p) => p.oracleKind === "Pyth") && !opts.hermesApiKey) {
+      throw new Error("Pyth pools need HERMES_API_KEY (get one at https://pythdata.app)");
+    }
+  }
+
+  private pythPrograms() {
+    return {
+      pushOracle: new PublicKey(this.cfg.pythPushOracleProgramId),
+      receiver: new PublicKey(this.cfg.pythReceiverProgramId),
+    };
+  }
+
+  private pushConfig(): PythPushConfig {
+    return {
+      ...this.pythPrograms(),
+      wormhole: new PublicKey(this.cfg.pythWormholeProgramId),
+      hermesUrl: this.cfg.hermesUrl,
+      apiKey: this.opts.hermesApiKey as string,
+    };
   }
 
   private client(): AfterbellClient {
     const connection = new Connection(this.cfg.rpcUrls[this.rpcIndex], "confirmed");
     const provider = new AnchorProvider(connection, new Wallet(this.payer), { commitment: "confirmed" });
-    return new AfterbellClient(provider, new PublicKey(this.cfg.programId));
+    return new AfterbellClient(provider, new PublicKey(this.cfg.programId), this.pythPrograms());
   }
 
   /** Try each RPC endpoint in turn, starting from the last one that worked. */
@@ -85,12 +107,13 @@ export class Keeper {
       const quote = new PublicKey(mintAddress(this.cfg, p.quote));
       const address = poolPda(new PublicKey(this.cfg.programId), base, quote);
       const info = await this.withFailover((c) => c.fetchPool(address));
-      // ponytail: Pyth pools need the Hermes post + update in one tx (Phase 3 step E); skipped until then.
-      if (p.oracleKind !== "Mock") {
-        log("warn", "Pyth pools not supported by this keeper yet, skipping", { pool: p.name });
-        continue;
-      }
-      this.pools.push({ name: p.name, accounts: info.accounts, feedId: feedIdBytes(p.feedId), mock: true });
+      this.pools.push({
+        name: p.name,
+        accounts: info.accounts,
+        feedId: feedIdBytes(p.feedId),
+        feedHex: p.feedId,
+        mock: p.oracleKind === "Mock",
+      });
       this.health.set(p.name, {
         name: p.name,
         address: address.toBase58(),
@@ -114,7 +137,7 @@ export class Keeper {
 
   private async ixsFor(c: AfterbellClient, pool: (typeof this.pools)[number]): Promise<TransactionInstruction[]> {
     const ixs: TransactionInstruction[] = [];
-    if (this.opts.mockHeartbeat) {
+    if (this.opts.mockHeartbeat && pool.mock) {
       // Fresh timestamp, price untouched: keeps a demo oracle "live" without racing the demo panel's price changes.
       ixs.push(await c.mockHeartbeat(this.payer.publicKey, pool.feedId));
     }
@@ -125,6 +148,19 @@ export class Keeper {
   private async updateOnce(pool: (typeof this.pools)[number]): Promise<string> {
     return this.withFailover(async (c) => {
       const fee = await this.priorityFee(c, pool.accounts.address);
+      if (!pool.mock) {
+        // Pyth: write the latest Hermes price into the feed account (fully verified), then update_reference
+        // reads it in the last transaction. User swaps read that same public account.
+        const txs = await buildPythPush(
+          c.connection,
+          this.payer,
+          this.pushConfig(),
+          [pool.feedHex],
+          await this.ixsFor(c, pool),
+          fee,
+        );
+        return (await sendInOrder(c.connection, this.payer, txs)).at(-1) as string;
+      }
       const tx = new Transaction().add(
         ComputeBudgetProgram.setComputeUnitLimit({ units: 200_000 }),
         ComputeBudgetProgram.setComputeUnitPrice({ microLamports: fee }),

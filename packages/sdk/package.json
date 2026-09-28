@@ -7,6 +7,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./pyth-push": {
+      "types": "./dist/pyth-push.d.ts",
+      "default": "./dist/pyth-push.js"
     }
   },
   "scripts": {
@@ -17,6 +21,8 @@
   "dependencies": {
     "@anchor-lang/core": "1.2.0",
     "@solana/spl-token": "0.4.15",
-    "@solana/web3.js": "1.99.0"
+    "@solana/web3.js": "1.99.0",
+    "@pythnetwork/hermes-client": "3.1.0",
+    "@pythnetwork/pyth-solana-receiver": "0.16.0"
   }
 }

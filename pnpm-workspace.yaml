@@ -9,3 +9,8 @@ allowBuilds:
   bigint-buffer: false
   bufferutil: false
   utf-8-validate: false
+  # Pulled in by the Pyth SDKs; its postinstall only prints a version check.
+  protobufjs: false
+# One @solana/web3.js everywhere: jito-ts (via the Pyth SDK) pins 1.77, which breaks with rpc-websockets 9.
+overrides:
+  "@solana/web3.js": 1.99.0

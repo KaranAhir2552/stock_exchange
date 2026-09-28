@@ -3,6 +3,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import { type AfterbellConfig, CONFIG_DIR, loadConfig, type Network, readRawConfig } from "@afterbell/config";
 import { AfterbellClient } from "@afterbell/sdk";
+import { buildPythPush, sendInOrder } from "@afterbell/sdk/pyth-push";
 import { AnchorProvider, Wallet } from "@anchor-lang/core";
 import {
   ComputeBudgetProgram,
@@ -45,7 +46,25 @@ export function context(network: Network): Ctx {
   const connection = new Connection(cfg.rpcUrls[0], "confirmed");
   const admin = loadKeypair();
   const provider = new AnchorProvider(connection, new Wallet(admin), { commitment: "confirmed" });
-  return { cfg, connection, admin, client: new AfterbellClient(provider, new PublicKey(cfg.programId)) };
+  const pyth = {
+    pushOracle: new PublicKey(cfg.pythPushOracleProgramId),
+    receiver: new PublicKey(cfg.pythReceiverProgramId),
+  };
+  return { cfg, connection, admin, client: new AfterbellClient(provider, new PublicKey(cfg.programId), pyth) };
+}
+
+/** Pushes fresh Hermes prices for `feedIds` into the Pyth feed accounts, then sends `after` (which reads them). */
+export async function pushPyth(ctx: Ctx, feedIds: string[], after: TransactionInstruction[] = []): Promise<string[]> {
+  const apiKey = process.env.HERMES_API_KEY;
+  if (!apiKey) throw new Error("HERMES_API_KEY is not set (add it to .env.<network>; get one at https://pythdata.app)");
+  const cfg = {
+    hermesUrl: ctx.cfg.hermesUrl,
+    apiKey,
+    pushOracle: new PublicKey(ctx.cfg.pythPushOracleProgramId),
+    receiver: new PublicKey(ctx.cfg.pythReceiverProgramId),
+    wormhole: new PublicKey(ctx.cfg.pythWormholeProgramId),
+  };
+  return sendInOrder(ctx.connection, ctx.admin, await buildPythPush(ctx.connection, ctx.admin, cfg, feedIds, after));
 }
 
 export async function send(

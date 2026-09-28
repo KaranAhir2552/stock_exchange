@@ -95,3 +95,20 @@ fn rejects_wrong_feed_wrong_owner_and_partial_verification() {
     let mock = h.oracle_for(FEED);
     assert_err(h.update_reference_with(mock), ErrorCode::WrongFeed);
 }
+
+/// Pyth Core's August 2026 upgrade moved Solana price updates to a new receiver program
+/// (docs.pyth.network/price-feeds/core/upgrade/contracts). Updates from the old receiver are refused.
+#[test]
+fn only_the_upgraded_pyth_receiver_is_trusted() {
+    assert_eq!(
+        pyth_solana_receiver_sdk::ID.to_string(),
+        "rec2HHDDnjLfj4kE7VyEtFA1HPGQLK33259532cRyHp"
+    );
+    let (mut h, _) = pyth_pool();
+    let mut old = PythUpdate::new(PRICE_100, h.now());
+    old.owner = "rec5EKMGg6MxZYaMdyBfgwp4d5rB9T1VQH5pJv5LtFJ"
+        .parse()
+        .unwrap();
+    let old = h.post_pyth(old);
+    assert_err(h.update_reference_with(old), ErrorCode::WrongFeed);
+}

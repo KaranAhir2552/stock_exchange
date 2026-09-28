@@ -17,8 +17,8 @@ import {
   nyseSessions,
   type OracleStatus,
   poolPda,
+  pythFeedAccount,
   quoteSwap,
-  targetMode,
   toUiPrice,
   US_EQUITY_PROFILE_ID,
 } from "@afterbell/sdk";
@@ -31,7 +31,7 @@ import {
 } from "@solana/spl-token";
 import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 
-import { type Ctx, context, exists, keypairPath, log, ROOT, saveMintAddress, send } from "./lib.ts";
+import { type Ctx, context, exists, keypairPath, log, pushPyth, ROOT, saveMintAddress, send } from "./lib.ts";
 
 const { values, positionals } = parseArgs({
   allowPositionals: true,
@@ -148,24 +148,31 @@ async function createPools(ctx: Ctx) {
       continue;
     }
     const feedId = feedIdBytes(p.feedId);
-    if (p.oracleKind !== "Mock") throw new Error(`${p.name}: Pyth pools arrive in Phase 3 step E`);
-    const price = DEMO_PRICE[p.base];
-    if (!price) throw new Error(`no demo price for ${p.base}`);
     const { maxTvlQuote, ...rest } = p.params;
-    await send(ctx, [
-      ctx.client.mockSetPrice(ctx.admin.publicKey, feedId, price, 0n, EXPO),
+    const create = (oracle: PublicKey) =>
       ctx.client.createPool(ctx.admin.publicKey, {
         baseMint: base,
         quoteMint: quote,
         profile: p.profile,
         oracleKind: p.oracleKind,
         feedId,
-        oracle: mockOraclePda(pid, feedId),
+        oracle,
         maxStalenessSecs: p.maxStalenessSecs,
         maxConfBps: p.maxConfBps,
         params: { ...rest, maxTvlQuote: BigInt(maxTvlQuote) },
-      }),
-    ]);
+      });
+    if (p.oracleKind === "Pyth") {
+      // Fresh Hermes price first, so the pool starts priced (and Open) rather than Paused.
+      const pythOracle = pythFeedAccount(new PublicKey(ctx.cfg.pythPushOracleProgramId), feedId);
+      await pushPyth(ctx, [p.feedId], [await create(pythOracle)]);
+    } else {
+      const price = DEMO_PRICE[p.base];
+      if (!price) throw new Error(`no demo price for ${p.base}`);
+      await send(ctx, [
+        ctx.client.mockSetPrice(ctx.admin.publicKey, feedId, price, 0n, EXPO),
+        create(mockOraclePda(pid, feedId)),
+      ]);
+    }
     log("pool created", { pool: p.name, address: poolPda(pid, base, quote).toBase58() });
   }
 }
@@ -200,7 +207,9 @@ async function seedLiquidity(ctx: Ctx) {
       }
     }
     await createAssociatedTokenAccountIdempotent(ctx.connection, ctx.admin, info.accounts.lpMint, ctx.admin.publicKey);
-    await send(ctx, [ctx.client.deposit(info.accounts, ctx.admin.publicKey, baseAmount, quoteAmount, 1n)]);
+    const deposit = ctx.client.deposit(info.accounts, ctx.admin.publicKey, baseAmount, quoteAmount, 1n);
+    if (p.oracleKind === "Pyth") await pushPyth(ctx, [p.feedId], [await deposit]);
+    else await send(ctx, [deposit]);
     const lpAta = getAssociatedTokenAddressSync(info.accounts.lpMint, ctx.admin.publicKey, false, TOKEN_PROGRAM_ID);
     log("liquidity seeded", {
       pool: p.name,
@@ -227,12 +236,13 @@ async function smoke(ctx: Ctx) {
       await mintTo(ctx.connection, ctx.admin, quote, ata, ctx.admin, amountIn);
     }
     const { userBase } = ctx.client.userAccounts(info.accounts, ctx.admin.publicKey);
-    const [market, reserves, before] = await Promise.all([
-      ctx.client.mockMarketContext(info),
-      ctx.client.reserves(info.accounts),
+    if (p.oracleKind === "Pyth") await pushPyth(ctx, [p.feedId]); // the swap refreshes from this price
+    const [[m], before] = await Promise.all([
+      ctx.client.fetchMarkets([info.accounts.address]),
       ctx.connection.getTokenAccountBalance(userBase),
     ]);
-    const q = quoteSwap(info.state, reserves, amountIn, "QuoteToBase", market);
+    if (!m.ctx) throw new Error(`${p.name}: no usable oracle price`);
+    const q = quoteSwap(m.info.state, m.reserves, amountIn, "QuoteToBase", m.ctx);
     await send(ctx, [ctx.client.swap(info.accounts, ctx.admin.publicKey, amountIn, q.amountOut, "QuoteToBase")]);
     const after = await ctx.connection.getTokenAccountBalance(userBase);
     const got = BigInt(after.value.amount) - BigInt(before.value.amount);
@@ -273,33 +283,28 @@ const onOff = () => {
 
 async function status(ctx: Ctx) {
   const pid = ctx.client.programId;
-  for (const p of ctx.cfg.pools) {
-    const address = poolPda(
-      pid,
-      new PublicKey(mintAddress(ctx.cfg, p.base)),
-      new PublicKey(mintAddress(ctx.cfg, p.quote)),
-    );
-    const info = await ctx.client.fetchPool(address);
-    const s = info.state;
-    const [market, reserves] = await Promise.all([
-      ctx.client.mockMarketContext(info),
-      ctx.client.reserves(info.accounts),
-    ]);
+  const names = ctx.cfg.pools.map((p) => p.name);
+  const addresses = ctx.cfg.pools.map((p) =>
+    poolPda(pid, new PublicKey(mintAddress(ctx.cfg, p.base)), new PublicKey(mintAddress(ctx.cfg, p.quote))),
+  );
+  for (const [i, m] of (await ctx.client.fetchMarkets(addresses)).entries()) {
+    const s = m.info.state;
     const ui = (x: bigint) => Number(toUiPrice(x, s.baseDecimals, s.quoteDecimals).toFixed(4));
-    const band = getBand(s, market.now);
-    log(p.name, {
+    const now = m.ctx?.now ?? m.chainNow;
+    const band = getBand(m.live, now);
+    log(names[i], {
+      oracle: m.info.accounts.oracleKind,
       mode: s.mode,
-      modeAfterRefresh: targetMode(s, market),
+      modeAfterRefresh: m.live.mode,
       poolPrice: ui(s.poolPrice),
       referencePrice: ui(s.referencePrice),
       band: band && { bps: band.bandBps, low: ui(band.low), high: ui(band.high) },
-      feeBps: getCurrentFee(s, market.now),
-      hoursSinceClose: Number(hoursSinceClose(s, market.now).toFixed(3)),
-      oraclePrice: ui(market.oracle.price),
-      oracleAgeSecs: market.now - market.oracle.publishTs,
-      oracleStatus: market.oracle.statusHint,
+      feeBps: getCurrentFee(m.live, now),
+      hoursSinceClose: Number(hoursSinceClose(m.live, now).toFixed(3)),
+      oraclePrice: m.ctx ? ui(m.ctx.oracle.price) : null,
+      oracleAgeSecs: m.ctx ? now - m.ctx.oracle.publishTs : null,
       halted: s.halted,
-      reserves,
+      reserves: m.reserves,
     });
   }
 }

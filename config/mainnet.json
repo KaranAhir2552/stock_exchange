@@ -9,8 +9,10 @@
       "decimals": 6
     }
   },
-  "pythReceiverProgramId": "rec5EKMGg6MxZYaMdyBfgwp4d5rB9T1VQH5pJv5LtFJ",
-  "hermesUrl": "https://hermes.pyth.network",
+  "pythReceiverProgramId": "rec2HHDDnjLfj4kE7VyEtFA1HPGQLK33259532cRyHp",
+  "pythPushOracleProgramId": "pyt2F414BA6dPttK6RddPZUdHfapoBN24GL5wbrPCou",
+  "pythWormholeProgramId": "HDw2E7P8X1SkCyjvoGsfBGAVUutKcj874bXjHrpVYrVL",
+  "hermesUrl": "https://pyth.dourolabs.app/hermes",
   "calendarProfileIds": [1],
   "explorerCluster": "mainnet-beta",
   "features": {

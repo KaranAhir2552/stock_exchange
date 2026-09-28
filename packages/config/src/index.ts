@@ -51,7 +51,10 @@ export const configSchema = z
     programId: pubkey,
     /** Symbol -> mint. Must include USDC. */
     mints: z.record(z.string(), mint).refine((m) => "USDC" in m, "mints must include USDC"),
+    /** Pyth programs (the upgraded "pro-compatible" deployment: docs.pyth.network/price-feeds/core/upgrade/contracts). */
     pythReceiverProgramId: pubkey,
+    pythPushOracleProgramId: pubkey,
+    pythWormholeProgramId: pubkey,
     hermesUrl: z.url(),
     calendarProfileIds: z.array(z.number().int().min(0).max(255)),
     explorerCluster: z.enum(["custom", "devnet", "mainnet-beta"]),
