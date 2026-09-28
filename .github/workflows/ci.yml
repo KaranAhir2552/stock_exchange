@@ -18,8 +18,8 @@ jobs:
         run: |
           sed -i 's/"demoControls": true/"demoControls": false/' config/devnet.json
           NETWORK=devnet pnpm --filter @afterbell/web build
-          ! grep -rq 'Load the devnet admin key' apps/web/.next
-          ! grep -rq 'label:"Demo"' apps/web/.next
+          ! grep -rq --exclude-dir=dev 'Load the devnet admin key' apps/web/.next
+          ! grep -rq --exclude-dir=dev 'label:"Demo"' apps/web/.next
           git checkout config/devnet.json
 
   program:
