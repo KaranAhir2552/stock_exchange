@@ -5,15 +5,15 @@
   "programId": "AUkfc1YB8AB1BSno52xnsPvKcXYCbnHyySDxhrkmwp9x",
   "mints": {
     "USDC": {
-      "address": null,
+      "address": "4tFLBsKTmtzsh9uXpAu5Q9cLkitbpDB53m6frkQXNst8",
       "decimals": 6
     },
     "TSLAx": {
-      "address": null,
+      "address": "C2Lorchs3SLLFvnmMUrXWZbeKzUQtp2DYPNB86qQ35Xf",
       "decimals": 8
     },
     "SOL": {
-      "address": null,
+      "address": "2AdqVDDgtt7jvjNmDjQtKGSoMR3vz8WAgfyWuwwaqLFo",
       "decimals": 9
     }
   },
