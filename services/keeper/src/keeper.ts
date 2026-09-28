@@ -1,7 +1,7 @@
 // Keeper: every interval, for each configured pool, refresh the on-chain mode/reference price.
 // update_reference is permissionless and idempotent, so any number of keepers can run at once.
 
-import { type AfterbellConfig, mintAddress } from "@afterbell/config";
+import { type AfterbellConfig, mintAddress, redactUrl } from "@afterbell/config";
 import { AfterbellClient, feedIdBytes, type PoolAccounts, poolPda } from "@afterbell/sdk";
 import { AnchorProvider, Wallet } from "@anchor-lang/core";
 import {
@@ -69,7 +69,10 @@ export class Keeper {
         return await fn(this.client());
       } catch (e) {
         lastErr = e;
-        log("warn", "rpc failed, trying next endpoint", { rpc: this.cfg.rpcUrls[this.rpcIndex], err: String(e) });
+        log("warn", "rpc failed, trying next endpoint", {
+          rpc: redactUrl(this.cfg.rpcUrls[this.rpcIndex]),
+          err: String(e),
+        });
         this.rpcIndex = (this.rpcIndex + 1) % this.cfg.rpcUrls.length;
       }
     }

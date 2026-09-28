@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { loadConfig, mainnetSafetyErrors, parseConfig, readRawConfig } from "./index.ts";
+import { loadConfig, mainnetSafetyErrors, parseConfig, readRawConfig, withRpcOverride } from "./index.ts";
 
 test("localnet and devnet configs load", () => {
   assert.equal(loadConfig("localnet").network, "localnet");
@@ -73,4 +73,12 @@ test("mainnet needs every mint address; pools must reference known mints", () =>
   const devnet = readRawConfig("devnet") as { pools: { base: string }[] };
   devnet.pools[0].base = "NOPE";
   assert.throws(() => parseConfig(devnet), /unknown mint NOPE/);
+});
+
+test("RPC_URL goes first, public RPCs stay as failover", () => {
+  const cfg = parseConfig(readRawConfig("devnet"));
+  const out = withRpcOverride(cfg, "https://rpc.example/?api-key=x");
+  assert.deepEqual(out.rpcUrls, ["https://rpc.example/?api-key=x", ...cfg.rpcUrls]);
+  assert.equal(out.wsUrls[0], "wss://rpc.example/?api-key=x");
+  assert.equal(withRpcOverride(cfg, undefined), cfg);
 });

@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
@@ -108,7 +108,20 @@ export function loadConfig(network = process.env.NETWORK, dir = CONFIG_DIR): Aft
   const net = z.enum(NETWORKS).parse(network);
   const cfg = parseConfig(readRawConfig(net, dir));
   if (cfg.network !== net) throw new Error(`config/${net}.json declares network "${cfg.network}"`);
-  return cfg;
+  // Secrets (e.g. a keyed RPC URL) live in the git-ignored .env.<network>; real env vars win.
+  const envFile = join(dir, "..", `.env.${net}`);
+  if (existsSync(envFile)) process.loadEnvFile(envFile);
+  return withRpcOverride(cfg, process.env.RPC_URL);
+}
+
+/** A private RPC (from RPC_URL) goes first; the configured public ones stay as failover. */
+export function withRpcOverride(cfg: AfterbellConfig, rpcUrl: string | undefined): AfterbellConfig {
+  if (!rpcUrl) return cfg;
+  return {
+    ...cfg,
+    rpcUrls: [rpcUrl, ...cfg.rpcUrls.filter((u) => u !== rpcUrl)],
+    wsUrls: [rpcUrl.replace(/^http/, "ws"), ...cfg.wsUrls],
+  };
 }
 
 /** Address of a configured mint; throws if it hasn't been created yet. */
@@ -118,3 +131,6 @@ export function mintAddress(cfg: AfterbellConfig, symbol: string): string {
   if (!m.address) throw new Error(`mint ${symbol} has no address yet: run create-test-mints --network ${cfg.network}`);
   return m.address;
 }
+
+/** For logs: an RPC URL without its query string (where API keys live). */
+export const redactUrl = (url: string) => url.replace(/\?.*$/, "?…");

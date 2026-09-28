@@ -4,7 +4,7 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parseArgs } from "node:util";
-import { mintAddress, NETWORKS, type Network } from "@afterbell/config";
+import { mintAddress, NETWORKS, type Network, redactUrl } from "@afterbell/config";
 import {
   calendarPda,
   feedIdBytes,
@@ -397,5 +397,5 @@ const commands: Record<string, (ctx: Ctx) => Promise<unknown>> = {
 const run = commands[command];
 if (!run) throw new Error(`unknown command ${command}; one of: ${Object.keys(commands).join(", ")}`);
 const ctx = context(network);
-log(`${command} on ${network}`, { admin: ctx.admin.publicKey.toBase58(), rpc: ctx.cfg.rpcUrls[0] });
+log(`${command} on ${network}`, { admin: ctx.admin.publicKey.toBase58(), rpc: redactUrl(ctx.cfg.rpcUrls[0]) });
 await run(ctx);

@@ -8,6 +8,7 @@
       "!**/node_modules",
       "!**/.anchor",
       "!packages/sdk/src/idl",
+      "!docs/design",
       "!packages/sdk/test/vectors.json",
       "!backtest"
     ]
