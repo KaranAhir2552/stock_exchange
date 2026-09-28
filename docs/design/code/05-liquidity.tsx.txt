@@ -1,0 +1,786 @@
+const imgIconCoins = "https://www.figma.com/api/mcp/asset/3d563dea-b78d-4c39-8cfb-13d35ef890da.svg";
+const imgIconInfo = "https://www.figma.com/api/mcp/asset/8df72532-ea4a-444c-acbe-e91111551a85.svg";
+const imgIconShield = "https://www.figma.com/api/mcp/asset/dc414404-2d7d-43ac-a96d-4d68157bd499.svg";
+const imgSwatch = "https://www.figma.com/api/mcp/asset/a65096c7-ef80-4715-82c4-9c48a964bbe0.svg";
+const imgEllipse = "https://www.figma.com/api/mcp/asset/0d4f5f6d-bf01-4d7b-b986-b9308631d57e.svg";
+const imgEllipse1 = "https://www.figma.com/api/mcp/asset/85df7154-aaf0-4102-8103-48dabebafdae.svg";
+const imgIconChevron = "https://www.figma.com/api/mcp/asset/0bf851b8-6c7a-4fb8-84a8-41049adef835.svg";
+const imgIcon = "https://www.figma.com/api/mcp/asset/d49e0ee4-adcc-4971-adb5-35586fb20398.svg";
+const imgIcon1 = "https://www.figma.com/api/mcp/asset/ad0e1746-ab00-4a23-89b6-fb912ef58dcf.svg";
+const imgIconChevronDown = "https://www.figma.com/api/mcp/asset/dc957d99-667e-46a5-a627-45c8c7dc5670.svg";
+const imgIcon2 = "https://www.figma.com/api/mcp/asset/958d1da7-e14e-4cd4-9a73-86c5b53ecfb9.svg";
+const imgIconCoins1 = "https://www.figma.com/api/mcp/asset/21ffd273-03d3-4810-8a5d-5431161d33c9.svg";
+const imgIconCoins2 = "https://www.figma.com/api/mcp/asset/abc3ae5e-4560-4b46-97c9-128f27d0c4a7.svg";
+
+type FeatureItemProps = {
+  className?: string;
+  description?: string;
+  title?: string;
+};
+
+function FeatureItem({ className, description = "Liquidity providers (LPs) earn a share of trading fees from swaps in this pool.", title = "Earn fees from every trade" }: FeatureItemProps) {
+  return (
+    <div className={className || "content-stretch flex gap-[18px] items-start relative w-[420px]"} data-node-id="14:262" data-name="Feature Item">
+      <div className="bg-[var(--bg\/brand-subtle,#eef0ff)] content-stretch flex items-center justify-center overflow-clip relative rounded-[28px] shrink-0 size-[56px]" data-node-id="14:263" data-name="Icon Badge">
+        <div className="relative shrink-0 size-[26px]" data-node-id="14:264" data-name="Icon/coins">
+          <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgIconCoins} />
+        </div>
+      </div>
+      <div className="[word-break:break-word] content-stretch flex flex-[1_0_0] flex-col gap-[4px] items-start min-w-px not-italic overflow-clip relative" data-node-id="14:267" data-name="Text">
+        <p className="font-['Inter:Semi_Bold'] font-semibold leading-[normal] relative shrink-0 text-[16px] text-[color:var(--text\/primary,#0f172a)] whitespace-nowrap" data-node-id="14:268">
+          {title}
+        </p>
+        <p className="font-['Inter:Regular'] font-normal leading-[21px] min-w-full relative shrink-0 text-[14px] text-[color:var(--text\/secondary,#64748b)] w-[min-content]" data-node-id="14:269">
+          {description}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+type InfoCalloutProps = {
+  className?: string;
+  text?: string;
+  tone?: "Brand" | "Shield";
+};
+
+function InfoCallout({ className, text = "Deposits are added at the current pool ratio.", tone = "Brand" }: InfoCalloutProps) {
+  const isBrand = tone === "Brand";
+  const isShield = tone === "Shield";
+  return (
+    <div className={className || `content-stretch flex gap-[12px] items-center px-[16px] py-[14px] relative rounded-[12px] w-[440px] ${isShield ? String.raw`bg-[var(--bg\/subtle,#f1f3f9)]` : String.raw`bg-[var(--bg\/brand-subtle,#eef0ff)]`}`} id={isShield ? "node-14_192" : "node-14_186"}>
+      {isBrand && (
+        <>
+          <div className="relative shrink-0 size-[20px]" data-node-id="14:187" data-name="Icon/info">
+            <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgIconInfo} />
+          </div>
+          <p className="[word-break:break-word] flex-[1_0_0] font-['Inter:Regular'] font-normal leading-[normal] min-w-px not-italic relative text-[14px] text-[color:var(--text\/secondary,#64748b)]" data-node-id="14:191">
+            {text}
+          </p>
+        </>
+      )}
+      {isShield && (
+        <>
+          <div className="relative shrink-0 size-[20px]" data-node-id="14:193" data-name="Icon/shield">
+            <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgIconShield} />
+          </div>
+          <p className="[word-break:break-word] flex-[1_0_0] font-['Inter:Regular'] font-normal leading-[normal] min-w-px not-italic relative text-[14px] text-[color:var(--text\/secondary,#64748b)]" data-node-id="14:195">
+            {text}
+          </p>
+        </>
+      )}
+    </div>
+  );
+}
+
+type LegendItemProps = {
+  className?: string;
+  label?: string;
+  shape?: "Dot";
+};
+
+function LegendItem({ className, label = "Pool price (TSLAx)", shape = "Dot" }: LegendItemProps) {
+  return (
+    <div className={className || "content-stretch flex gap-[8px] items-center relative"} data-node-id="14:277">
+      <div className="relative shrink-0 size-[10px]" data-node-id="14:278" data-name="Swatch">
+        <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgSwatch} />
+      </div>
+      <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[13px] text-[color:var(--text\/secondary,#64748b)] whitespace-nowrap" data-node-id="14:279">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+type StatCardProps = {
+  className?: string;
+  caption?: string;
+  label?: string;
+  showCaption?: boolean;
+  style?: "Plain";
+  value?: string;
+};
+
+function StatCard({ className, caption = "Weekend session · price protected", label = "Total liquidity", showCaption = false, style = "Plain", value = "$1.84M" }: StatCardProps) {
+  return (
+    <div className={className || "bg-[var(--bg\\/surface,white)] border border-[var(--border\\/default,#e6e9f2)] border-solid content-stretch flex items-center px-[20px] py-[18px] relative rounded-[14px] w-[300px]"} data-node-id="14:212">
+      <div className="[word-break:break-word] content-stretch flex flex-[1_0_0] flex-col gap-[4px] items-start leading-[normal] min-w-px not-italic overflow-clip relative whitespace-nowrap" data-node-id="14:213" data-name="Text">
+        <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[14px] text-[color:var(--text\/secondary,#64748b)]" data-node-id="14:214">
+          {label}
+        </p>
+        <p className="font-['Inter:Bold'] font-bold relative shrink-0 text-[28px] text-[color:var(--text\/primary,#0f172a)]" data-node-id="14:215">
+          {value}
+        </p>
+        {showCaption && (
+          <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[12px] text-[color:var(--text\/secondary,#64748b)]" data-node-id="14:216">
+            {caption}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+type PairAvatarProps = {
+  className?: string;
+  size?: "Large";
+};
+
+function PairAvatar({ className, size = "Large" }: PairAvatarProps) {
+  return (
+    <div className={className || "content-stretch flex isolate items-start relative"} data-node-id="14:219">
+      <div className="bg-[#e5484d] border-2 border-solid border-white content-stretch flex items-center justify-center mr-[-10px] relative rounded-[28px] shrink-0 size-[56px] z-[2]" data-node-id="14:220" data-name="Base">
+        <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[22px] text-[color:var(--text\/on-brand,white)] whitespace-nowrap" data-node-id="I14:220;2:25">
+          T
+        </p>
+      </div>
+      <div className="bg-[#4346e0] border-2 border-solid border-white content-stretch flex items-center justify-center relative rounded-[28px] shrink-0 size-[56px] z-[1]" data-node-id="14:222" data-name="Quote">
+        <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[22px] text-[color:var(--text\/on-brand,white)] whitespace-nowrap" data-node-id="I14:222;2:25">
+          U
+        </p>
+      </div>
+    </div>
+  );
+}
+
+type WeekTimelineProps = {
+  className?: string;
+  state?: "Weekend (Sat)";
+};
+
+function WeekTimeline({ className, state = "Weekend (Sat)" }: WeekTimelineProps) {
+  return (
+    <div className={className || "bg-[var(--bg\\/surface,white)] border border-[var(--border\\/default,#e6e9f2)] border-solid content-stretch drop-shadow-[0px_4px_8px_rgba(15,23,51,0.06)] flex flex-col gap-[18px] items-start pb-[18px] pt-[20px] px-[24px] relative rounded-[16px] w-[1440px]"} data-node-id="3:31">
+      <div className="content-stretch flex gap-[8px] items-start relative shrink-0 w-full" data-node-id="3:32" data-name="Days">
+        <div className="content-stretch flex flex-[1_0_0] flex-col gap-[10px] items-start min-w-px relative" data-node-id="3:33" data-name="Mon">
+          <div className="[word-break:break-word] content-stretch flex flex-col gap-[2px] items-start leading-[normal] not-italic relative shrink-0 whitespace-nowrap" data-node-id="3:34" data-name="Label">
+            <p className="font-['Inter:Semi_Bold'] font-semibold relative shrink-0 text-[14px] text-[color:var(--text\/primary,#0f172a)]" data-node-id="3:35">
+              Mon
+            </p>
+            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[13px] text-[color:var(--text\/secondary,#64748b)]" data-node-id="3:36">
+              Sep 22
+            </p>
+          </div>
+          <div className="bg-[var(--status\/closed,#c7cbf5)] content-stretch flex h-[14px] items-start overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="3:37" data-name="Bar">
+            <div className="bg-[var(--status\/positive,#10a37f)] h-[14px] relative shrink-0 w-[130px]" data-node-id="3:38" data-name="Open" />
+          </div>
+        </div>
+        <div className="content-stretch flex flex-[1_0_0] flex-col gap-[10px] items-start min-w-px relative" data-node-id="3:39" data-name="Tue">
+          <div className="[word-break:break-word] content-stretch flex flex-col gap-[2px] items-start leading-[normal] not-italic relative shrink-0 whitespace-nowrap" data-node-id="3:40" data-name="Label">
+            <p className="font-['Inter:Semi_Bold'] font-semibold relative shrink-0 text-[14px] text-[color:var(--text\/primary,#0f172a)]" data-node-id="3:41">
+              Tue
+            </p>
+            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[13px] text-[color:var(--text\/secondary,#64748b)]" data-node-id="3:42">
+              Sep 23
+            </p>
+          </div>
+          <div className="bg-[var(--status\/closed,#c7cbf5)] content-stretch flex h-[14px] items-start overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="3:43" data-name="Bar">
+            <div className="bg-[var(--status\/positive,#10a37f)] h-[14px] relative shrink-0 w-[130px]" data-node-id="3:44" data-name="Open" />
+          </div>
+        </div>
+        <div className="content-stretch flex flex-[1_0_0] flex-col gap-[10px] items-start min-w-px relative" data-node-id="3:45" data-name="Wed">
+          <div className="[word-break:break-word] content-stretch flex flex-col gap-[2px] items-start leading-[normal] not-italic relative shrink-0 whitespace-nowrap" data-node-id="3:46" data-name="Label">
+            <p className="font-['Inter:Semi_Bold'] font-semibold relative shrink-0 text-[14px] text-[color:var(--text\/primary,#0f172a)]" data-node-id="3:47">
+              Wed
+            </p>
+            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[13px] text-[color:var(--text\/secondary,#64748b)]" data-node-id="3:48">
+              Sep 24
+            </p>
+          </div>
+          <div className="bg-[var(--status\/closed,#c7cbf5)] content-stretch flex h-[14px] items-start overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="3:49" data-name="Bar">
+            <div className="bg-[var(--status\/positive,#10a37f)] h-[14px] relative shrink-0 w-[130px]" data-node-id="3:50" data-name="Open" />
+          </div>
+        </div>
+        <div className="content-stretch flex flex-[1_0_0] flex-col gap-[10px] items-start min-w-px relative" data-node-id="3:51" data-name="Thu">
+          <div className="[word-break:break-word] content-stretch flex flex-col gap-[2px] items-start leading-[normal] not-italic relative shrink-0 whitespace-nowrap" data-node-id="3:52" data-name="Label">
+            <p className="font-['Inter:Semi_Bold'] font-semibold relative shrink-0 text-[14px] text-[color:var(--text\/primary,#0f172a)]" data-node-id="3:53">
+              Thu
+            </p>
+            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[13px] text-[color:var(--text\/secondary,#64748b)]" data-node-id="3:54">
+              Sep 25
+            </p>
+          </div>
+          <div className="bg-[var(--status\/closed,#c7cbf5)] content-stretch flex h-[14px] items-start overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="3:55" data-name="Bar">
+            <div className="bg-[var(--status\/positive,#10a37f)] h-[14px] relative shrink-0 w-[130px]" data-node-id="3:56" data-name="Open" />
+          </div>
+        </div>
+        <div className="content-stretch flex flex-[1_0_0] flex-col gap-[10px] items-start min-w-px relative" data-node-id="3:57" data-name="Fri">
+          <div className="[word-break:break-word] content-stretch flex flex-col gap-[2px] items-start leading-[normal] not-italic relative shrink-0 whitespace-nowrap" data-node-id="3:58" data-name="Label">
+            <p className="font-['Inter:Semi_Bold'] font-semibold relative shrink-0 text-[14px] text-[color:var(--text\/primary,#0f172a)]" data-node-id="3:59">
+              Fri
+            </p>
+            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[13px] text-[color:var(--text\/secondary,#64748b)]" data-node-id="3:60">
+              Sep 26
+            </p>
+          </div>
+          <div className="bg-[var(--status\/closed,#c7cbf5)] content-stretch flex h-[14px] items-start overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="3:61" data-name="Bar">
+            <div className="bg-[var(--status\/positive,#10a37f)] h-[14px] relative shrink-0 w-[112px]" data-node-id="3:62" data-name="Open" />
+          </div>
+        </div>
+        <div className="content-stretch flex flex-[1_0_0] flex-col gap-[10px] items-start min-w-px relative" data-node-id="3:63" data-name="Sat">
+          <div className="[word-break:break-word] content-stretch flex flex-col gap-[2px] items-start leading-[normal] not-italic relative shrink-0 whitespace-nowrap" data-node-id="3:64" data-name="Label">
+            <p className="font-['Inter:Semi_Bold'] font-semibold relative shrink-0 text-[14px] text-[color:var(--text\/primary,#0f172a)]" data-node-id="3:65">
+              Sat
+            </p>
+            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[13px] text-[color:var(--text\/secondary,#64748b)]" data-node-id="3:66">
+              Sep 27
+            </p>
+          </div>
+          <div className="bg-[var(--status\/closed,#c7cbf5)] h-[14px] relative rounded-[4px] shrink-0 w-full" data-node-id="3:67" data-name="Bar" />
+          <div className="absolute content-stretch flex flex-col items-center left-[40px] top-[-12px]" data-node-id="3:73" data-name="Now Marker">
+            <div className="bg-[var(--brand\/primary,#4346e0)] content-stretch flex items-start px-[10px] py-[5px] relative rounded-[6px] shrink-0" data-node-id="3:74" data-name="Tooltip">
+              <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[normal] not-italic relative shrink-0 text-[12px] text-[color:var(--text\/on-brand,white)] whitespace-nowrap" data-node-id="3:75">
+                Now 10:14 · Closed 18h
+              </p>
+            </div>
+            <div className="bg-[var(--brand\/primary,#4346e0)] h-[34px] relative shrink-0 w-[2px]" data-node-id="3:76" data-name="Line" />
+          </div>
+        </div>
+        <div className="content-stretch flex flex-[1_0_0] flex-col gap-[10px] items-start min-w-px relative" data-node-id="3:68" data-name="Sun">
+          <div className="[word-break:break-word] content-stretch flex flex-col gap-[2px] items-start leading-[normal] not-italic relative shrink-0 whitespace-nowrap" data-node-id="3:69" data-name="Label">
+            <p className="font-['Inter:Semi_Bold'] font-semibold relative shrink-0 text-[14px] text-[color:var(--text\/primary,#0f172a)]" data-node-id="3:70">
+              Sun
+            </p>
+            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[13px] text-[color:var(--text\/secondary,#64748b)]" data-node-id="3:71">
+              Sep 28
+            </p>
+          </div>
+          <div className="bg-[var(--status\/closed,#c7cbf5)] h-[14px] relative rounded-[4px] shrink-0 w-full" data-node-id="3:72" data-name="Bar" />
+        </div>
+      </div>
+      <div className="content-stretch flex gap-[40px] items-center relative shrink-0" data-node-id="3:77" data-name="Legend">
+        <div className="content-stretch flex gap-[8px] items-center relative shrink-0" data-node-id="3:78" data-name="Market open 09:30 – 16:00 (ET)">
+          <div className="relative shrink-0 size-[10px]" data-node-id="3:79" data-name="Ellipse">
+            <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgEllipse} />
+          </div>
+          <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[13px] text-[color:var(--text\/secondary,#64748b)] whitespace-nowrap" data-node-id="3:80">
+            Market open 09:30 – 16:00 (ET)
+          </p>
+        </div>
+        <div className="content-stretch flex gap-[8px] items-center relative shrink-0" data-node-id="3:81" data-name="Market closed">
+          <div className="relative shrink-0 size-[10px]" data-node-id="3:82" data-name="Ellipse">
+            <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgEllipse1} />
+          </div>
+          <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[13px] text-[color:var(--text\/secondary,#64748b)] whitespace-nowrap" data-node-id="3:83">
+            Market closed
+          </p>
+        </div>
+        <div className="content-stretch flex gap-[8px] items-center relative shrink-0" data-node-id="3:84" data-name="Now">
+          <div className="relative shrink-0 size-[10px]" data-node-id="3:85" data-name="Ellipse">
+            <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgSwatch} />
+          </div>
+          <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[13px] text-[color:var(--text\/secondary,#64748b)] whitespace-nowrap" data-node-id="3:86">
+            Now
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+type ButtonProps = {
+  className?: string;
+  label?: string;
+  variant?: "Primary";
+};
+
+function Button({ className, label = "Connect wallet", variant = "Primary" }: ButtonProps) {
+  return (
+    <div className={className || "bg-[var(--brand\\/primary,#4346e0)] content-stretch flex items-center justify-center px-[28px] py-[12px] relative rounded-[10px]"} data-node-id="2:4">
+      <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[15px] text-[color:var(--text\/on-brand,white)] whitespace-nowrap" data-node-id="2:5">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+type NavTabProps = {
+  className?: string;
+  label?: string;
+  state?: "Active" | "Default";
+};
+
+function NavTab({ className, label = "Swap", state = "Active" }: NavTabProps) {
+  const isActive = state === "Active";
+  const isDefault = state === "Default";
+  return (
+    <div className={className || "content-stretch flex flex-col gap-[8px] items-center pt-[4px] relative"} id={isDefault ? "node-2_13" : "node-2_10"}>
+      {isActive && (
+        <>
+          <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[16px] text-[color:var(--brand\/primary,#4346e0)] whitespace-nowrap" data-node-id="2:11">
+            {label}
+          </p>
+          <div className="bg-[var(--brand\/primary,#4346e0)] h-[2px] relative rounded-[1px] shrink-0 w-full" data-node-id="2:12" data-name="Indicator" />
+        </>
+      )}
+      {isDefault && (
+        <>
+          <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[normal] not-italic relative shrink-0 text-[16px] text-[color:var(--text\/primary,#0f172a)] whitespace-nowrap" data-node-id="2:14">
+            {label}
+          </p>
+          <div className="bg-[var(--brand\/primary,#4346e0)] h-[2px] opacity-0 relative rounded-[1px] shrink-0 w-full" data-node-id="2:15" data-name="Indicator" />
+        </>
+      )}
+    </div>
+  );
+}
+
+export default function Component05Liquidity() {
+  return (
+    <div className="bg-[var(--bg\/page,#f4f6fb)] content-stretch flex flex-col gap-[20px] items-start pb-[48px] pt-[24px] px-[40px] relative size-full" data-node-id="2006:1215" data-name="05 · Liquidity">
+      <div className="bg-[var(--bg\/surface,white)] border border-[var(--border\/default,#e6e9f2)] border-solid content-stretch drop-shadow-[0px_4px_8px_rgba(15,23,51,0.06)] flex gap-[56px] h-[76px] items-center pl-[28px] pr-[14px] relative rounded-[16px] shrink-0 w-full" data-node-id="2006:1216" data-name="Navbar">
+        <p className="[word-break:break-word] font-['Inter:Extra_Bold'] font-extrabold leading-[0] not-italic relative shrink-0 text-[26px] text-[color:var(--text\/primary,#0f172a)] tracking-[-0.52px] whitespace-nowrap" data-node-id="I2006:1216;3:8">
+          <span className="leading-[normal]">Weekend</span>
+          <span className="leading-[normal] text-[#4346e0]">Guard</span>
+        </p>
+        <div className="content-stretch flex gap-[40px] items-start overflow-clip relative shrink-0" data-node-id="I2006:1216;3:9" data-name="Nav Links">
+          <div className="content-stretch flex flex-col gap-[8px] items-center pt-[4px] relative shrink-0" data-node-id="I2006:1216;3:10" data-name="Nav Tab">
+            <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[normal] not-italic relative shrink-0 text-[16px] text-[color:var(--text\/primary,#0f172a)] whitespace-nowrap" data-node-id="I2006:1216;3:10;2:14">
+              Swap
+            </p>
+            <div className="bg-[var(--brand\/primary,#4346e0)] h-[2px] opacity-0 relative rounded-[1px] shrink-0 w-full" data-node-id="I2006:1216;3:10;2:15" data-name="Indicator" />
+          </div>
+          <div className="content-stretch flex flex-col gap-[8px] items-center pt-[4px] relative shrink-0" data-node-id="I2006:1216;3:13" data-name="Nav Tab">
+            <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[16px] text-[color:var(--brand\/primary,#4346e0)] whitespace-nowrap" data-node-id="I2006:1216;3:13;2:11">
+              Liquidity
+            </p>
+            <div className="bg-[var(--brand\/primary,#4346e0)] h-[2px] relative rounded-[1px] shrink-0 w-full" data-node-id="I2006:1216;3:13;2:12" data-name="Indicator" />
+          </div>
+          <NavTab className="content-stretch flex flex-col gap-[8px] items-center pt-[4px] relative shrink-0" label="Pools" state="Default" />
+          <NavTab className="content-stretch flex flex-col gap-[8px] items-center pt-[4px] relative shrink-0" label="Results" state="Default" />
+        </div>
+        <div className="flex-[1_0_0] h-[10px] min-w-px relative" data-node-id="I2006:1216;3:22" data-name="Spacer" />
+        <div className="content-stretch flex gap-[12px] items-center overflow-clip relative shrink-0" data-node-id="I2006:1216;3:23" data-name="Actions">
+          <div className="bg-[var(--bg\/subtle,#f1f3f9)] content-stretch flex gap-[10px] items-center overflow-clip px-[14px] py-[12px] relative rounded-[10px] shrink-0" data-node-id="I2006:1216;3:24" data-name="Network Selector">
+            <div className="relative shrink-0 size-[10px]" data-node-id="I2006:1216;3:25" data-name="Status">
+              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgEllipse} />
+            </div>
+            <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[normal] not-italic relative shrink-0 text-[15px] text-[color:var(--text\/primary,#0f172a)] whitespace-nowrap" data-node-id="I2006:1216;3:26">
+              Devnet
+            </p>
+            <div className="h-[5px] relative shrink-0 w-[10px]" data-node-id="I2006:1216;3:27" data-name="Icon/Chevron">
+              <div className="absolute inset-[-16%_-8%]">
+                <img alt="" className="block max-w-none size-full" src={imgIconChevron} />
+              </div>
+            </div>
+          </div>
+          <Button className="bg-[var(--brand\/primary,#4346e0)] content-stretch flex items-center justify-center px-[28px] py-[12px] relative rounded-[10px] shrink-0" />
+        </div>
+      </div>
+      <WeekTimeline className="bg-[var(--bg\/surface,white)] border border-[var(--border\/default,#e6e9f2)] border-solid content-stretch drop-shadow-[0px_4px_8px_rgba(15,23,51,0.06)] flex flex-col gap-[18px] items-start pb-[18px] pt-[20px] px-[24px] relative rounded-[16px] shrink-0 w-full" />
+      <div className="content-stretch flex gap-[20px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2006:1300" data-name="Main">
+        <div className="bg-[var(--bg\/surface,white)] border border-[var(--border\/default,#e6e9f2)] border-solid content-stretch flex flex-[1_0_0] flex-col gap-[22px] items-start min-w-px overflow-clip p-[26px] relative rounded-[18px] self-stretch shadow-[0px_4px_16px_0px_rgba(15,23,51,0.06)]" data-node-id="2006:1301" data-name="Your Position">
+          <div className="content-stretch flex items-center justify-between overflow-clip relative shrink-0 w-full" data-node-id="2006:1302" data-name="Header">
+            <p className="[word-break:break-word] font-['Inter:Bold'] font-bold leading-[normal] not-italic relative shrink-0 text-[26px] text-[color:var(--text\/primary,#0f172a)] whitespace-nowrap" data-node-id="2006:1303">
+              Your position
+            </p>
+            <div className="bg-[var(--bg\/brand-subtle,#eef0ff)] content-stretch flex items-center justify-center px-[16px] py-[10px] relative rounded-[10px] shrink-0" data-node-id="2006:1304" data-name="Button">
+              <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[14px] text-[color:var(--brand\/primary,#4346e0)] whitespace-pre" data-node-id="I2006:1304;13:224">{`View pool details  →`}</p>
+            </div>
+          </div>
+          <div className="content-stretch flex gap-[16px] items-center overflow-clip relative shrink-0" data-node-id="2006:1306" data-name="Pool">
+            <PairAvatar className="content-stretch flex isolate items-start relative shrink-0" />
+            <div className="[word-break:break-word] content-stretch flex flex-col gap-[2px] items-start leading-[normal] not-italic overflow-clip relative shrink-0" data-node-id="2006:1314" data-name="Frame">
+              <p className="font-['Inter:Bold'] font-bold relative shrink-0 text-[22px] text-[color:var(--text\/primary,#0f172a)] whitespace-nowrap" data-node-id="2006:1312">
+                TSLAx / USDC
+              </p>
+              <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[15px] text-[color:var(--text\/secondary,#64748b)] whitespace-pre" data-node-id="2006:1313">{`Tokenized Tesla  ·  0.30% fee tier`}</p>
+            </div>
+          </div>
+          <div className="content-stretch flex flex-col gap-[6px] items-start overflow-clip relative shrink-0" data-node-id="2006:1315" data-name="Total value">
+            <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[15px] text-[color:var(--text\/secondary,#64748b)] whitespace-nowrap" data-node-id="2006:1316">
+              Total value
+            </p>
+            <div className="content-stretch flex gap-[18px] items-center overflow-clip relative shrink-0" data-node-id="2006:1317" data-name="Frame">
+              <p className="[word-break:break-word] font-['Inter:Extra_Bold'] font-extrabold leading-[normal] not-italic relative shrink-0 text-[48px] text-[color:var(--text\/primary,#0f172a)] whitespace-nowrap" data-node-id="2006:1318">
+                $4,212.80
+              </p>
+              <div className="bg-[var(--status\/positive-subtle,#e8f7f1)] content-stretch flex gap-[10px] items-center overflow-clip pl-[14px] pr-[16px] py-[10px] relative rounded-[10px] shrink-0" data-node-id="2006:1319" data-name="Change">
+                <div className="relative shrink-0 size-[20px]" data-node-id="2006:1320" data-name="Icon">
+                  <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgIcon} />
+                </div>
+                <div className="[word-break:break-word] content-stretch flex flex-col gap-[2px] items-start leading-[normal] not-italic overflow-clip relative shrink-0 whitespace-nowrap" data-node-id="2006:1324" data-name="Frame">
+                  <p className="font-['Inter:Semi_Bold'] font-semibold relative shrink-0 text-[16px] text-[color:var(--status\/positive,#10a37f)]" data-node-id="2006:1322">
+                    +2.14%
+                  </p>
+                  <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[13px] text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1323">
+                    (+$88.20)
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="content-stretch flex gap-[16px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2006:1325" data-name="Stats">
+            <StatCard className="bg-[var(--bg\/surface,white)] border border-[var(--border\/default,#e6e9f2)] border-solid content-stretch flex flex-[1_0_0] items-center min-w-px px-[20px] py-[18px] relative rounded-[14px]" label="Pool share" value="1.8%" />
+            <StatCard className="bg-[var(--bg\/surface,white)] border border-[var(--border\/default,#e6e9f2)] border-solid content-stretch flex flex-[1_0_0] items-center min-w-px px-[20px] py-[18px] relative rounded-[14px]" label="Fees earned" value="$38.40" />
+            <div className="bg-[var(--bg\/brand-subtle,#eef0ff)] content-stretch flex flex-[1_0_0] items-center min-w-px px-[20px] py-[18px] relative rounded-[14px]" data-node-id="2006:1336" data-name="Stat Card">
+              <div className="[word-break:break-word] content-stretch flex flex-[1_0_0] flex-col gap-[4px] items-start leading-[normal] min-w-px not-italic overflow-clip relative text-[color:var(--brand\/primary,#4346e0)] whitespace-nowrap" data-node-id="I2006:1336;14:213" data-name="Text">
+                <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[14px]" data-node-id="I2006:1336;14:214">
+                  Weekend fees earned
+                </p>
+                <p className="font-['Inter:Bold'] font-bold relative shrink-0 text-[28px]" data-node-id="I2006:1336;14:215">
+                  $21.10
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="content-stretch flex items-center justify-between overflow-clip relative shrink-0 w-full" data-node-id="2006:1341" data-name="Chart Header">
+            <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[18px] text-[color:var(--text\/primary,#0f172a)] whitespace-nowrap" data-node-id="2006:1342">
+              Fees earned per day
+            </p>
+            <div className="content-stretch flex gap-[24px] items-start overflow-clip relative shrink-0" data-node-id="2006:1343" data-name="Frame">
+              <div className="content-stretch flex gap-[8px] items-center relative shrink-0" data-node-id="2006:1344" data-name="Legend Item">
+                <div className="relative shrink-0 size-[10px]" data-node-id="I2006:1344;14:278" data-name="Swatch">
+                  <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgEllipse} />
+                </div>
+                <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[13px] text-[color:var(--text\/secondary,#64748b)] whitespace-nowrap" data-node-id="I2006:1344;14:279">
+                  Weekday (market open)
+                </p>
+              </div>
+              <LegendItem className="content-stretch flex gap-[8px] items-center relative shrink-0" label="Weekend (market closed)" />
+            </div>
+          </div>
+          <div className="h-[220px] relative shrink-0 w-[900px]" data-node-id="2006:1350" data-name="Bar Chart">
+            <p className="[word-break:break-word] absolute font-['Inter:Regular'] font-normal leading-[normal] left-0 not-italic text-[12px] text-[color:var(--text\/muted,#94a3b8)] top-[172px] whitespace-nowrap" data-node-id="2006:1351">
+              $0
+            </p>
+            <div className="absolute bg-[var(--border\/default,#e6e9f2)] h-px left-[40px] top-[180px] w-[860px]" data-node-id="2006:1352" data-name="Grid" />
+            <p className="[word-break:break-word] absolute font-['Inter:Regular'] font-normal leading-[normal] left-0 not-italic text-[12px] text-[color:var(--text\/muted,#94a3b8)] top-[129px] whitespace-nowrap" data-node-id="2006:1353">
+              $10
+            </p>
+            <div className="absolute bg-[var(--border\/default,#e6e9f2)] h-px left-[40px] top-[137px] w-[860px]" data-node-id="2006:1354" data-name="Grid" />
+            <p className="[word-break:break-word] absolute font-['Inter:Regular'] font-normal leading-[normal] left-0 not-italic text-[12px] text-[color:var(--text\/muted,#94a3b8)] top-[86px] whitespace-nowrap" data-node-id="2006:1355">
+              $20
+            </p>
+            <div className="absolute bg-[var(--border\/default,#e6e9f2)] h-px left-[40px] top-[94px] w-[860px]" data-node-id="2006:1356" data-name="Grid" />
+            <p className="[word-break:break-word] absolute font-['Inter:Regular'] font-normal leading-[normal] left-0 not-italic text-[12px] text-[color:var(--text\/muted,#94a3b8)] top-[43px] whitespace-nowrap" data-node-id="2006:1357">
+              $30
+            </p>
+            <div className="absolute bg-[var(--border\/default,#e6e9f2)] h-px left-[40px] top-[51px] w-[860px]" data-node-id="2006:1358" data-name="Grid" />
+            <p className="[word-break:break-word] absolute font-['Inter:Regular'] font-normal leading-[normal] left-0 not-italic text-[12px] text-[color:var(--text\/muted,#94a3b8)] top-0 whitespace-nowrap" data-node-id="2006:1359">
+              $40
+            </p>
+            <div className="absolute bg-[var(--border\/default,#e6e9f2)] h-px left-[40px] top-[8px] w-[860px]" data-node-id="2006:1360" data-name="Grid" />
+            <div className="absolute bg-[var(--status\/positive,#10a37f)] h-[51.6px] left-[51.71px] opacity-50 rounded-tl-[4px] rounded-tr-[4px] top-[128.4px] w-[38px]" data-node-id="2006:1361" data-name="Weekday" />
+            <div className="[word-break:break-word] absolute content-stretch flex flex-col font-['Inter:Regular'] font-normal gap-px items-center leading-[normal] left-[51.21px] not-italic overflow-clip text-[12px] top-[186px] whitespace-nowrap" data-node-id="2006:1364" data-name="Frame">
+              <p className="relative shrink-0 text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1362">
+                Sep 15
+              </p>
+              <p className="relative shrink-0 text-[color:var(--text\/muted,#94a3b8)]" data-node-id="2006:1363">
+                Mon
+              </p>
+            </div>
+            <div className="absolute bg-[var(--status\/positive,#10a37f)] h-[47.3px] left-[113.14px] opacity-50 rounded-tl-[4px] rounded-tr-[4px] top-[132.7px] w-[38px]" data-node-id="2006:1365" data-name="Weekday" />
+            <div className="[word-break:break-word] absolute content-stretch flex flex-col font-['Inter:Regular'] font-normal gap-px items-center leading-[normal] left-[112.64px] not-italic overflow-clip text-[12px] top-[186px] whitespace-nowrap" data-node-id="2006:1368" data-name="Frame">
+              <p className="relative shrink-0 text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1366">
+                Sep 16
+              </p>
+              <p className="relative shrink-0 text-[color:var(--text\/muted,#94a3b8)]" data-node-id="2006:1367">
+                Tue
+              </p>
+            </div>
+            <div className="absolute bg-[var(--status\/positive,#10a37f)] h-[64.5px] left-[174.57px] opacity-50 rounded-tl-[4px] rounded-tr-[4px] top-[115.5px] w-[38px]" data-node-id="2006:1369" data-name="Weekday" />
+            <div className="[word-break:break-word] absolute content-stretch flex flex-col font-['Inter:Regular'] font-normal gap-px items-center leading-[normal] left-[174.57px] not-italic overflow-clip text-[12px] top-[186px] whitespace-nowrap" data-node-id="2006:1372" data-name="Frame">
+              <p className="relative shrink-0 text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1370">
+                Sep 17
+              </p>
+              <p className="relative shrink-0 text-[color:var(--text\/muted,#94a3b8)]" data-node-id="2006:1371">
+                Wed
+              </p>
+            </div>
+            <div className="absolute bg-[var(--status\/positive,#10a37f)] h-[55.9px] left-[236px] opacity-50 rounded-tl-[4px] rounded-tr-[4px] top-[124.1px] w-[38px]" data-node-id="2006:1373" data-name="Weekday" />
+            <div className="[word-break:break-word] absolute content-stretch flex flex-col font-['Inter:Regular'] font-normal gap-px items-center leading-[normal] left-[235.5px] not-italic overflow-clip text-[12px] top-[186px] whitespace-nowrap" data-node-id="2006:1376" data-name="Frame">
+              <p className="relative shrink-0 text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1374">
+                Sep 18
+              </p>
+              <p className="relative shrink-0 text-[color:var(--text\/muted,#94a3b8)]" data-node-id="2006:1375">
+                Thu
+              </p>
+            </div>
+            <div className="absolute bg-[var(--status\/positive,#10a37f)] h-[73.1px] left-[297.43px] opacity-50 rounded-tl-[4px] rounded-tr-[4px] top-[106.9px] w-[38px]" data-node-id="2006:1377" data-name="Weekday" />
+            <div className="[word-break:break-word] absolute content-stretch flex flex-col font-['Inter:Regular'] font-normal gap-px items-center leading-[normal] left-[296.93px] not-italic overflow-clip text-[12px] top-[186px] whitespace-nowrap" data-node-id="2006:1380" data-name="Frame">
+              <p className="relative shrink-0 text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1378">
+                Sep 19
+              </p>
+              <p className="relative shrink-0 text-[color:var(--text\/muted,#94a3b8)]" data-node-id="2006:1379">
+                Fri
+              </p>
+            </div>
+            <div className="absolute bg-[var(--brand\/primary,#4346e0)] h-[107.5px] left-[358.86px] opacity-62 rounded-tl-[4px] rounded-tr-[4px] top-[72.5px] w-[38px]" data-node-id="2006:1381" data-name="Weekend" />
+            <div className="[word-break:break-word] absolute content-stretch flex flex-col font-['Inter:Regular'] font-normal gap-px items-center leading-[normal] left-[357.36px] not-italic overflow-clip text-[12px] top-[186px] whitespace-nowrap" data-node-id="2006:1384" data-name="Frame">
+              <p className="relative shrink-0 text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1382">
+                Sep 20
+              </p>
+              <p className="relative shrink-0 text-[color:var(--text\/muted,#94a3b8)]" data-node-id="2006:1383">
+                Sat
+              </p>
+            </div>
+            <div className="absolute bg-[var(--brand\/primary,#4346e0)] h-[90.3px] left-[420.29px] opacity-62 rounded-tl-[4px] rounded-tr-[4px] top-[89.7px] w-[38px]" data-node-id="2006:1385" data-name="Weekend" />
+            <div className="[word-break:break-word] absolute content-stretch flex flex-col font-['Inter:Regular'] font-normal gap-px items-center leading-[normal] left-[419.79px] not-italic overflow-clip text-[12px] top-[186px] whitespace-nowrap" data-node-id="2006:1388" data-name="Frame">
+              <p className="relative shrink-0 text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1386">
+                Sep 21
+              </p>
+              <p className="relative shrink-0 text-[color:var(--text\/muted,#94a3b8)]" data-node-id="2006:1387">
+                Sun
+              </p>
+            </div>
+            <div className="absolute bg-[var(--status\/positive,#10a37f)] h-[55.9px] left-[481.71px] opacity-50 rounded-tl-[4px] rounded-tr-[4px] top-[124.1px] w-[38px]" data-node-id="2006:1389" data-name="Weekday" />
+            <div className="[word-break:break-word] absolute content-stretch flex flex-col font-['Inter:Regular'] font-normal gap-px items-center leading-[normal] left-[480.71px] not-italic overflow-clip text-[12px] top-[186px] whitespace-nowrap" data-node-id="2006:1392" data-name="Frame">
+              <p className="relative shrink-0 text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1390">
+                Sep 22
+              </p>
+              <p className="relative shrink-0 text-[color:var(--text\/muted,#94a3b8)]" data-node-id="2006:1391">
+                Mon
+              </p>
+            </div>
+            <div className="absolute bg-[var(--status\/positive,#10a37f)] h-[64.5px] left-[543.14px] opacity-50 rounded-tl-[4px] rounded-tr-[4px] top-[115.5px] w-[38px]" data-node-id="2006:1393" data-name="Weekday" />
+            <div className="[word-break:break-word] absolute content-stretch flex flex-col font-['Inter:Regular'] font-normal gap-px items-center leading-[normal] left-[541.64px] not-italic overflow-clip text-[12px] top-[186px] whitespace-nowrap" data-node-id="2006:1396" data-name="Frame">
+              <p className="relative shrink-0 text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1394">
+                Sep 23
+              </p>
+              <p className="relative shrink-0 text-[color:var(--text\/muted,#94a3b8)]" data-node-id="2006:1395">
+                Tue
+              </p>
+            </div>
+            <div className="absolute bg-[var(--status\/positive,#10a37f)] h-[68.8px] left-[604.57px] opacity-50 rounded-tl-[4px] rounded-tr-[4px] top-[111.2px] w-[38px]" data-node-id="2006:1397" data-name="Weekday" />
+            <div className="[word-break:break-word] absolute content-stretch flex flex-col font-['Inter:Regular'] font-normal gap-px items-center leading-[normal] left-[603.07px] not-italic overflow-clip text-[12px] top-[186px] whitespace-nowrap" data-node-id="2006:1400" data-name="Frame">
+              <p className="relative shrink-0 text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1398">
+                Sep 24
+              </p>
+              <p className="relative shrink-0 text-[color:var(--text\/muted,#94a3b8)]" data-node-id="2006:1399">
+                Wed
+              </p>
+            </div>
+            <div className="absolute bg-[var(--status\/positive,#10a37f)] h-[60.2px] left-[666px] opacity-50 rounded-tl-[4px] rounded-tr-[4px] top-[119.8px] w-[38px]" data-node-id="2006:1401" data-name="Weekday" />
+            <div className="[word-break:break-word] absolute content-stretch flex flex-col font-['Inter:Regular'] font-normal gap-px items-center leading-[normal] left-[665px] not-italic overflow-clip text-[12px] top-[186px] whitespace-nowrap" data-node-id="2006:1404" data-name="Frame">
+              <p className="relative shrink-0 text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1402">
+                Sep 25
+              </p>
+              <p className="relative shrink-0 text-[color:var(--text\/muted,#94a3b8)]" data-node-id="2006:1403">
+                Thu
+              </p>
+            </div>
+            <div className="absolute bg-[var(--status\/positive,#10a37f)] h-[64.5px] left-[727.43px] opacity-50 rounded-tl-[4px] rounded-tr-[4px] top-[115.5px] w-[38px]" data-node-id="2006:1405" data-name="Weekday" />
+            <div className="[word-break:break-word] absolute content-stretch flex flex-col font-['Inter:Regular'] font-normal gap-px items-center leading-[normal] left-[725.93px] not-italic overflow-clip text-[12px] top-[186px] whitespace-nowrap" data-node-id="2006:1408" data-name="Frame">
+              <p className="relative shrink-0 text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1406">
+                Sep 26
+              </p>
+              <p className="relative shrink-0 text-[color:var(--text\/muted,#94a3b8)]" data-node-id="2006:1407">
+                Fri
+              </p>
+            </div>
+            <div className="absolute bg-[var(--brand\/primary,#4346e0)] h-[94.6px] left-[788.86px] opacity-62 rounded-tl-[4px] rounded-tr-[4px] top-[85.4px] w-[38px]" data-node-id="2006:1409" data-name="Weekend" />
+            <div className="[word-break:break-word] absolute content-stretch flex flex-col font-['Inter:Regular'] font-normal gap-px items-center leading-[normal] left-[787.86px] not-italic overflow-clip text-[12px] top-[186px] whitespace-nowrap" data-node-id="2006:1412" data-name="Frame">
+              <p className="relative shrink-0 text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1410">
+                Sep 27
+              </p>
+              <p className="relative shrink-0 text-[color:var(--text\/muted,#94a3b8)]" data-node-id="2006:1411">
+                Sat
+              </p>
+            </div>
+            <div className="absolute bg-[var(--brand\/primary,#4346e0)] h-[111.8px] left-[850.29px] opacity-62 rounded-tl-[4px] rounded-tr-[4px] top-[68.2px] w-[38px]" data-node-id="2006:1413" data-name="Weekend" />
+            <div className="[word-break:break-word] absolute content-stretch flex flex-col font-['Inter:Regular'] font-normal gap-px items-center leading-[normal] left-[849.29px] not-italic overflow-clip text-[12px] top-[186px] whitespace-nowrap" data-node-id="2006:1416" data-name="Frame">
+              <p className="relative shrink-0 text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1414">
+                Sep 28
+              </p>
+              <p className="relative shrink-0 text-[color:var(--text\/muted,#94a3b8)]" data-node-id="2006:1415">
+                Sun
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-[var(--bg\/surface,white)] border border-[var(--border\/default,#e6e9f2)] border-solid content-stretch flex flex-col gap-[16px] items-start overflow-clip p-[22px] relative rounded-[18px] shadow-[0px_4px_16px_0px_rgba(15,23,51,0.06)] shrink-0 w-[460px]" data-node-id="2006:1417" data-name="Add Liquidity">
+          <div className="bg-[var(--bg\/subtle,#f1f3f9)] content-stretch flex gap-[4px] items-start overflow-clip p-[4px] relative rounded-[10px] shrink-0 w-full" data-node-id="2006:1418" data-name="Mode">
+            <div className="bg-[var(--bg\/surface,white)] content-stretch flex flex-[1_0_0] items-start justify-center min-w-px px-[18px] py-[9px] relative rounded-[8px]" data-node-id="2006:1419" data-name="Segment Tab">
+              <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[15px] text-[color:var(--brand\/primary,#4346e0)] whitespace-nowrap" data-node-id="I2006:1419;2:19">
+                Add
+              </p>
+            </div>
+            <div className="content-stretch flex flex-[1_0_0] items-start justify-center min-w-px px-[18px] py-[9px] relative rounded-[8px]" data-node-id="2006:1421" data-name="Segment Tab">
+              <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[normal] not-italic relative shrink-0 text-[15px] text-[color:var(--text\/secondary,#64748b)] whitespace-nowrap" data-node-id="I2006:1421;2:21">
+                Remove
+              </p>
+            </div>
+          </div>
+          <div className="content-stretch flex items-start justify-between overflow-clip relative shrink-0 w-full" data-node-id="2006:1423" data-name="Header">
+            <div className="[word-break:break-word] content-stretch flex flex-col gap-[4px] items-start leading-[normal] not-italic overflow-clip relative shrink-0 whitespace-nowrap" data-node-id="2006:1426" data-name="Frame">
+              <p className="font-['Inter:Bold'] font-bold relative shrink-0 text-[20px] text-[color:var(--text\/primary,#0f172a)]" data-node-id="2006:1424">
+                Add liquidity
+              </p>
+              <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[14px] text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1425">
+                Deposit both tokens to earn trading fees.
+              </p>
+            </div>
+            <div className="border border-[var(--border\/default,#e6e9f2)] border-solid content-stretch flex items-start overflow-clip p-[9px] relative rounded-[10px] shrink-0" data-node-id="2006:1427" data-name="Settings">
+              <div className="relative shrink-0 size-[20px]" data-node-id="2006:1428" data-name="Icon">
+                <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgIcon1} />
+              </div>
+            </div>
+          </div>
+          <div className="content-stretch flex flex-col gap-[12px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2006:1431" data-name="Deposits">
+            <div className="border border-[var(--border\/default,#e6e9f2)] border-solid content-stretch flex items-center overflow-clip pl-[14px] pr-[16px] py-[14px] relative rounded-[14px] shrink-0 w-full" data-node-id="2006:1432" data-name="TSLAx">
+              <div className="content-stretch flex flex-col gap-[8px] items-start overflow-clip relative shrink-0" data-node-id="2006:1440" data-name="Frame">
+                <div className="bg-[var(--bg\/surface,white)] border border-[var(--border\/default,#e6e9f2)] border-solid content-stretch flex gap-[10px] items-center pl-[8px] pr-[14px] py-[8px] relative rounded-[12px] shrink-0" data-node-id="2006:1433" data-name="Token Selector">
+                  <div className="bg-[#e5484d] content-stretch flex items-center justify-center relative rounded-[20px] shrink-0 size-[40px]" data-node-id="I2006:1433;14:142" data-name="Token Avatar">
+                    <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[17px] text-[color:var(--text\/on-brand,white)] whitespace-nowrap" data-node-id="I2006:1433;14:142;2:25">
+                      T
+                    </p>
+                  </div>
+                  <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[18px] text-[color:var(--text\/primary,#0f172a)] whitespace-nowrap" data-node-id="I2006:1433;14:144">
+                    TSLAx
+                  </p>
+                  <div className="relative shrink-0 size-[20px]" data-node-id="I2006:1433;14:145" data-name="Icon/chevron-down">
+                    <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgIconChevronDown} />
+                  </div>
+                </div>
+                <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[13px] text-[color:var(--text\/secondary,#64748b)] whitespace-nowrap" data-node-id="2006:1439">
+                  Balance: 12.8432
+                </p>
+              </div>
+              <div className="[word-break:break-word] content-stretch flex flex-[1_0_0] flex-col gap-[4px] items-end leading-[normal] min-w-px not-italic overflow-clip relative whitespace-nowrap" data-node-id="2006:1443" data-name="Frame">
+                <p className="font-['Inter:Bold'] font-bold relative shrink-0 text-[24px] text-[color:var(--text\/primary,#0f172a)]" data-node-id="2006:1441">
+                  2.5000
+                </p>
+                <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[13px] text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1442">
+                  ≈ $500.75
+                </p>
+              </div>
+            </div>
+            <div className="border border-[var(--border\/default,#e6e9f2)] border-solid content-stretch flex items-center overflow-clip pl-[14px] pr-[16px] py-[14px] relative rounded-[14px] shrink-0 w-full" data-node-id="2006:1444" data-name="USDC">
+              <div className="content-stretch flex flex-col gap-[8px] items-start overflow-clip relative shrink-0" data-node-id="2006:1452" data-name="Frame">
+                <div className="bg-[var(--bg\/surface,white)] border border-[var(--border\/default,#e6e9f2)] border-solid content-stretch flex gap-[10px] items-center pl-[8px] pr-[14px] py-[8px] relative rounded-[12px] shrink-0" data-node-id="2006:1445" data-name="Token Selector">
+                  <div className="bg-[#4346e0] content-stretch flex items-center justify-center relative rounded-[20px] shrink-0 size-[40px]" data-node-id="I2006:1445;14:142" data-name="Token Avatar">
+                    <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[17px] text-[color:var(--text\/on-brand,white)] whitespace-nowrap" data-node-id="I2006:1445;14:142;2:25">
+                      U
+                    </p>
+                  </div>
+                  <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[18px] text-[color:var(--text\/primary,#0f172a)] whitespace-nowrap" data-node-id="I2006:1445;14:144">
+                    USDC
+                  </p>
+                  <div className="relative shrink-0 size-[20px]" data-node-id="I2006:1445;14:145" data-name="Icon/chevron-down">
+                    <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgIconChevronDown} />
+                  </div>
+                </div>
+                <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[13px] text-[color:var(--text\/secondary,#64748b)] whitespace-nowrap" data-node-id="2006:1451">
+                  Balance: 1,250.00
+                </p>
+              </div>
+              <div className="[word-break:break-word] content-stretch flex flex-[1_0_0] flex-col gap-[4px] items-end leading-[normal] min-w-px not-italic overflow-clip relative whitespace-nowrap" data-node-id="2006:1455" data-name="Frame">
+                <p className="font-['Inter:Bold'] font-bold relative shrink-0 text-[24px] text-[color:var(--text\/primary,#0f172a)]" data-node-id="2006:1453">
+                  500.00
+                </p>
+                <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[13px] text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1454">
+                  ≈ $500.00
+                </p>
+              </div>
+            </div>
+            <div className="absolute bg-[var(--bg\/surface,white)] border border-[var(--border\/default,#e6e9f2)] border-solid content-stretch flex items-start left-[190px] overflow-clip p-[8px] rounded-[20px] shadow-[0px_4px_16px_0px_rgba(15,23,51,0.06)] top-[100px]" data-node-id="2006:1456" data-name="Plus">
+              <div className="relative shrink-0 size-[18px]" data-node-id="2006:1457" data-name="Icon">
+                <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgIcon2} />
+              </div>
+            </div>
+          </div>
+          <InfoCallout className="bg-[var(--bg\/brand-subtle,#eef0ff)] content-stretch flex gap-[12px] items-center px-[16px] py-[14px] relative rounded-[12px] shrink-0 w-full" />
+          <div className="[word-break:break-word] border border-[var(--border\/default,#e6e9f2)] border-solid content-stretch flex items-start justify-between leading-[normal] not-italic overflow-clip p-[16px] relative rounded-[12px] shrink-0 w-full whitespace-nowrap" data-node-id="2006:1465" data-name="You will receive">
+            <div className="content-stretch flex flex-col gap-[4px] items-start overflow-clip relative shrink-0" data-node-id="2006:1468" data-name="Frame">
+              <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[13px] text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1466">
+                You will receive
+              </p>
+              <p className="font-['Inter:Bold'] font-bold relative shrink-0 text-[22px] text-[color:var(--text\/primary,#0f172a)]" data-node-id="2006:1467">
+                12.34 LP tokens
+              </p>
+            </div>
+            <div className="content-stretch flex flex-col gap-[6px] items-end overflow-clip relative shrink-0" data-node-id="2006:1471" data-name="Frame">
+              <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[13px] text-[color:var(--text\/secondary,#64748b)]" data-node-id="2006:1469">
+                Pool share (est.)
+              </p>
+              <p className="font-['Inter:Semi_Bold'] font-semibold relative shrink-0 text-[16px] text-[color:var(--status\/positive,#10a37f)]" data-node-id="2006:1470">
+                +0.18%
+              </p>
+            </div>
+          </div>
+          <div className="bg-[var(--brand\/primary,#4346e0)] content-stretch flex items-center justify-center px-[28px] py-[16px] relative rounded-[10px] shrink-0 w-full" data-node-id="2006:1472" data-name="Button">
+            <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[17px] text-[color:var(--text\/on-brand,white)] whitespace-nowrap" data-node-id="I2006:1472;2:5">
+              Add liquidity
+            </p>
+          </div>
+          <InfoCallout className="bg-[var(--bg\/subtle,#f1f3f9)] content-stretch flex gap-[12px] items-center px-[16px] py-[14px] relative rounded-[12px] shrink-0 w-full" text="Withdrawals always work, even when trading is paused." tone="Shield" />
+        </div>
+      </div>
+      <div className="bg-[var(--bg\/surface,white)] border border-[var(--border\/default,#e6e9f2)] border-solid content-stretch flex flex-col gap-[20px] items-start overflow-clip pb-[28px] pt-[24px] px-[26px] relative rounded-[18px] shadow-[0px_4px_16px_0px_rgba(15,23,51,0.06)] shrink-0 w-full" data-node-id="2006:1478" data-name="How it works">
+        <p className="[word-break:break-word] font-['Inter:Bold'] font-bold leading-[normal] not-italic relative shrink-0 text-[20px] text-[color:var(--text\/primary,#0f172a)] whitespace-nowrap" data-node-id="2006:1479">
+          How it works
+        </p>
+        <div className="content-stretch flex gap-[32px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2006:1480" data-name="Frame">
+          <FeatureItem className="content-stretch flex flex-[1_0_0] gap-[18px] items-start min-w-px relative" description="Liquidity providers (LPs) earn a share of trading fees from swaps in this pool, including weekday trades and weekend trading." />
+          <div className="content-stretch flex flex-[1_0_0] gap-[18px] items-start min-w-px relative" data-node-id="2006:1489" data-name="Feature Item">
+            <div className="bg-[var(--bg\/brand-subtle,#eef0ff)] content-stretch flex items-center justify-center overflow-clip relative rounded-[28px] shrink-0 size-[56px]" data-node-id="I2006:1489;14:263" data-name="Icon Badge">
+              <div className="relative shrink-0 size-[26px]" data-node-id="I2006:1489;14:264" data-name="Icon/coins">
+                <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgIconCoins1} />
+              </div>
+            </div>
+            <div className="[word-break:break-word] content-stretch flex flex-[1_0_0] flex-col gap-[4px] items-start min-w-px not-italic overflow-clip relative" data-node-id="I2006:1489;14:267" data-name="Text">
+              <p className="font-['Inter:Semi_Bold'] font-semibold leading-[normal] relative shrink-0 text-[16px] text-[color:var(--text\/primary,#0f172a)] whitespace-nowrap" data-node-id="I2006:1489;14:268">
+                Weekend band protects against extremes
+              </p>
+              <p className="font-['Inter:Regular'] font-normal leading-[21px] min-w-full relative shrink-0 text-[14px] text-[color:var(--text\/secondary,#64748b)] w-[min-content]" data-node-id="I2006:1489;14:269">
+                On weekends, prices are kept within a corridor around Friday’s close to prevent extreme moves while still allowing trading.
+              </p>
+            </div>
+          </div>
+          <div className="content-stretch flex flex-[1_0_0] gap-[18px] items-start min-w-px relative" data-node-id="2006:1500" data-name="Feature Item">
+            <div className="bg-[var(--bg\/brand-subtle,#eef0ff)] content-stretch flex items-center justify-center overflow-clip relative rounded-[28px] shrink-0 size-[56px]" data-node-id="I2006:1500;14:263" data-name="Icon Badge">
+              <div className="relative shrink-0 size-[26px]" data-node-id="I2006:1500;14:264" data-name="Icon/coins">
+                <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgIconCoins2} />
+              </div>
+            </div>
+            <div className="[word-break:break-word] content-stretch flex flex-[1_0_0] flex-col gap-[4px] items-start min-w-px not-italic overflow-clip relative" data-node-id="I2006:1500;14:267" data-name="Text">
+              <p className="font-['Inter:Semi_Bold'] font-semibold leading-[normal] relative shrink-0 text-[16px] text-[color:var(--text\/primary,#0f172a)] whitespace-nowrap" data-node-id="I2006:1500;14:268">
+                Monday open re-aligns with Nasdaq
+              </p>
+              <p className="font-['Inter:Regular'] font-normal leading-[21px] min-w-full relative shrink-0 text-[14px] text-[color:var(--text\/secondary,#64748b)] w-[min-content]" data-node-id="I2006:1500;14:269">
+                When the market opens on Monday, prices realign with Nasdaq and the band resets to the new closing price.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}SUPER CRITICAL: The generated React+Tailwind code MUST be converted to match the target project's technology stack and styling system.
+1. Analyze the target codebase to identify: technology stack, styling approach, component patterns, and design tokens
+2. Convert React syntax to the target framework/library
+3. Transform all Tailwind classes to the target styling system while preserving exact visual design
+4. Follow the project's existing patterns and conventions
+DO NOT install any Tailwind as a dependency unless the user instructs you to do so.
+Node ids have been added to the code as data attributes, e.g. `data-node-id="1:2"`.Component descriptions: The following components have usage descriptions or documentation links defined in Figma. These descriptions provide important context about the intended usage, best practices, and any constraints for each component. Follow these guidelines when implementing or using these components.
+
+## Navbar
+**Node ID:** 3:7
+
+Top navigation: logo, primary links, network selector and wallet CTA.
+
+## Button
+**Node ID:** 2:8
+
+Primary action button. Set width to Fill for full-width CTAs.
+
+## Week Timeline
+**Node ID:** 13:476
+
+Week market-hours timeline. Variants for each market state.
+
+## Token Avatar
+**Node ID:** 2:28
+
+Circular token/asset avatar. Override the fill color per asset.
+
+## Icon
+**Node ID:** 13:222
+
+Stroke icon set (24px, 1.8 stroke). Recolor via layers named S (stroke) and F (fill).
+
+## Stat Card
+**Node ID:** 14:217
+
+KPI card. Swap the icon inside Icon Badge via instance swap.Images and SVGs will be stored as constants, e.g. const image = 'https://www.figma.com/api/mcp/asset/550e8400-e29b-41d4-a716-446655440000.png'. These constants will be used in the code as the source for the image, ex: <img src={image} />. Image assets are stored on a remote server for 7 days and can be fetched using the provided URLs until they expire.

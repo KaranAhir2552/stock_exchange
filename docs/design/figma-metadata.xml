@@ -1,0 +1,1495 @@
+<canvas id="1:2" name="🖥️ Screens" x="0" y="0" width="0" height="0">
+  <frame id="4:223" name="01 · Dashboard" x="0" y="0" width="1520" height="1217">
+    <instance id="4:224" name="Navbar" x="40" y="24" width="1440" height="76" />
+    <instance id="4:247" name="Week Timeline" x="40" y="120" width="1440" height="133" />
+    <frame id="4:303" name="Main" x="40" y="273" width="1440" height="904">
+      <instance id="4:304" name="Sidebar" x="0" y="0" width="400" height="904" />
+      <frame id="4:426" name="Content" x="420" y="0" width="1020" height="894">
+        <frame id="4:427" name="Trade" x="0" y="0" width="1020" height="568">
+          <instance id="4:428" name="Price Chart Card" x="0" y="0" width="600" height="483" />
+          <instance id="4:483" name="Swap Panel" x="620" y="0" width="400" height="568" />
+        </frame>
+        <frame id="4:531" name="Movers" x="0" y="588" width="1020" height="306">
+          <frame id="4:532" name="Top gainers (24h)" x="0" y="0" width="500" height="306">
+            <instance id="4:533" name="Card Header" x="21" y="21" width="458" height="32" />
+            <instance id="4:536" name="Mover Row" x="21" y="57" width="458" height="44" />
+            <instance id="4:542" name="Mover Row" x="21" y="105" width="458" height="44" />
+            <instance id="4:548" name="Mover Row" x="21" y="153" width="458" height="44" />
+            <instance id="4:554" name="Mover Row" x="21" y="201" width="458" height="44" />
+            <instance id="4:560" name="Mover Row" x="21" y="249" width="458" height="44" />
+          </frame>
+          <frame id="4:566" name="Top losers (24h)" x="520" y="0" width="500" height="306">
+            <instance id="4:567" name="Card Header" x="21" y="21" width="458" height="32" />
+            <instance id="4:570" name="Mover Row" x="21" y="57" width="458" height="44" />
+            <instance id="4:576" name="Mover Row" x="21" y="105" width="458" height="44" />
+            <instance id="4:582" name="Mover Row" x="21" y="153" width="458" height="44" />
+            <instance id="4:588" name="Mover Row" x="21" y="201" width="458" height="44" />
+            <instance id="4:594" name="Mover Row" x="21" y="249" width="458" height="44" />
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+  </frame>
+  <text id="16:699" name="Label / 01" x="0" y="-80" width="292" height="48" />
+  <text id="2005:698" name="Label / 02 · Swap – Market closed" x="1640" y="-80" width="509" height="48" />
+  <frame id="2005:699" name="02 · Swap – Market closed" x="1640" y="0" width="1520" height="1238">
+    <instance id="2005:700" name="Navbar" x="40" y="24" width="1440" height="76" />
+    <instance id="2005:724" name="Week Timeline" x="40" y="120" width="1440" height="133" />
+    <frame id="2005:780" name="Content" x="40" y="273" width="1440" height="917">
+      <instance id="2005:781" name="Swap Card" x="240" y="8" width="580" height="909" />
+      <frame id="2005:881" name="Explainer" x="840" y="8" width="360" height="618">
+        <text id="2005:882" name="Why is my price limited?" x="27" y="29" width="262" height="27" />
+        <text id="2005:883" name="Tokenized stocks don’t trade on weekends, so the real market price is closed." x="27" y="74" width="308" height="75" />
+        <text id="2005:884" name="We keep your trade safe by only allowing prices within a protected range around Friday’s close." x="27" y="167" width="308" height="75" />
+        <text id="2005:885" name="This helps prevent extreme prices and lets you trade with confidence until the market opens again." x="27" y="260" width="308" height="75" />
+        <frame id="2005:886" name="Band Summary" x="27" y="353" width="308" height="156">
+          <frame id="2005:887" name="Friday" x="117" y="16" width="74" height="37">
+            <text id="2005:888" name="Friday close" x="0" y="0" width="74" height="16" />
+            <text id="2005:889" name="$200.00" x="3.5" y="18" width="67" height="19" />
+          </frame>
+          <rounded-rectangle id="2005:890" name="Range" x="29" y="78" width="250" height="16" />
+          <rounded-rectangle id="2005:891" name="Limit" x="29" y="73" width="2" height="26" />
+          <rounded-rectangle id="2005:892" name="Limit" x="277" y="73" width="2" height="26" />
+          <vector id="2005:893" name="Friday Line" x="154" y="62" width="0" height="50" />
+          <frame id="2005:894" name="Lower" x="23" y="106" width="62" height="33">
+            <text id="2005:895" name="$192.40" x="0" y="0" width="56" height="17" />
+            <text id="2005:896" name="Lower limit" x="0" y="18" width="62" height="15" />
+          </frame>
+          <frame id="2005:897" name="Upper" x="223" y="106" width="62" height="33">
+            <text id="2005:898" name="$207.60" x="7" y="0" width="55" height="17" />
+            <text id="2005:899" name="Upper limit" x="0" y="18" width="62" height="15" />
+          </frame>
+        </frame>
+        <instance id="2005:900" name="Info Callout" x="27" y="527" width="306" height="62" />
+      </frame>
+    </frame>
+  </frame>
+  <text id="2005:904" name="Label / 03 · Swap – Market open" x="3280" y="-80" width="478" height="48" />
+  <frame id="2005:905" name="03 · Swap – Market open" x="3606" y="-19" width="1520" height="1040">
+    <instance id="2005:906" name="Navbar" x="40" y="24" width="1440" height="76" />
+    <instance id="2005:930" name="Week Timeline" x="40" y="120" width="1440" height="133" />
+    <frame id="2005:987" name="Content" x="40" y="273" width="1440" height="719">
+      <instance id="2005:988" name="Swap Card" x="170" y="8" width="580" height="711" />
+      <frame id="2005:1066" name="Price Card" x="770" y="8" width="500" height="503">
+        <frame id="2005:1067" name="Header" x="25" y="25" width="450" height="48">
+          <frame id="2005:1068" name="Asset" x="0" y="0" width="166" height="48">
+            <instance id="2005:1069" name="Token Avatar" x="0" y="0" width="48" height="48" />
+            <frame id="2005:1071" name="Name" x="60" y="2.5" width="106" height="43">
+              <text id="2005:1072" name="TSLAx" x="0" y="0" width="65" height="24" />
+              <text id="2005:1073" name="Tokenized Tesla" x="0" y="26" width="106" height="17" />
+            </frame>
+          </frame>
+          <frame id="2005:1074" name="Range" x="249" y="0" width="201" height="39">
+            <instance id="2005:1075" name="Segment Tab" x="4" y="4" width="45" height="31" />
+            <instance id="2005:1077" name="Segment Tab" x="51" y="4" width="49" height="31" />
+            <instance id="2005:1079" name="Segment Tab" x="102" y="4" width="48" height="31" />
+            <instance id="2005:1081" name="Segment Tab" x="152" y="4" width="45" height="31" />
+          </frame>
+        </frame>
+        <frame id="2005:1083" name="Price" x="25" y="89" width="275" height="41">
+          <text id="2005:1084" name="$200.42" x="0" y="0" width="145" height="41" />
+          <text id="2005:1085" name="+2.18 (+1.10%)" x="159" y="16" width="116" height="21" />
+        </frame>
+        <frame id="2005:1086" name="Chart" x="25" y="146" width="452" height="240">
+          <text id="2005:1087" name="202" x="0" y="27.25" width="23" height="15" />
+          <rounded-rectangle id="2005:1088" name="Grid" x="38" y="35.25" width="414" height="1" />
+          <text id="2005:1089" name="200" x="0" y="77.75" width="23" height="15" />
+          <rounded-rectangle id="2005:1090" name="Grid" x="38" y="85.75" width="414" height="1" />
+          <text id="2005:1091" name="198" x="0" y="128.25" width="21" height="15" />
+          <rounded-rectangle id="2005:1092" name="Grid" x="38" y="136.25" width="414" height="1" />
+          <text id="2005:1093" name="196" x="0" y="178.75" width="21" height="15" />
+          <rounded-rectangle id="2005:1094" name="Grid" x="38" y="186.75" width="414" height="1" />
+          <text id="2005:1095" name="09:30" x="38" y="224" width="34" height="15" />
+          <text id="2005:1096" name="11:00" x="126.5" y="224" width="30" height="15" />
+          <text id="2005:1097" name="12:30" x="229" y="224" width="32" height="15" />
+          <text id="2005:1098" name="14:00" x="332.5" y="224" width="32" height="15" />
+          <text id="2005:1099" name="16:00" x="420" y="224" width="32" height="15" />
+          <vector id="2005:1100" name="Area" x="38" y="73.69999694824219" width="385" height="138.3000030517578" />
+          <vector id="2005:1101" name="Line" x="38" y="73.69999694824219" width="385" height="89.9000015258789" />
+          <ellipse id="2005:1102" name="Current" x="418.0199890136719" y="70.1449966430664" width="10" height="10" />
+          <frame id="2005:1103" name="Tooltip" x="393.5199890136719" y="42.14500045776367" width="59" height="23">
+            <text id="2005:1104" name="200.42" x="8" y="4" width="43" height="15" />
+          </frame>
+        </frame>
+        <frame id="2005:1105" name="Stats" x="25" y="402" width="450" height="76">
+          <frame id="2005:1106" name="Oracle price" x="21" y="17" width="81" height="42">
+            <text id="2005:1107" name="$200.31" x="0" y="0" width="68" height="21" />
+            <text id="2005:1108" name="Oracle price" x="0" y="25" width="81" height="17" />
+          </frame>
+          <frame id="2005:1109" name="Day low" x="199.5" y="17" width="68" height="42">
+            <text id="2005:1110" name="$195.24" x="0" y="0" width="68" height="21" />
+            <text id="2005:1111" name="Day low" x="7.5" y="25" width="53" height="17" />
+          </frame>
+          <frame id="2005:1112" name="Day high" x="365" y="17" width="64" height="42">
+            <text id="2005:1113" name="$201.13" x="0" y="0" width="64" height="21" />
+            <text id="2005:1114" name="Day high" x="6" y="25" width="58" height="17" />
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+  </frame>
+  <text id="2005:1115" name="Label / 04 · Swap – Trading halted" x="0" y="1520" width="516" height="48" />
+  <frame id="2005:1116" name="04 · Swap – Trading halted" x="0" y="1600" width="1520" height="1141">
+    <instance id="2005:1117" name="Navbar" x="40" y="24" width="1440" height="76" />
+    <instance id="2005:1141" name="Week Timeline" x="40" y="120" width="1440" height="133" />
+    <frame id="2005:1199" name="Content" x="40" y="273" width="1440" height="820">
+      <instance id="2005:1200" name="Swap Card" x="170" y="8" width="580" height="812" />
+      <frame id="2005:1288" name="Side" x="770" y="8" width="500" height="672">
+        <frame id="2005:1289" name="Price Card" x="0" y="0" width="500" height="503">
+          <frame id="2005:1290" name="Header" x="25" y="25" width="450" height="48">
+            <frame id="2005:1291" name="Asset" x="0" y="0" width="166" height="48">
+              <instance id="2005:1292" name="Token Avatar" x="0" y="0" width="48" height="48" />
+              <frame id="2005:1294" name="Name" x="60" y="2.5" width="106" height="43">
+                <text id="2005:1295" name="TSLAx" x="0" y="0" width="65" height="24" />
+                <text id="2005:1296" name="Tokenized Tesla" x="0" y="26" width="106" height="17" />
+              </frame>
+            </frame>
+            <frame id="2005:1297" name="Range" x="249" y="0" width="201" height="39">
+              <instance id="2005:1298" name="Segment Tab" x="4" y="4" width="45" height="31" />
+              <instance id="2005:1300" name="Segment Tab" x="51" y="4" width="49" height="31" />
+              <instance id="2005:1302" name="Segment Tab" x="102" y="4" width="48" height="31" />
+              <instance id="2005:1304" name="Segment Tab" x="152" y="4" width="45" height="31" />
+            </frame>
+          </frame>
+          <frame id="2005:1306" name="Price" x="25" y="89" width="255" height="41">
+            <text id="2005:1307" name="$200.12" x="0" y="0" width="135" height="41" />
+            <text id="2005:1308" name="0.00 (0.00%)" x="149" y="16" width="106" height="21" />
+          </frame>
+          <frame id="2005:1309" name="Chart" x="25" y="146" width="452" height="240">
+            <text id="2005:1310" name="205" x="0" y="28.34782600402832" width="23" height="15" />
+            <rounded-rectangle id="2005:1311" name="Grid" x="38" y="36.34782791137695" width="414" height="1" />
+            <text id="2005:1312" name="202" x="0" y="81.0434799194336" width="23" height="15" />
+            <rounded-rectangle id="2005:1313" name="Grid" x="38" y="89.0434799194336" width="414" height="1" />
+            <text id="2005:1314" name="199" x="0" y="133.7391357421875" width="21" height="15" />
+            <rounded-rectangle id="2005:1315" name="Grid" x="38" y="141.7391357421875" width="414" height="1" />
+            <text id="2005:1316" name="196" x="0" y="186.43478393554688" width="21" height="15" />
+            <rounded-rectangle id="2005:1317" name="Grid" x="38" y="194.43478393554688" width="414" height="1" />
+            <text id="2005:1318" name="09:30" x="38" y="224" width="34" height="15" />
+            <text id="2005:1319" name="11:00" x="126.5" y="224" width="30" height="15" />
+            <text id="2005:1320" name="12:30" x="229" y="224" width="32" height="15" />
+            <text id="2005:1321" name="14:00" x="332.5" y="224" width="32" height="15" />
+            <text id="2005:1322" name="16:00" x="420" y="224" width="32" height="15" />
+            <vector id="2005:1323" name="Area" x="38" y="94.80000305175781" width="298.1000061035156" height="117.19999694824219" />
+            <vector id="2005:1324" name="Line" x="38" y="94.80000305175781" width="298.1000061035156" height="72.30000305175781" />
+            <vector id="2005:1325" name="Halted (flat)" x="336.1000061035156" y="101.30000305175781" width="115.9000015258789" height="0" />
+            <vector id="2005:1326" name="Halt Line" x="336.1000061035156" y="32" width="0" height="180" />
+            <ellipse id="2005:1327" name="Ellipse" x="331.0799865722656" y="96.3391342163086" width="10" height="10" />
+            <frame id="2005:1328" name="Tooltip" x="286.0799865722656" y="6" width="100" height="23">
+              <text id="2005:1329" name="Trading halted" x="8" y="4" width="84" height="15" />
+            </frame>
+          </frame>
+          <frame id="2005:1330" name="Stats" x="25" y="402" width="450" height="76">
+            <frame id="2005:1331" name="Previous close" x="21" y="17" width="96" height="42">
+              <text id="2005:1332" name="$200.31" x="0" y="0" width="68" height="21" />
+              <text id="2005:1333" name="Previous close" x="0" y="25" width="96" height="17" />
+            </frame>
+            <frame id="2005:1334" name="Day high" x="205" y="17" width="72" height="42">
+              <text id="2005:1335" name="$203.40" x="0" y="0" width="72" height="21" />
+              <text id="2005:1336" name="Day high" x="7" y="25" width="58" height="17" />
+            </frame>
+            <frame id="2005:1337" name="Day low" x="365" y="17" width="64" height="42">
+              <text id="2005:1338" name="$197.22" x="0" y="0" width="64" height="21" />
+              <text id="2005:1339" name="Day low" x="11" y="25" width="53" height="17" />
+            </frame>
+          </frame>
+        </frame>
+        <frame id="2005:1340" name="What does this mean" x="0" y="523" width="500" height="149">
+          <instance id="2005:1341" name="Icon" x="25" y="25" width="28" height="28" />
+          <frame id="2005:1345" name="Text" x="69" y="25" width="400" height="99">
+            <text id="2005:1346" name="What does this mean?" x="0" y="0" width="194" height="22" />
+            <text id="2005:1347" name="The exchange has paused TSLA trading due to high volatility. During a halt, prices may be uncertain, so swaps and deposits are temporarily disabled." x="0" y="30" width="400" height="69" />
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+  </frame>
+  <text id="2005:1348" name="Label / 01" x="0" y="-80" width="292" height="48" />
+  <text id="2006:1214" name="Label / 05 · Liquidity" x="1640" y="1520" width="254" height="48" />
+  <frame id="2006:1215" name="05 · Liquidity" x="1640" y="1600" width="1520" height="1236">
+    <instance id="2006:1216" name="Navbar" x="40" y="24" width="1440" height="76" />
+    <instance id="2006:1244" name="Week Timeline" x="40" y="120" width="1440" height="133" />
+    <frame id="2006:1300" name="Main" x="40" y="273" width="1440" height="711">
+      <frame id="2006:1301" name="Your Position" x="0" y="0" width="960" height="711">
+        <frame id="2006:1302" name="Header" x="27" y="27" width="906" height="37">
+          <text id="2006:1303" name="Your position" x="0" y="3" width="169" height="31" />
+          <instance id="2006:1304" name="Button" x="738" y="0" width="168" height="37" />
+        </frame>
+        <frame id="2006:1306" name="Pool" x="27" y="86" width="351" height="56">
+          <instance id="2006:1307" name="Pair Avatar" x="0" y="0" width="102" height="56" />
+          <frame id="2006:1314" name="Frame" x="118" y="4.5" width="233" height="47">
+            <text id="2006:1312" name="TSLAx / USDC" x="0" y="0" width="153" height="27" />
+            <text id="2006:1313" name="Tokenized Tesla  ·  0.30% fee tier" x="0" y="29" width="233" height="18" />
+          </frame>
+        </frame>
+        <frame id="2006:1315" name="Total value" x="27" y="164" width="385" height="82">
+          <text id="2006:1316" name="Total value" x="0" y="0" width="77" height="18" />
+          <frame id="2006:1317" name="Frame" x="0" y="24" width="385" height="58">
+            <text id="2006:1318" name="$4,212.80" x="0" y="0" width="245" height="58" />
+            <frame id="2006:1319" name="Change" x="263" y="0.5" width="122" height="57">
+              <instance id="2006:1320" name="Icon" x="14" y="18.5" width="20" height="20" />
+              <frame id="2006:1324" name="Frame" x="44" y="10" width="62" height="37">
+                <text id="2006:1322" name="+2.14%" x="0" y="0" width="56" height="19" />
+                <text id="2006:1323" name="(+$88.20)" x="0" y="21" width="62" height="16" />
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+        <frame id="2006:1325" name="Stats" x="27" y="268" width="906" height="93">
+          <instance id="2006:1326" name="Stat Card" x="0" y="0" width="292" height="93" />
+          <instance id="2006:1331" name="Stat Card" x="308" y="0" width="292" height="93" />
+          <instance id="2006:1336" name="Stat Card" x="616" y="0" width="290" height="91" />
+        </frame>
+        <frame id="2006:1341" name="Chart Header" x="27" y="383" width="906" height="22">
+          <text id="2006:1342" name="Fees earned per day" x="0" y="0" width="177" height="22" />
+          <frame id="2006:1343" name="Frame" x="542" y="3" width="364" height="16">
+            <instance id="2006:1344" name="Legend Item" x="0" y="0" width="165" height="16" />
+            <instance id="2006:1347" name="Legend Item" x="189" y="0" width="175" height="16" />
+          </frame>
+        </frame>
+        <frame id="2006:1350" name="Bar Chart" x="27" y="427" width="900" height="220">
+          <text id="2006:1351" name="$0" x="0" y="172" width="16" height="15" />
+          <rounded-rectangle id="2006:1352" name="Grid" x="40" y="180" width="860" height="1" />
+          <text id="2006:1353" name="$10" x="0" y="129" width="21" height="15" />
+          <rounded-rectangle id="2006:1354" name="Grid" x="40" y="137" width="860" height="1" />
+          <text id="2006:1355" name="$20" x="0" y="86" width="23" height="15" />
+          <rounded-rectangle id="2006:1356" name="Grid" x="40" y="94" width="860" height="1" />
+          <text id="2006:1357" name="$30" x="0" y="43" width="23" height="15" />
+          <rounded-rectangle id="2006:1358" name="Grid" x="40" y="51" width="860" height="1" />
+          <text id="2006:1359" name="$40" x="0" y="0" width="23" height="15" />
+          <rounded-rectangle id="2006:1360" name="Grid" x="40" y="8" width="860" height="1" />
+          <rounded-rectangle id="2006:1361" name="Weekday" x="51.71428680419922" y="128.39999389648438" width="38" height="51.599998474121094" />
+          <frame id="2006:1364" name="Frame" x="51.21428680419922" y="186" width="39" height="31">
+            <text id="2006:1362" name="Sep 15" x="0" y="0" width="39" height="15" />
+            <text id="2006:1363" name="Mon" x="7" y="16" width="25" height="15" />
+          </frame>
+          <rounded-rectangle id="2006:1365" name="Weekday" x="113.14286041259766" y="132.6999969482422" width="38" height="47.29999923706055" />
+          <frame id="2006:1368" name="Frame" x="112.64286041259766" y="186" width="39" height="31">
+            <text id="2006:1366" name="Sep 16" x="0" y="0" width="39" height="15" />
+            <text id="2006:1367" name="Tue" x="9" y="16" width="21" height="15" />
+          </frame>
+          <rounded-rectangle id="2006:1369" name="Weekday" x="174.57142639160156" y="115.5" width="38" height="64.5" />
+          <frame id="2006:1372" name="Frame" x="174.57142639160156" y="186" width="38" height="31">
+            <text id="2006:1370" name="Sep 17" x="0" y="0" width="38" height="15" />
+            <text id="2006:1371" name="Wed" x="6" y="16" width="26" height="15" />
+          </frame>
+          <rounded-rectangle id="2006:1373" name="Weekday" x="236" y="124.0999984741211" width="38" height="55.900001525878906" />
+          <frame id="2006:1376" name="Frame" x="235.5" y="186" width="39" height="31">
+            <text id="2006:1374" name="Sep 18" x="0" y="0" width="39" height="15" />
+            <text id="2006:1375" name="Thu" x="8.5" y="16" width="22" height="15" />
+          </frame>
+          <rounded-rectangle id="2006:1377" name="Weekday" x="297.4285583496094" y="106.9000015258789" width="38" height="73.0999984741211" />
+          <frame id="2006:1380" name="Frame" x="296.9285583496094" y="186" width="39" height="31">
+            <text id="2006:1378" name="Sep 19" x="0" y="0" width="39" height="15" />
+            <text id="2006:1379" name="Fri" x="12" y="16" width="15" height="15" />
+          </frame>
+          <rounded-rectangle id="2006:1381" name="Weekend" x="358.8571472167969" y="72.5" width="38" height="107.5" />
+          <frame id="2006:1384" name="Frame" x="357.3571472167969" y="186" width="41" height="31">
+            <text id="2006:1382" name="Sep 20" x="0" y="0" width="41" height="15" />
+            <text id="2006:1383" name="Sat" x="11" y="16" width="19" height="15" />
+          </frame>
+          <rounded-rectangle id="2006:1385" name="Weekend" x="420.28570556640625" y="89.69999694824219" width="38" height="90.30000305175781" />
+          <frame id="2006:1388" name="Frame" x="419.78570556640625" y="186" width="39" height="31">
+            <text id="2006:1386" name="Sep 21" x="0" y="0" width="39" height="15" />
+            <text id="2006:1387" name="Sun" x="8.5" y="16" width="22" height="15" />
+          </frame>
+          <rounded-rectangle id="2006:1389" name="Weekday" x="481.71429443359375" y="124.0999984741211" width="38" height="55.900001525878906" />
+          <frame id="2006:1392" name="Frame" x="480.71429443359375" y="186" width="40" height="31">
+            <text id="2006:1390" name="Sep 22" x="0" y="0" width="40" height="15" />
+            <text id="2006:1391" name="Mon" x="7.5" y="16" width="25" height="15" />
+          </frame>
+          <rounded-rectangle id="2006:1393" name="Weekday" x="543.1428833007812" y="115.5" width="38" height="64.5" />
+          <frame id="2006:1396" name="Frame" x="541.6428833007812" y="186" width="41" height="31">
+            <text id="2006:1394" name="Sep 23" x="0" y="0" width="41" height="15" />
+            <text id="2006:1395" name="Tue" x="10" y="16" width="21" height="15" />
+          </frame>
+          <rounded-rectangle id="2006:1397" name="Weekday" x="604.5714111328125" y="111.19999694824219" width="38" height="68.80000305175781" />
+          <frame id="2006:1400" name="Frame" x="603.0714111328125" y="186" width="41" height="31">
+            <text id="2006:1398" name="Sep 24" x="0" y="0" width="41" height="15" />
+            <text id="2006:1399" name="Wed" x="7.5" y="16" width="26" height="15" />
+          </frame>
+          <rounded-rectangle id="2006:1401" name="Weekday" x="666" y="119.80000305175781" width="38" height="60.20000076293945" />
+          <frame id="2006:1404" name="Frame" x="665" y="186" width="40" height="31">
+            <text id="2006:1402" name="Sep 25" x="0" y="0" width="40" height="15" />
+            <text id="2006:1403" name="Thu" x="9" y="16" width="22" height="15" />
+          </frame>
+          <rounded-rectangle id="2006:1405" name="Weekday" x="727.4285888671875" y="115.5" width="38" height="64.5" />
+          <frame id="2006:1408" name="Frame" x="725.9285888671875" y="186" width="41" height="31">
+            <text id="2006:1406" name="Sep 26" x="0" y="0" width="41" height="15" />
+            <text id="2006:1407" name="Fri" x="13" y="16" width="15" height="15" />
+          </frame>
+          <rounded-rectangle id="2006:1409" name="Weekend" x="788.8571166992188" y="85.4000015258789" width="38" height="94.5999984741211" />
+          <frame id="2006:1412" name="Frame" x="787.8571166992188" y="186" width="40" height="31">
+            <text id="2006:1410" name="Sep 27" x="0" y="0" width="40" height="15" />
+            <text id="2006:1411" name="Sat" x="10.5" y="16" width="19" height="15" />
+          </frame>
+          <rounded-rectangle id="2006:1413" name="Weekend" x="850.2857055664062" y="68.19999694824219" width="38" height="111.80000305175781" />
+          <frame id="2006:1416" name="Frame" x="849.2857055664062" y="186" width="40" height="31">
+            <text id="2006:1414" name="Sep 28" x="0" y="0" width="40" height="15" />
+            <text id="2006:1415" name="Sun" x="9" y="16" width="22" height="15" />
+          </frame>
+        </frame>
+      </frame>
+      <frame id="2006:1417" name="Add Liquidity" x="980" y="0" width="460" height="711">
+        <frame id="2006:1418" name="Mode" x="23" y="23" width="414" height="44">
+          <instance id="2006:1419" name="Segment Tab" x="4" y="4" width="201" height="36" />
+          <instance id="2006:1421" name="Segment Tab" x="209" y="4" width="201" height="36" />
+        </frame>
+        <frame id="2006:1423" name="Header" x="23" y="83" width="414" height="45">
+          <frame id="2006:1426" name="Frame" x="0" y="0" width="272" height="45">
+            <text id="2006:1424" name="Add liquidity" x="0" y="0" width="124" height="24" />
+            <text id="2006:1425" name="Deposit both tokens to earn trading fees." x="0" y="28" width="272" height="17" />
+          </frame>
+          <frame id="2006:1427" name="Settings" x="374" y="0" width="40" height="40">
+            <instance id="2006:1428" name="Icon" x="10" y="10" width="20" height="20" />
+          </frame>
+        </frame>
+        <frame id="2006:1431" name="Deposits" x="23" y="144" width="414" height="236">
+          <frame id="2006:1432" name="TSLAx" x="0" y="0" width="414" height="112">
+            <frame id="2006:1440" name="Frame" x="15" y="15" width="162" height="82">
+              <instance id="2006:1433" name="Token Selector" x="0" y="0" width="162" height="58" />
+              <text id="2006:1439" name="Balance: 12.8432" x="0" y="66" width="106" height="16" />
+            </frame>
+            <frame id="2006:1443" name="Frame" x="177" y="31.5" width="220" height="49">
+              <text id="2006:1441" name="2.5000" x="132" y="0" width="88" height="29" />
+              <text id="2006:1442" name="≈ $500.75" x="157" y="33" width="63" height="16" />
+            </frame>
+          </frame>
+          <frame id="2006:1444" name="USDC" x="0" y="124" width="414" height="112">
+            <frame id="2006:1452" name="Frame" x="15" y="15" width="156" height="82">
+              <instance id="2006:1445" name="Token Selector" x="0" y="0" width="156" height="58" />
+              <text id="2006:1451" name="Balance: 1,250.00" x="0" y="66" width="109" height="16" />
+            </frame>
+            <frame id="2006:1455" name="Frame" x="171" y="31.5" width="226" height="49">
+              <text id="2006:1453" name="500.00" x="138" y="0" width="88" height="29" />
+              <text id="2006:1454" name="≈ $500.00" x="162" y="33" width="64" height="16" />
+            </frame>
+          </frame>
+          <frame id="2006:1456" name="Plus" x="190" y="100" width="36" height="36">
+            <instance id="2006:1457" name="Icon" x="9" y="9" width="18" height="18" />
+          </frame>
+        </frame>
+        <instance id="2006:1459" name="Info Callout" x="23" y="396" width="414" height="48" />
+        <frame id="2006:1465" name="You will receive" x="23" y="460" width="414" height="81">
+          <frame id="2006:1468" name="Frame" x="17" y="17" width="171" height="47">
+            <text id="2006:1466" name="You will receive" x="0" y="0" width="95" height="16" />
+            <text id="2006:1467" name="12.34 LP tokens" x="0" y="20" width="171" height="27" />
+          </frame>
+          <frame id="2006:1471" name="Frame" x="296" y="17" width="101" height="41">
+            <text id="2006:1469" name="Pool share (est.)" x="0" y="0" width="101" height="16" />
+            <text id="2006:1470" name="+0.18%" x="45" y="22" width="56" height="19" />
+          </frame>
+        </frame>
+        <instance id="2006:1472" name="Button" x="23" y="557" width="414" height="53" />
+        <instance id="2006:1474" name="Info Callout" x="23" y="626" width="414" height="62" />
+      </frame>
+    </frame>
+    <frame id="2006:1478" name="How it works" x="40" y="1004" width="1440" height="184">
+      <text id="2006:1479" name="How it works" x="27" y="25" width="127" height="24" />
+      <frame id="2006:1480" name="Frame" x="27" y="69" width="1386" height="86">
+        <instance id="2006:1481" name="Feature Item" x="0" y="0" width="440.6666564941406" height="86" />
+        <instance id="2006:1489" name="Feature Item" x="472.6666564941406" y="0" width="440.66668701171875" height="86" />
+        <instance id="2006:1500" name="Feature Item" x="945.3333740234375" y="0" width="440.66668701171875" height="65" />
+      </frame>
+    </frame>
+  </frame>
+  <text id="2006:1509" name="Label / 06 · Pools" x="3280" y="1520" width="193" height="48" />
+  <frame id="2006:1510" name="06 · Pools" x="3280" y="1600" width="1520" height="1019">
+    <instance id="2006:1511" name="Navbar" x="40" y="24" width="1440" height="76" />
+    <instance id="2006:1539" name="Week Timeline" x="40" y="120" width="1440" height="133" />
+    <frame id="2006:1596" name="Header" x="40" y="273" width="1440" height="110">
+      <frame id="2006:1599" name="Frame" x="0" y="12.5" width="606" height="93">
+        <text id="2006:1597" name="Pools" x="0" y="0" width="143" height="63" />
+        <text id="2006:1598" name="Trade tokenized stocks and crypto. Stock pools follow market hours." x="0" y="71" width="583" height="22" />
+      </frame>
+      <instance id="2006:1600" name="Stat Card" x="622" y="12" width="262" height="94" />
+      <instance id="2006:1608" name="Stat Card" x="900" y="12" width="262" height="94" />
+      <instance id="2006:1617" name="Stat Card" x="1178" y="12" width="262" height="94" />
+    </frame>
+    <frame id="2006:1627" name="Pools Table" x="40" y="403" width="1440" height="568">
+      <frame id="2006:1628" name="Toolbar" x="21" y="21" width="1398" height="46">
+        <frame id="2006:1629" name="Filters" x="0" y="2.5" width="298" height="41">
+          <instance id="2006:1630" name="Segment Tab" x="0" y="0" width="72" height="41" />
+          <instance id="2006:1632" name="Segment Tab" x="80" y="0" width="105" height="41" />
+          <instance id="2006:1634" name="Segment Tab" x="193" y="0" width="105" height="41" />
+        </frame>
+        <frame id="2006:1636" name="Search" x="1018" y="0" width="380" height="46">
+          <instance id="2006:1637" name="Icon" x="15" y="13" width="20" height="20" />
+          <text id="2006:1640" name="Search pools (e.g. TSLA, SOL, USDC)" x="45" y="14" width="265" height="18" />
+        </frame>
+      </frame>
+      <frame id="2006:1641" name="Header Row" x="21" y="67" width="1398" height="45">
+        <frame id="2006:1642" name="Pool" x="16" y="14" width="246" height="17">
+          <text id="2006:1643" name="Pool" x="0" y="0" width="30" height="17" />
+        </frame>
+        <frame id="2006:1644" name="Type" x="262" y="14" width="90" height="17">
+          <text id="2006:1645" name="Type" x="0" y="0" width="34" height="17" />
+        </frame>
+        <frame id="2006:1646" name="Status" x="352" y="14" width="130" height="17">
+          <text id="2006:1647" name="Status" x="0" y="0" width="44" height="17" />
+        </frame>
+        <frame id="2006:1648" name="Market hours (ET)" x="482" y="14" width="210" height="17">
+          <text id="2006:1649" name="Market hours (ET)" x="0" y="0" width="121" height="17" />
+        </frame>
+        <frame id="2006:1650" name="Price (USDC)" x="692" y="14" width="120" height="17">
+          <text id="2006:1651" name="Price (USDC)" x="32" y="0" width="88" height="17" />
+        </frame>
+        <frame id="2006:1652" name="24h change" x="812" y="14" width="110" height="17">
+          <text id="2006:1653" name="24h change" x="30" y="0" width="80" height="17" />
+        </frame>
+        <frame id="2006:1654" name="TVL" x="922" y="14" width="120" height="17">
+          <text id="2006:1655" name="TVL" x="93" y="0" width="27" height="17" />
+        </frame>
+        <frame id="2006:1656" name="24h volume" x="1042" y="14" width="120" height="17">
+          <text id="2006:1657" name="24h volume" x="41" y="0" width="79" height="17" />
+        </frame>
+        <frame id="2006:1658" name="Fee now" x="1162" y="14" width="100" height="17">
+          <text id="2006:1659" name="Fee now" x="44" y="0" width="56" height="17" />
+        </frame>
+        <frame id="2006:1660" name="Action" x="1262" y="14" width="120" height="17">
+          <text id="2006:1661" name=" " x="120" y="0" width="0" height="17" />
+        </frame>
+      </frame>
+      <frame id="2006:1662" name="TSLAx / USDC" x="21" y="112" width="1398" height="74">
+        <frame id="2006:1663" name="Pool" x="16" y="16.5" width="246" height="40">
+          <instance id="2006:1664" name="Pair Avatar" x="0" y="0" width="73" height="40" />
+          <frame id="2006:1671" name="Frame" x="85" y="0.5" width="111" height="39">
+            <text id="2006:1669" name="TSLAx / USDC" x="0" y="0" width="111" height="19" />
+            <text id="2006:1670" name="Tokenized Tesla" x="0" y="22" width="106" height="17" />
+          </frame>
+        </frame>
+        <frame id="2006:1674" name="Type" x="262" y="23.5" width="90" height="26">
+          <instance id="2006:1672" name="Tag" x="0" y="0" width="56" height="26" />
+        </frame>
+        <frame id="2006:1678" name="Status" x="352" y="21" width="130" height="31">
+          <instance id="2006:1675" name="Status Pill" x="0" y="0" width="79" height="31" />
+        </frame>
+        <frame id="2006:1679" name="Market hours (ET)" x="482" y="19.5" width="210" height="34">
+          <frame id="2006:1680" name="Hours" x="0" y="0" width="180" height="34">
+            <frame id="2006:1681" name="Frame" x="0" y="0" width="180" height="14">
+              <rounded-rectangle id="2006:1683" name="Rectangle" x="0" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1686" name="Rectangle" x="26" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1689" name="Rectangle" x="52" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1692" name="Rectangle" x="78" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1695" name="Rectangle" x="104" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1698" name="Rectangle" x="130" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1701" name="Rectangle" x="156" y="0" width="24" height="14" />
+            </frame>
+            <frame id="2006:1682" name="Frame" x="0" y="20" width="180" height="14">
+              <frame id="2006:1684" name="Frame" x="0" y="0" width="24" height="14">
+                <text id="2006:1685" name="M" x="7" y="0" width="10" height="13" />
+              </frame>
+              <frame id="2006:1687" name="Frame" x="26" y="0" width="24" height="14">
+                <text id="2006:1688" name="T" x="8" y="0" width="8" height="13" />
+              </frame>
+              <frame id="2006:1690" name="Frame" x="52" y="0" width="24" height="14">
+                <text id="2006:1691" name="W" x="6.5" y="0" width="11" height="13" />
+              </frame>
+              <frame id="2006:1693" name="Frame" x="78" y="0" width="24" height="14">
+                <text id="2006:1694" name="T" x="8" y="0" width="8" height="13" />
+              </frame>
+              <frame id="2006:1696" name="Frame" x="104" y="0" width="24" height="14">
+                <text id="2006:1697" name="F" x="8.5" y="0" width="7" height="13" />
+              </frame>
+              <frame id="2006:1699" name="Frame" x="130" y="0" width="24" height="14">
+                <text id="2006:1700" name="S" x="8" y="0" width="8" height="13" />
+              </frame>
+              <frame id="2006:1702" name="Frame" x="156" y="0" width="24" height="14">
+                <text id="2006:1703" name="S" x="8" y="0" width="8" height="13" />
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+        <frame id="2006:1704" name="Price (USDC)" x="692" y="27" width="120" height="19">
+          <text id="2006:1705" name="$200.42" x="56" y="0" width="64" height="19" />
+        </frame>
+        <frame id="2006:1706" name="24h change" x="812" y="27" width="110" height="19">
+          <text id="2006:1707" name="+2.18%" x="55" y="0" width="55" height="19" />
+        </frame>
+        <frame id="2006:1708" name="TVL" x="922" y="27" width="120" height="19">
+          <text id="2006:1709" name="$512,340" x="48" y="0" width="72" height="19" />
+        </frame>
+        <frame id="2006:1710" name="24h volume" x="1042" y="27" width="120" height="19">
+          <text id="2006:1711" name="$86,120" x="60" y="0" width="60" height="19" />
+        </frame>
+        <frame id="2006:1712" name="Fee now" x="1162" y="27" width="100" height="19">
+          <text id="2006:1713" name="0.30%" x="53" y="0" width="47" height="19" />
+        </frame>
+        <frame id="2006:1716" name="Action" x="1262" y="16" width="120" height="41">
+          <instance id="2006:1714" name="Button" x="19" y="0" width="101" height="41" />
+        </frame>
+      </frame>
+      <frame id="2006:1717" name="AAPLx / USDC" x="21" y="186" width="1398" height="74">
+        <frame id="2006:1718" name="Pool" x="16" y="16.5" width="246" height="40">
+          <instance id="2006:1719" name="Pair Avatar" x="0" y="0" width="73" height="40" />
+          <frame id="2006:1726" name="Frame" x="85" y="0.5" width="112" height="39">
+            <text id="2006:1724" name="AAPLx / USDC" x="0" y="0" width="112" height="19" />
+            <text id="2006:1725" name="Tokenized Apple" x="0" y="22" width="110" height="17" />
+          </frame>
+        </frame>
+        <frame id="2006:1729" name="Type" x="262" y="23.5" width="90" height="26">
+          <instance id="2006:1727" name="Tag" x="0" y="0" width="56" height="26" />
+        </frame>
+        <frame id="2006:1733" name="Status" x="352" y="21" width="130" height="31">
+          <instance id="2006:1730" name="Status Pill" x="0" y="0" width="79" height="31" />
+        </frame>
+        <frame id="2006:1734" name="Market hours (ET)" x="482" y="19.5" width="210" height="34">
+          <frame id="2006:1735" name="Hours" x="0" y="0" width="180" height="34">
+            <frame id="2006:1736" name="Frame" x="0" y="0" width="180" height="14">
+              <rounded-rectangle id="2006:1738" name="Rectangle" x="0" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1741" name="Rectangle" x="26" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1744" name="Rectangle" x="52" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1747" name="Rectangle" x="78" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1750" name="Rectangle" x="104" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1753" name="Rectangle" x="130" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1756" name="Rectangle" x="156" y="0" width="24" height="14" />
+            </frame>
+            <frame id="2006:1737" name="Frame" x="0" y="20" width="180" height="14">
+              <frame id="2006:1739" name="Frame" x="0" y="0" width="24" height="14">
+                <text id="2006:1740" name="M" x="7" y="0" width="10" height="13" />
+              </frame>
+              <frame id="2006:1742" name="Frame" x="26" y="0" width="24" height="14">
+                <text id="2006:1743" name="T" x="8" y="0" width="8" height="13" />
+              </frame>
+              <frame id="2006:1745" name="Frame" x="52" y="0" width="24" height="14">
+                <text id="2006:1746" name="W" x="6.5" y="0" width="11" height="13" />
+              </frame>
+              <frame id="2006:1748" name="Frame" x="78" y="0" width="24" height="14">
+                <text id="2006:1749" name="T" x="8" y="0" width="8" height="13" />
+              </frame>
+              <frame id="2006:1751" name="Frame" x="104" y="0" width="24" height="14">
+                <text id="2006:1752" name="F" x="8.5" y="0" width="7" height="13" />
+              </frame>
+              <frame id="2006:1754" name="Frame" x="130" y="0" width="24" height="14">
+                <text id="2006:1755" name="S" x="8" y="0" width="8" height="13" />
+              </frame>
+              <frame id="2006:1757" name="Frame" x="156" y="0" width="24" height="14">
+                <text id="2006:1758" name="S" x="8" y="0" width="8" height="13" />
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+        <frame id="2006:1759" name="Price (USDC)" x="692" y="27" width="120" height="19">
+          <text id="2006:1760" name="$185.24" x="59" y="0" width="61" height="19" />
+        </frame>
+        <frame id="2006:1761" name="24h change" x="812" y="27" width="110" height="19">
+          <text id="2006:1762" name="+1.32%" x="54" y="0" width="56" height="19" />
+        </frame>
+        <frame id="2006:1763" name="TVL" x="922" y="27" width="120" height="19">
+          <text id="2006:1764" name="$421,880" x="49" y="0" width="71" height="19" />
+        </frame>
+        <frame id="2006:1765" name="24h volume" x="1042" y="27" width="120" height="19">
+          <text id="2006:1766" name="$71,340" x="59" y="0" width="61" height="19" />
+        </frame>
+        <frame id="2006:1767" name="Fee now" x="1162" y="27" width="100" height="19">
+          <text id="2006:1768" name="0.30%" x="53" y="0" width="47" height="19" />
+        </frame>
+        <frame id="2006:1771" name="Action" x="1262" y="16" width="120" height="41">
+          <instance id="2006:1769" name="Button" x="19" y="0" width="101" height="41" />
+        </frame>
+      </frame>
+      <frame id="2006:1772" name="NVDAx / USDC" x="21" y="260" width="1398" height="74">
+        <frame id="2006:1773" name="Pool" x="16" y="16.5" width="246" height="40">
+          <instance id="2006:1774" name="Pair Avatar" x="0" y="0" width="73" height="40" />
+          <frame id="2006:1781" name="Frame" x="85" y="0.5" width="115" height="39">
+            <text id="2006:1779" name="NVDAx / USDC" x="0" y="0" width="115" height="19" />
+            <text id="2006:1780" name="Tokenized Nvidia" x="0" y="22" width="113" height="17" />
+          </frame>
+        </frame>
+        <frame id="2006:1784" name="Type" x="262" y="23.5" width="90" height="26">
+          <instance id="2006:1782" name="Tag" x="0" y="0" width="56" height="26" />
+        </frame>
+        <frame id="2006:1788" name="Status" x="352" y="21" width="130" height="31">
+          <instance id="2006:1785" name="Status Pill" x="0" y="0" width="93" height="31" />
+        </frame>
+        <frame id="2006:1789" name="Market hours (ET)" x="482" y="19.5" width="210" height="34">
+          <frame id="2006:1790" name="Hours" x="0" y="0" width="180" height="34">
+            <frame id="2006:1791" name="Frame" x="0" y="0" width="180" height="14">
+              <rounded-rectangle id="2006:1793" name="Rectangle" x="0" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1796" name="Rectangle" x="26" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1799" name="Rectangle" x="52" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1802" name="Rectangle" x="78" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1805" name="Rectangle" x="104" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1808" name="Rectangle" x="130" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1811" name="Rectangle" x="156" y="0" width="24" height="14" />
+            </frame>
+            <frame id="2006:1792" name="Frame" x="0" y="20" width="180" height="14">
+              <frame id="2006:1794" name="Frame" x="0" y="0" width="24" height="14">
+                <text id="2006:1795" name="M" x="7" y="0" width="10" height="13" />
+              </frame>
+              <frame id="2006:1797" name="Frame" x="26" y="0" width="24" height="14">
+                <text id="2006:1798" name="T" x="8" y="0" width="8" height="13" />
+              </frame>
+              <frame id="2006:1800" name="Frame" x="52" y="0" width="24" height="14">
+                <text id="2006:1801" name="W" x="6.5" y="0" width="11" height="13" />
+              </frame>
+              <frame id="2006:1803" name="Frame" x="78" y="0" width="24" height="14">
+                <text id="2006:1804" name="T" x="8" y="0" width="8" height="13" />
+              </frame>
+              <frame id="2006:1806" name="Frame" x="104" y="0" width="24" height="14">
+                <text id="2006:1807" name="F" x="8.5" y="0" width="7" height="13" />
+              </frame>
+              <frame id="2006:1809" name="Frame" x="130" y="0" width="24" height="14">
+                <text id="2006:1810" name="S" x="8" y="0" width="8" height="13" />
+              </frame>
+              <frame id="2006:1812" name="Frame" x="156" y="0" width="24" height="14">
+                <text id="2006:1813" name="S" x="8" y="0" width="8" height="13" />
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+        <frame id="2006:1814" name="Price (USDC)" x="692" y="27" width="120" height="19">
+          <text id="2006:1815" name="$132.69" x="58" y="0" width="62" height="19" />
+        </frame>
+        <frame id="2006:1816" name="24h change" x="812" y="27" width="110" height="19">
+          <text id="2006:1817" name="-0.56%" x="55" y="0" width="55" height="19" />
+        </frame>
+        <frame id="2006:1818" name="TVL" x="922" y="27" width="120" height="19">
+          <text id="2006:1819" name="$398,210" x="48" y="0" width="72" height="19" />
+        </frame>
+        <frame id="2006:1820" name="24h volume" x="1042" y="27" width="120" height="19">
+          <text id="2006:1821" name="$64,230" x="55" y="0" width="65" height="19" />
+        </frame>
+        <frame id="2006:1822" name="Fee now" x="1162" y="27" width="100" height="19">
+          <text id="2006:1823" name="0.30%" x="53" y="0" width="47" height="19" />
+        </frame>
+        <frame id="2006:1826" name="Action" x="1262" y="16" width="120" height="41">
+          <instance id="2006:1824" name="Button" x="19" y="0" width="101" height="41" />
+        </frame>
+      </frame>
+      <frame id="2006:1827" name="SPYx / USDC" x="21" y="334" width="1398" height="74">
+        <frame id="2006:1828" name="Pool" x="16" y="16.5" width="246" height="40">
+          <instance id="2006:1829" name="Pair Avatar" x="0" y="0" width="73" height="40" />
+          <frame id="2006:1836" name="Frame" x="85" y="0.5" width="129" height="39">
+            <text id="2006:1834" name="SPYx / USDC" x="0" y="0" width="101" height="19" />
+            <text id="2006:1835" name="Tokenized S&amp;P 500" x="0" y="22" width="129" height="17" />
+          </frame>
+        </frame>
+        <frame id="2006:1839" name="Type" x="262" y="23.5" width="90" height="26">
+          <instance id="2006:1837" name="Tag" x="0" y="0" width="56" height="26" />
+        </frame>
+        <frame id="2006:1843" name="Status" x="352" y="21" width="130" height="31">
+          <instance id="2006:1840" name="Status Pill" x="0" y="0" width="79" height="31" />
+        </frame>
+        <frame id="2006:1844" name="Market hours (ET)" x="482" y="19.5" width="210" height="34">
+          <frame id="2006:1845" name="Hours" x="0" y="0" width="180" height="34">
+            <frame id="2006:1846" name="Frame" x="0" y="0" width="180" height="14">
+              <rounded-rectangle id="2006:1848" name="Rectangle" x="0" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1851" name="Rectangle" x="26" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1854" name="Rectangle" x="52" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1857" name="Rectangle" x="78" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1860" name="Rectangle" x="104" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1863" name="Rectangle" x="130" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1866" name="Rectangle" x="156" y="0" width="24" height="14" />
+            </frame>
+            <frame id="2006:1847" name="Frame" x="0" y="20" width="180" height="14">
+              <frame id="2006:1849" name="Frame" x="0" y="0" width="24" height="14">
+                <text id="2006:1850" name="M" x="7" y="0" width="10" height="13" />
+              </frame>
+              <frame id="2006:1852" name="Frame" x="26" y="0" width="24" height="14">
+                <text id="2006:1853" name="T" x="8" y="0" width="8" height="13" />
+              </frame>
+              <frame id="2006:1855" name="Frame" x="52" y="0" width="24" height="14">
+                <text id="2006:1856" name="W" x="6.5" y="0" width="11" height="13" />
+              </frame>
+              <frame id="2006:1858" name="Frame" x="78" y="0" width="24" height="14">
+                <text id="2006:1859" name="T" x="8" y="0" width="8" height="13" />
+              </frame>
+              <frame id="2006:1861" name="Frame" x="104" y="0" width="24" height="14">
+                <text id="2006:1862" name="F" x="8.5" y="0" width="7" height="13" />
+              </frame>
+              <frame id="2006:1864" name="Frame" x="130" y="0" width="24" height="14">
+                <text id="2006:1865" name="S" x="8" y="0" width="8" height="13" />
+              </frame>
+              <frame id="2006:1867" name="Frame" x="156" y="0" width="24" height="14">
+                <text id="2006:1868" name="S" x="8" y="0" width="8" height="13" />
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+        <frame id="2006:1869" name="Price (USDC)" x="692" y="27" width="120" height="19">
+          <text id="2006:1870" name="$502.11" x="62" y="0" width="58" height="19" />
+        </frame>
+        <frame id="2006:1871" name="24h change" x="812" y="27" width="110" height="19">
+          <text id="2006:1872" name="+0.87%" x="52" y="0" width="58" height="19" />
+        </frame>
+        <frame id="2006:1873" name="TVL" x="922" y="27" width="120" height="19">
+          <text id="2006:1874" name="$276,440" x="46" y="0" width="74" height="19" />
+        </frame>
+        <frame id="2006:1875" name="24h volume" x="1042" y="27" width="120" height="19">
+          <text id="2006:1876" name="$49,880" x="56" y="0" width="64" height="19" />
+        </frame>
+        <frame id="2006:1877" name="Fee now" x="1162" y="27" width="100" height="19">
+          <text id="2006:1878" name="0.30%" x="53" y="0" width="47" height="19" />
+        </frame>
+        <frame id="2006:1881" name="Action" x="1262" y="16" width="120" height="41">
+          <instance id="2006:1879" name="Button" x="19" y="0" width="101" height="41" />
+        </frame>
+      </frame>
+      <frame id="2006:1882" name="SOL / USDC" x="21" y="408" width="1398" height="74">
+        <frame id="2006:1883" name="Pool" x="16" y="16.5" width="246" height="40">
+          <instance id="2006:1884" name="Pair Avatar" x="0" y="0" width="73" height="40" />
+          <frame id="2006:1891" name="Frame" x="85" y="0.5" width="92" height="39">
+            <text id="2006:1889" name="SOL / USDC" x="0" y="0" width="92" height="19" />
+            <text id="2006:1890" name="Solana" x="0" y="22" width="45" height="17" />
+          </frame>
+        </frame>
+        <frame id="2006:1894" name="Type" x="262" y="23.5" width="90" height="26">
+          <instance id="2006:1892" name="Tag" x="0" y="0" width="63" height="26" />
+        </frame>
+        <frame id="2006:1898" name="Status" x="352" y="21" width="130" height="31">
+          <instance id="2006:1895" name="Status Pill" x="0" y="0" width="74" height="31" />
+        </frame>
+        <frame id="2006:1899" name="Market hours (ET)" x="482" y="19.5" width="210" height="34">
+          <frame id="2006:1900" name="Hours" x="0" y="0" width="180" height="34">
+            <frame id="2006:1901" name="Frame" x="0" y="0" width="180" height="14">
+              <rounded-rectangle id="2006:1903" name="Rectangle" x="0" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1906" name="Rectangle" x="26" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1909" name="Rectangle" x="52" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1912" name="Rectangle" x="78" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1915" name="Rectangle" x="104" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1918" name="Rectangle" x="130" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1921" name="Rectangle" x="156" y="0" width="24" height="14" />
+            </frame>
+            <frame id="2006:1902" name="Frame" x="0" y="20" width="180" height="14">
+              <frame id="2006:1904" name="Frame" x="0" y="0" width="24" height="14">
+                <text id="2006:1905" name="M" x="7" y="0" width="10" height="13" />
+              </frame>
+              <frame id="2006:1907" name="Frame" x="26" y="0" width="24" height="14">
+                <text id="2006:1908" name="T" x="8" y="0" width="8" height="13" />
+              </frame>
+              <frame id="2006:1910" name="Frame" x="52" y="0" width="24" height="14">
+                <text id="2006:1911" name="W" x="6.5" y="0" width="11" height="13" />
+              </frame>
+              <frame id="2006:1913" name="Frame" x="78" y="0" width="24" height="14">
+                <text id="2006:1914" name="T" x="8" y="0" width="8" height="13" />
+              </frame>
+              <frame id="2006:1916" name="Frame" x="104" y="0" width="24" height="14">
+                <text id="2006:1917" name="F" x="8.5" y="0" width="7" height="13" />
+              </frame>
+              <frame id="2006:1919" name="Frame" x="130" y="0" width="24" height="14">
+                <text id="2006:1920" name="S" x="8" y="0" width="8" height="13" />
+              </frame>
+              <frame id="2006:1922" name="Frame" x="156" y="0" width="24" height="14">
+                <text id="2006:1923" name="S" x="8" y="0" width="8" height="13" />
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+        <frame id="2006:1924" name="Price (USDC)" x="692" y="27" width="120" height="19">
+          <text id="2006:1925" name="$148.36" x="58" y="0" width="62" height="19" />
+        </frame>
+        <frame id="2006:1926" name="24h change" x="812" y="27" width="110" height="19">
+          <text id="2006:1927" name="+3.21%" x="54" y="0" width="56" height="19" />
+        </frame>
+        <frame id="2006:1928" name="TVL" x="922" y="27" width="120" height="19">
+          <text id="2006:1929" name="$621,330" x="48" y="0" width="72" height="19" />
+        </frame>
+        <frame id="2006:1930" name="24h volume" x="1042" y="27" width="120" height="19">
+          <text id="2006:1931" name="$120,450" x="48" y="0" width="72" height="19" />
+        </frame>
+        <frame id="2006:1932" name="Fee now" x="1162" y="27" width="100" height="19">
+          <text id="2006:1933" name="0.25%" x="53" y="0" width="47" height="19" />
+        </frame>
+        <frame id="2006:1936" name="Action" x="1262" y="16" width="120" height="41">
+          <instance id="2006:1934" name="Button" x="19" y="0" width="101" height="41" />
+        </frame>
+      </frame>
+      <frame id="2006:1937" name="JUP / USDC" x="21" y="482" width="1398" height="73">
+        <frame id="2006:1938" name="Pool" x="16" y="16.5" width="246" height="40">
+          <instance id="2006:1939" name="Pair Avatar" x="0" y="0" width="73" height="40" />
+          <frame id="2006:1946" name="Frame" x="85" y="0.5" width="91" height="39">
+            <text id="2006:1944" name="JUP / USDC" x="0" y="0" width="91" height="19" />
+            <text id="2006:1945" name="Jupiter" x="0" y="22" width="46" height="17" />
+          </frame>
+        </frame>
+        <frame id="2006:1949" name="Type" x="262" y="23.5" width="90" height="26">
+          <instance id="2006:1947" name="Tag" x="0" y="0" width="63" height="26" />
+        </frame>
+        <frame id="2006:1953" name="Status" x="352" y="21" width="130" height="31">
+          <instance id="2006:1950" name="Status Pill" x="0" y="0" width="74" height="31" />
+        </frame>
+        <frame id="2006:1954" name="Market hours (ET)" x="482" y="19.5" width="210" height="34">
+          <frame id="2006:1955" name="Hours" x="0" y="0" width="180" height="34">
+            <frame id="2006:1956" name="Frame" x="0" y="0" width="180" height="14">
+              <rounded-rectangle id="2006:1958" name="Rectangle" x="0" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1961" name="Rectangle" x="26" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1964" name="Rectangle" x="52" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1967" name="Rectangle" x="78" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1970" name="Rectangle" x="104" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1973" name="Rectangle" x="130" y="0" width="24" height="14" />
+              <rounded-rectangle id="2006:1976" name="Rectangle" x="156" y="0" width="24" height="14" />
+            </frame>
+            <frame id="2006:1957" name="Frame" x="0" y="20" width="180" height="14">
+              <frame id="2006:1959" name="Frame" x="0" y="0" width="24" height="14">
+                <text id="2006:1960" name="M" x="7" y="0" width="10" height="13" />
+              </frame>
+              <frame id="2006:1962" name="Frame" x="26" y="0" width="24" height="14">
+                <text id="2006:1963" name="T" x="8" y="0" width="8" height="13" />
+              </frame>
+              <frame id="2006:1965" name="Frame" x="52" y="0" width="24" height="14">
+                <text id="2006:1966" name="W" x="6.5" y="0" width="11" height="13" />
+              </frame>
+              <frame id="2006:1968" name="Frame" x="78" y="0" width="24" height="14">
+                <text id="2006:1969" name="T" x="8" y="0" width="8" height="13" />
+              </frame>
+              <frame id="2006:1971" name="Frame" x="104" y="0" width="24" height="14">
+                <text id="2006:1972" name="F" x="8.5" y="0" width="7" height="13" />
+              </frame>
+              <frame id="2006:1974" name="Frame" x="130" y="0" width="24" height="14">
+                <text id="2006:1975" name="S" x="8" y="0" width="8" height="13" />
+              </frame>
+              <frame id="2006:1977" name="Frame" x="156" y="0" width="24" height="14">
+                <text id="2006:1978" name="S" x="8" y="0" width="8" height="13" />
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+        <frame id="2006:1979" name="Price (USDC)" x="692" y="27" width="120" height="19">
+          <text id="2006:1980" name="$0.8421" x="58" y="0" width="62" height="19" />
+        </frame>
+        <frame id="2006:1981" name="24h change" x="812" y="27" width="110" height="19">
+          <text id="2006:1982" name="-1.24%" x="57" y="0" width="53" height="19" />
+        </frame>
+        <frame id="2006:1983" name="TVL" x="922" y="27" width="120" height="19">
+          <text id="2006:1984" name="$184,550" x="49" y="0" width="71" height="19" />
+        </frame>
+        <frame id="2006:1985" name="24h volume" x="1042" y="27" width="120" height="19">
+          <text id="2006:1986" name="$36,210" x="58" y="0" width="62" height="19" />
+        </frame>
+        <frame id="2006:1987" name="Fee now" x="1162" y="27" width="100" height="19">
+          <text id="2006:1988" name="0.25%" x="53" y="0" width="47" height="19" />
+        </frame>
+        <frame id="2006:1991" name="Action" x="1262" y="16" width="120" height="41">
+          <instance id="2006:1989" name="Button" x="19" y="0" width="101" height="41" />
+        </frame>
+      </frame>
+    </frame>
+  </frame>
+  <text id="2007:1513" name="Label / 07 · Pool detail" x="0" y="3120" width="286" height="48" />
+  <frame id="2007:1514" name="07 · Pool detail" x="0" y="3200" width="1520" height="1252">
+    <instance id="2007:1515" name="Navbar" x="40" y="24" width="1440" height="76" />
+    <instance id="2007:1543" name="Week Timeline" x="40" y="120" width="1440" height="133" />
+    <frame id="2007:1600" name="Back" x="40" y="273" width="129" height="19">
+      <instance id="2007:1601" name="Icon" x="0" y="0.5" width="18" height="18" />
+      <text id="2007:1603" name="Back to pools" x="26" y="0" width="103" height="19" />
+    </frame>
+    <frame id="2007:1604" name="Header" x="40" y="312" width="1440" height="67">
+      <instance id="2007:1605" name="Pair Avatar" x="0" y="5.5" width="102" height="56" />
+      <frame id="2007:1615" name="Frame" x="120" y="0.5" width="765" height="66">
+        <frame id="2007:1610" name="Frame" x="0" y="0" width="372" height="41">
+          <text id="2007:1611" name="TSLAx / USDC" x="0" y="0" width="238" height="41" />
+          <instance id="2007:1612" name="Tag" x="250" y="7.5" width="122" height="26" />
+        </frame>
+        <text id="2007:1614" name="Tokenized Tesla  ·  0.30% fee tier" x="0" y="47" width="249" height="19" />
+      </frame>
+      <instance id="2007:1616" name="Status Badge" x="903" y="14.5" width="165" height="38" />
+      <frame id="2007:1622" name="Actions" x="1086" y="0" width="354" height="67">
+        <instance id="2007:1623" name="Button" x="9" y="9" width="192" height="49" />
+        <instance id="2007:1625" name="Button" x="209" y="9" width="136" height="49" />
+      </frame>
+    </frame>
+    <frame id="2007:1627" name="Main" x="40" y="399" width="1440" height="564">
+      <frame id="2007:1628" name="Price Chart" x="0" y="0" width="1040" height="527">
+        <frame id="2007:1629" name="Header" x="25" y="25" width="990" height="39">
+          <text id="2007:1630" name="Price (last 5 days)" x="0" y="7.5" width="177" height="24" />
+          <frame id="2007:1631" name="Range" x="698" y="0" width="292" height="39">
+            <instance id="2007:1632" name="Segment Tab" x="4" y="4" width="53" height="31" />
+            <instance id="2007:1634" name="Segment Tab" x="59" y="4" width="56" height="31" />
+            <instance id="2007:1636" name="Segment Tab" x="117" y="4" width="56" height="31" />
+            <instance id="2007:1638" name="Segment Tab" x="175" y="4" width="58" height="31" />
+            <instance id="2007:1640" name="Segment Tab" x="235" y="4" width="53" height="31" />
+          </frame>
+        </frame>
+        <frame id="2007:1642" name="Chart" x="25" y="80" width="1000" height="390">
+          <rounded-rectangle id="2007:1643" name="Overnight (closed)" x="167.67999267578125" y="46" width="140.16000366210938" height="300" />
+          <rounded-rectangle id="2007:1644" name="Overnight (closed)" x="359.67999267578125" y="46" width="140.16000366210938" height="300" />
+          <rounded-rectangle id="2007:1645" name="Weekend (closed)" x="551.6799926757812" y="12" width="448.32000732421875" height="334" />
+          <text id="2007:1646" name="Wed
+(open)" x="88.19999694824219" y="4" width="38" height="30" />
+          <text id="2007:1647" name="Thu
+(open)" x="280.20001220703125" y="4" width="38" height="30" />
+          <text id="2007:1648" name="Fri
+(open)" x="462.6000061035156" y="4" width="38" height="30" />
+          <text id="2007:1649" name="Sat
+(closed)" x="688.5" y="4" width="47" height="30" />
+          <text id="2007:1650" name="Sun
+(closed)" x="880.5" y="4" width="47" height="30" />
+          <text id="2007:1651" name="220" x="0" y="52.28571319580078" width="23" height="15" />
+          <text id="2007:1652" name="210" x="0" y="123.71428680419922" width="21" height="15" />
+          <text id="2007:1653" name="200" x="0" y="195.14285278320312" width="23" height="15" />
+          <text id="2007:1654" name="190" x="0" y="266.5714416503906" width="21" height="15" />
+          <text id="2007:1655" name="180" x="0" y="338" width="21" height="15" />
+          <rounded-rectangle id="2007:1656" name="Rectangle" x="40" y="46" width="1" height="300" />
+          <rounded-rectangle id="2007:1657" name="Rectangle" x="40" y="346" width="960" height="1" />
+          <vector id="2007:1658" name="Vector" x="616" y="46" width="0" height="300" />
+          <vector id="2007:1659" name="Vector" x="808" y="46" width="0" height="300" />
+          <vector id="2007:1660" name="Allowed band" x="551.6799926757812" y="113.85713958740234" width="448.32000732421875" height="178.57142639160156" />
+          <vector id="2007:1661" name="Vector" x="40" y="203.14285278320312" width="960" height="0" />
+          <vector id="2007:1662" name="Oracle price" x="40" y="173.89999389648438" width="511.70001220703125" height="54.5" />
+          <vector id="2007:1663" name="Pool price" x="551.7000122070312" y="201.5" width="414.70001220703125" height="27.100000381469727" />
+          <ellipse id="2007:1664" name="Ellipse" x="960.4000244140625" y="203.57142639160156" width="12" height="12" />
+          <frame id="2007:1665" name="Frame" x="936.4000244140625" y="223.57142639160156" width="62" height="27">
+            <text id="2007:1666" name="199.10" x="9" y="5" width="44" height="17" />
+          </frame>
+          <frame id="2007:1669" name="Frame" x="934.4000244140625" y="153.14285278320312" width="79" height="40">
+            <text id="2007:1667" name="Friday close" x="8" y="5" width="63" height="13" />
+            <text id="2007:1668" name="$200.00" x="12" y="19" width="55" height="16" />
+          </frame>
+          <text id="2007:1670" name="Wed
+Sep 24" x="19.5" y="354" width="41" height="30" />
+          <text id="2007:1671" name="12:00" x="120" y="354" width="32" height="15" />
+          <text id="2007:1672" name="Thu
+Sep 25" x="212" y="354" width="40" height="30" />
+          <text id="2007:1673" name="12:00" x="312" y="354" width="32" height="15" />
+          <text id="2007:1674" name="Fri
+Sep 26" x="403.5" y="354" width="41" height="30" />
+          <text id="2007:1675" name="12:00" x="504" y="354" width="32" height="15" />
+          <text id="2007:1676" name="Sat
+Sep 27" x="596" y="354" width="40" height="30" />
+          <text id="2007:1677" name="12:00" x="696" y="354" width="32" height="15" />
+          <text id="2007:1678" name="Sun
+Sep 28" x="788" y="354" width="40" height="30" />
+          <text id="2007:1679" name="12:00" x="888" y="354" width="32" height="15" />
+          <text id="2007:1680" name="Mon
+Sep 29" x="979.5" y="354" width="41" height="30" />
+        </frame>
+        <frame id="2007:1681" name="Legend" x="25" y="486" width="738" height="16">
+          <instance id="2007:1682" name="Legend Item" x="0" y="0" width="133" height="16" />
+          <instance id="2007:1685" name="Legend Item" x="169" y="0" width="153" height="16" />
+          <instance id="2007:1688" name="Legend Item" x="358" y="0" width="184" height="16" />
+          <instance id="2007:1691" name="Legend Item" x="578" y="0" width="160" height="16" />
+        </frame>
+      </frame>
+      <frame id="2007:1694" name="Pool details" x="1060" y="0" width="380" height="564">
+        <text id="2007:1695" name="Pool details" x="23" y="25" width="114" height="24" />
+        <instance id="2007:1696" name="Key-Value Row" x="23" y="53" width="334" height="48" />
+        <instance id="2007:1704" name="Key-Value Row" x="23" y="105" width="334" height="48" />
+        <instance id="2007:1712" name="Key-Value Row" x="23" y="157" width="334" height="48" />
+        <instance id="2007:1720" name="Key-Value Row" x="23" y="209" width="334" height="48" />
+        <instance id="2007:1728" name="Key-Value Row" x="23" y="261" width="334" height="48" />
+        <instance id="2007:1736" name="Key-Value Row" x="23" y="313" width="334" height="48" />
+        <instance id="2007:1744" name="Key-Value Row" x="23" y="365" width="334" height="47" />
+        <frame id="2007:1760" name="Spacer" x="23" y="416" width="10" height="8" />
+        <frame id="2007:1752" name="Status note" x="23" y="428" width="334" height="115">
+          <instance id="2007:1753" name="Icon" x="16" y="16" width="30" height="30" />
+          <frame id="2007:1759" name="Frame" x="60" y="16" width="260" height="83">
+            <text id="2007:1757" name="Market closed" x="0" y="0" width="110" height="19" />
+            <text id="2007:1758" name="TSLA is closed. The pool price is kept within a band around Friday’s close until Monday open." x="0" y="23" width="260" height="60" />
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+    <frame id="2007:1761" name="Mode history" x="40" y="983" width="1440" height="221">
+      <frame id="2007:1762" name="Frame" x="25" y="23" width="1390" height="35">
+        <text id="2007:1763" name="Mode history" x="0" y="4" width="143" height="27" />
+        <instance id="2007:1764" name="Button" x="1240" y="0" width="150" height="35" />
+      </frame>
+      <frame id="2007:1766" name="Events" x="25" y="78" width="1390" height="116">
+        <rounded-rectangle id="2007:1767" name="Track" x="20" y="31" width="1330" height="2" />
+        <frame id="2007:1768" name="Market closed" x="0" y="0" width="329.5" height="116">
+          <text id="2007:1769" name="Fri, Sep 26 · 16:00" x="6" y="0" width="120" height="17" />
+          <ellipse id="2007:1770" name="Dot" x="6" y="27" width="14" height="14" />
+          <frame id="2007:1773" name="Frame" x="6" y="51" width="280" height="65">
+            <text id="2007:1771" name="Market closed" x="0" y="0" width="117" height="21" />
+            <text id="2007:1772" name="TSLA market closed. Price band activated around $200.00." x="0" y="25" width="280" height="40" />
+          </frame>
+        </frame>
+        <frame id="2007:1774" name="Market opened" x="353.5" y="0" width="329.5" height="116">
+          <text id="2007:1775" name="Mon, Sep 22 · 09:30" x="6" y="0" width="135" height="17" />
+          <ellipse id="2007:1776" name="Dot" x="6" y="27" width="14" height="14" />
+          <frame id="2007:1779" name="Frame" x="6" y="51" width="280" height="65">
+            <text id="2007:1777" name="Market opened" x="0" y="0" width="125" height="21" />
+            <text id="2007:1778" name="Price re-centered to $196.20 without trades." x="0" y="25" width="280" height="40" />
+          </frame>
+        </frame>
+        <frame id="2007:1780" name="Paused (halt)" x="707" y="0" width="329.5" height="116">
+          <text id="2007:1781" name="Wed, Sep 24 · 14:02" x="6" y="0" width="133" height="17" />
+          <ellipse id="2007:1782" name="Dot" x="6" y="27" width="14" height="14" />
+          <frame id="2007:1785" name="Frame" x="6" y="51" width="280" height="65">
+            <text id="2007:1783" name="Paused (halt)" x="0" y="0" width="110" height="21" />
+            <text id="2007:1784" name="Trading paused due to volatility. Swaps and deposits disabled." x="0" y="25" width="280" height="40" />
+          </frame>
+        </frame>
+        <frame id="2007:1786" name="Resumed" x="1060.5" y="0" width="329.5" height="116">
+          <text id="2007:1787" name="Wed, Sep 24 · 14:47" x="6" y="0" width="133" height="17" />
+          <ellipse id="2007:1788" name="Dot" x="6" y="27" width="14" height="14" />
+          <frame id="2007:1791" name="Frame" x="6" y="51" width="280" height="65">
+            <text id="2007:1789" name="Resumed" x="0" y="0" width="77" height="21" />
+            <text id="2007:1790" name="Trading resumed. Price following Nasdaq again." x="0" y="25" width="280" height="40" />
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+  </frame>
+  <text id="2007:1792" name="Label / 08 · Results" x="1640" y="3120" width="231" height="48" />
+  <frame id="2007:1793" name="08 · Results" x="1640" y="3200" width="1520" height="1399">
+    <instance id="2007:1794" name="Navbar" x="40" y="24" width="1440" height="76" />
+    <frame id="2007:1824" name="Frame" x="40" y="120" width="986" height="66">
+      <text id="2007:1822" name="What happened to liquidity providers on 20 real weekend gaps" x="0" y="0" width="986" height="39" />
+      <text id="2007:1823" name="Simulated with real Friday close and Monday open prices, 2021 to 2026." x="0" y="45" width="578" height="21" />
+    </frame>
+    <frame id="2007:1825" name="Summary" x="40" y="206" width="1440" height="114">
+      <instance id="2007:1826" name="Stat Card" x="0" y="0" width="466.6666564941406" height="114" />
+      <instance id="2007:1835" name="Stat Card" x="486.6666564941406" y="0" width="466.66668701171875" height="114" />
+      <instance id="2007:1844" name="Stat Card" x="973.3333740234375" y="0" width="466.66668701171875" height="114" />
+    </frame>
+    <frame id="2007:1854" name="Main" x="40" y="340" width="1440" height="686">
+      <frame id="2007:1855" name="LP loss chart" x="0" y="0" width="1020" height="641">
+        <frame id="2007:1856" name="Frame" x="25" y="23" width="970" height="45">
+          <frame id="2007:1859" name="Frame" x="0" y="0" width="336" height="45">
+            <text id="2007:1857" name="LP loss on each weekend event" x="0" y="0" width="305" height="24" />
+            <text id="2007:1858" name="Negative values mean a loss for liquidity providers." x="0" y="28" width="336" height="17" />
+          </frame>
+          <frame id="2007:1860" name="Frame" x="537" y="0" width="433" height="16">
+            <instance id="2007:1861" name="Legend Item" x="0" y="0" width="188" height="16" />
+            <instance id="2007:1864" name="Legend Item" x="212" y="0" width="221" height="16" />
+          </frame>
+        </frame>
+        <frame id="2007:1867" name="Bars" x="25" y="82" width="572" height="536">
+          <rounded-rectangle id="2007:1868" name="Rectangle" x="150" y="0" width="1" height="480" />
+          <text id="2007:1869" name="-8%" x="137.5" y="488" width="25" height="16" />
+          <rounded-rectangle id="2007:1870" name="Rectangle" x="240.5" y="0" width="1" height="480" />
+          <text id="2007:1871" name="-6%" x="228" y="488" width="25" height="16" />
+          <rounded-rectangle id="2007:1872" name="Rectangle" x="331" y="0" width="1" height="480" />
+          <text id="2007:1873" name="-4%" x="318.5" y="488" width="25" height="16" />
+          <rounded-rectangle id="2007:1874" name="Rectangle" x="421.5" y="0" width="1" height="480" />
+          <text id="2007:1875" name="-2%" x="409.5" y="488" width="24" height="16" />
+          <rounded-rectangle id="2007:1876" name="Rectangle" x="512" y="0" width="1" height="480" />
+          <text id="2007:1877" name="0%" x="502.5" y="488" width="19" height="16" />
+          <text id="2007:1878" name="TSLA · Oct 2024" x="0" y="4" width="102" height="16" />
+          <rounded-rectangle id="2007:1879" name="Rectangle" x="222.39999389648438" y="3" width="289.6000061035156" height="8" />
+          <rounded-rectangle id="2007:1880" name="Rectangle" x="416.9750061035156" y="12" width="95.0250015258789" height="8" />
+          <text id="2007:1881" name="-6.4%" x="185.39999389648438" y="1" width="31" height="13" />
+          <text id="2007:1882" name="-2.1%" x="518" y="9" width="28" height="13" />
+          <text id="2007:1883" name="NVDA · Aug 2024" x="0" y="28" width="108" height="16" />
+          <rounded-rectangle id="2007:1884" name="Rectangle" x="294.79998779296875" y="27" width="217.1999969482422" height="8" />
+          <rounded-rectangle id="2007:1885" name="Rectangle" x="435.07501220703125" y="36" width="76.92500305175781" height="8" />
+          <text id="2007:1886" name="-4.8%" x="257.79998779296875" y="25" width="31" height="13" />
+          <text id="2007:1887" name="-1.7%" x="518" y="33" width="29" height="13" />
+          <text id="2007:1888" name="AAPL · May 2024" x="0" y="52" width="106" height="16" />
+          <rounded-rectangle id="2007:1889" name="Rectangle" x="371.7250061035156" y="51" width="140.27499389648438" height="8" />
+          <rounded-rectangle id="2007:1890" name="Rectangle" x="466.75" y="60" width="45.25" height="8" />
+          <text id="2007:1891" name="-3.1%" x="337.7250061035156" y="49" width="28" height="13" />
+          <text id="2007:1892" name="-1.0%" x="518" y="57" width="29" height="13" />
+          <text id="2007:1893" name="AMZN · Apr 2024" x="0" y="76" width="107" height="16" />
+          <rounded-rectangle id="2007:1894" name="Rectangle" x="380.7749938964844" y="75" width="131.22500610351562" height="8" />
+          <rounded-rectangle id="2007:1895" name="Rectangle" x="471.2749938964844" y="84" width="40.724998474121094" height="8" />
+          <text id="2007:1896" name="-2.9%" x="343.7749938964844" y="73" width="31" height="13" />
+          <text id="2007:1897" name="-0.9%" x="518" y="81" width="32" height="13" />
+          <text id="2007:1898" name="META · Feb 2024" x="0" y="100" width="105" height="16" />
+          <rounded-rectangle id="2007:1899" name="Rectangle" x="394.3500061035156" y="99" width="117.6500015258789" height="8" />
+          <rounded-rectangle id="2007:1900" name="Rectangle" x="475.79998779296875" y="108" width="36.20000076293945" height="8" />
+          <text id="2007:1901" name="-2.6%" x="358.3500061035156" y="97" width="30" height="13" />
+          <text id="2007:1902" name="-0.8%" x="518" y="105" width="31" height="13" />
+          <text id="2007:1903" name="TSLA · Jan 2024" x="0" y="124" width="102" height="16" />
+          <rounded-rectangle id="2007:1904" name="Rectangle" x="276.70001220703125" y="123" width="235.3000030517578" height="8" />
+          <rounded-rectangle id="2007:1905" name="Rectangle" x="426.0249938964844" y="132" width="85.9749984741211" height="8" />
+          <text id="2007:1906" name="-5.2%" x="239.6999969482422" y="121" width="31" height="13" />
+          <text id="2007:1907" name="-1.9%" x="518" y="129" width="29" height="13" />
+          <text id="2007:1908" name="NVDA · Nov 2023" x="0" y="148" width="108" height="16" />
+          <rounded-rectangle id="2007:1909" name="Rectangle" x="344.57501220703125" y="147" width="167.4250030517578" height="8" />
+          <rounded-rectangle id="2007:1910" name="Rectangle" x="462.2250061035156" y="156" width="49.775001525878906" height="8" />
+          <text id="2007:1911" name="-3.7%" x="308.57501220703125" y="145" width="30" height="13" />
+          <text id="2007:1912" name="-1.1%" x="518" y="153" width="27" height="13" />
+          <text id="2007:1913" name="AAPL · Aug 2023" x="0" y="172" width="105" height="16" />
+          <rounded-rectangle id="2007:1914" name="Rectangle" x="426.0249938964844" y="171" width="85.9749984741211" height="8" />
+          <rounded-rectangle id="2007:1915" name="Rectangle" x="484.8500061035156" y="180" width="27.149999618530273" height="8" />
+          <text id="2007:1916" name="-1.9%" x="391.0249938964844" y="169" width="29" height="13" />
+          <text id="2007:1917" name="-0.6%" x="518" y="177" width="31" height="13" />
+          <text id="2007:1918" name="MSFT · Jul 2023" x="0" y="196" width="101" height="16" />
+          <rounded-rectangle id="2007:1919" name="Rectangle" x="407.92498779296875" y="195" width="104.07499694824219" height="8" />
+          <rounded-rectangle id="2007:1920" name="Rectangle" x="480.32501220703125" y="204" width="31.674999237060547" height="8" />
+          <text id="2007:1921" name="-2.3%" x="370.92498779296875" y="193" width="31" height="13" />
+          <text id="2007:1922" name="-0.7%" x="518" y="201" width="31" height="13" />
+          <text id="2007:1923" name="GOOGL · Apr 2023" x="0" y="220" width="115" height="16" />
+          <rounded-rectangle id="2007:1924" name="Rectangle" x="421.5" y="219" width="90.5" height="8" />
+          <rounded-rectangle id="2007:1925" name="Rectangle" x="484.8500061035156" y="228" width="27.149999618530273" height="8" />
+          <text id="2007:1926" name="-2.0%" x="385.5" y="217" width="30" height="13" />
+          <text id="2007:1927" name="-0.6%" x="518" y="225" width="31" height="13" />
+          <text id="2007:1928" name="TSLA · Jan 2023" x="0" y="244" width="103" height="16" />
+          <rounded-rectangle id="2007:1929" name="Rectangle" x="326.4750061035156" y="243" width="185.52499389648438" height="8" />
+          <rounded-rectangle id="2007:1930" name="Rectangle" x="448.6499938964844" y="252" width="63.349998474121094" height="8" />
+          <text id="2007:1931" name="-4.1%" x="292.4750061035156" y="241" width="28" height="13" />
+          <text id="2007:1932" name="-1.4%" x="518" y="249" width="30" height="13" />
+          <text id="2007:1933" name="AMD · Nov 2022" x="0" y="268" width="101" height="16" />
+          <rounded-rectangle id="2007:1934" name="Rectangle" x="353.625" y="267" width="158.375" height="8" />
+          <rounded-rectangle id="2007:1935" name="Rectangle" x="466.75" y="276" width="45.25" height="8" />
+          <text id="2007:1936" name="-3.5%" x="316.625" y="265" width="31" height="13" />
+          <text id="2007:1937" name="-1.0%" x="518" y="273" width="29" height="13" />
+          <text id="2007:1938" name="NVDA · Oct 2022" x="0" y="292" width="105" height="16" />
+          <rounded-rectangle id="2007:1939" name="Rectangle" x="204.3000030517578" y="291" width="307.70001220703125" height="8" />
+          <rounded-rectangle id="2007:1940" name="Rectangle" x="403.3999938964844" y="300" width="108.5999984741211" height="8" />
+          <text id="2007:1941" name="-6.8%" x="167.3000030517578" y="289" width="31" height="13" />
+          <text id="2007:1942" name="-2.4%" x="518" y="297" width="31" height="13" />
+          <text id="2007:1943" name="AAPL · Aug 2022" x="0" y="316" width="104" height="16" />
+          <rounded-rectangle id="2007:1944" name="Rectangle" x="389.82501220703125" y="315" width="122.17500305175781" height="8" />
+          <rounded-rectangle id="2007:1945" name="Rectangle" x="475.79998779296875" y="324" width="36.20000076293945" height="8" />
+          <text id="2007:1946" name="-2.7%" x="353.82501220703125" y="313" width="30" height="13" />
+          <text id="2007:1947" name="-0.8%" x="518" y="321" width="31" height="13" />
+          <text id="2007:1948" name="TSLA · May 2022" x="0" y="340" width="106" height="16" />
+          <rounded-rectangle id="2007:1949" name="Rectangle" x="290.2749938964844" y="339" width="221.72500610351562" height="8" />
+          <rounded-rectangle id="2007:1950" name="Rectangle" x="439.6000061035156" y="348" width="72.4000015258789" height="8" />
+          <text id="2007:1951" name="-4.9%" x="253.27499389648438" y="337" width="31" height="13" />
+          <text id="2007:1952" name="-1.6%" x="518" y="345" width="29" height="13" />
+          <text id="2007:1953" name="META · Feb 2022" x="0" y="364" width="105" height="16" />
+          <rounded-rectangle id="2007:1954" name="Rectangle" x="367.20001220703125" y="363" width="144.8000030517578" height="8" />
+          <rounded-rectangle id="2007:1955" name="Rectangle" x="466.75" y="372" width="45.25" height="8" />
+          <text id="2007:1956" name="-3.2%" x="330.20001220703125" y="361" width="31" height="13" />
+          <text id="2007:1957" name="-1.0%" x="518" y="369" width="29" height="13" />
+          <text id="2007:1958" name="SPY · Jan 2022" x="0" y="388" width="94" height="16" />
+          <rounded-rectangle id="2007:1959" name="Rectangle" x="416.9750061035156" y="387" width="95.0250015258789" height="8" />
+          <rounded-rectangle id="2007:1960" name="Rectangle" x="484.8500061035156" y="396" width="27.149999618530273" height="8" />
+          <text id="2007:1961" name="-2.1%" x="382.9750061035156" y="385" width="28" height="13" />
+          <text id="2007:1962" name="-0.6%" x="518" y="393" width="31" height="13" />
+          <text id="2007:1963" name="AAPL · Nov 2021" x="0" y="412" width="103" height="16" />
+          <rounded-rectangle id="2007:1964" name="Rectangle" x="385.29998779296875" y="411" width="126.69999694824219" height="8" />
+          <rounded-rectangle id="2007:1965" name="Rectangle" x="471.2749938964844" y="420" width="40.724998474121094" height="8" />
+          <text id="2007:1966" name="-2.8%" x="349.29998779296875" y="409" width="30" height="13" />
+          <text id="2007:1967" name="-0.9%" x="518" y="417" width="32" height="13" />
+          <text id="2007:1968" name="TSLA · Sep 2021" x="0" y="436" width="102" height="16" />
+          <rounded-rectangle id="2007:1969" name="Rectangle" x="317.42498779296875" y="435" width="194.5749969482422" height="8" />
+          <rounded-rectangle id="2007:1970" name="Rectangle" x="444.125" y="444" width="67.875" height="8" />
+          <text id="2007:1971" name="-4.3%" x="280.42498779296875" y="433" width="31" height="13" />
+          <text id="2007:1972" name="-1.5%" x="518" y="441" width="29" height="13" />
+          <text id="2007:1973" name="AMZN · Jul 2021" x="0" y="460" width="101" height="16" />
+          <rounded-rectangle id="2007:1974" name="Rectangle" x="376.25" y="459" width="135.75" height="8" />
+          <rounded-rectangle id="2007:1975" name="Rectangle" x="475.79998779296875" y="468" width="36.20000076293945" height="8" />
+          <text id="2007:1976" name="-3.0%" x="339.25" y="457" width="31" height="13" />
+          <text id="2007:1977" name="-0.8%" x="518" y="465" width="31" height="13" />
+          <text id="2007:1978" name="LP return over the weekend" x="246" y="512" width="170" height="16" />
+        </frame>
+      </frame>
+      <frame id="2007:1979" name="Side" x="1040" y="0" width="400" height="686">
+        <frame id="2007:1980" name="How we tested" x="0" y="0" width="400" height="429">
+          <frame id="2007:1981" name="Frame" x="23" y="23" width="174" height="24">
+            <instance id="2007:1982" name="Icon" x="0" y="0" width="24" height="24" />
+            <text id="2007:1984" name="How we tested" x="36" y="0.5" width="138" height="23" />
+          </frame>
+          <frame id="2007:1985" name="Frame" x="23" y="63" width="348" height="60">
+            <frame id="2007:1986" name="Frame" x="0" y="13" width="34" height="34">
+              <text id="2007:1987" name="1" x="13.5" y="8.5" width="7" height="17" />
+            </frame>
+            <text id="2007:1988" name="Used real Friday close and Monday open prices for 20 large stock events from 2021 to 2026." x="48" y="0" width="300" height="60" />
+          </frame>
+          <frame id="2007:1989" name="Frame" x="23" y="139" width="348" height="40">
+            <frame id="2007:1990" name="Frame" x="0" y="3" width="34" height="34">
+              <text id="2007:1991" name="2" x="12.5" y="8.5" width="9" height="17" />
+            </frame>
+            <text id="2007:1992" name="Simulated an LP position in a 50/50 pool without any price protection (normal pool)." x="48" y="0" width="300" height="40" />
+          </frame>
+          <frame id="2007:1993" name="Frame" x="23" y="195" width="348" height="60">
+            <frame id="2007:1994" name="Frame" x="0" y="13" width="34" height="34">
+              <text id="2007:1995" name="3" x="12" y="8.5" width="10" height="17" />
+            </frame>
+            <text id="2007:1996" name="Simulated the same position in WeekendGuard with the weekend price band and weekend fees." x="48" y="0" width="300" height="60" />
+          </frame>
+          <frame id="2007:1997" name="Frame" x="23" y="271" width="348" height="40">
+            <frame id="2007:1998" name="Frame" x="0" y="3" width="34" height="34">
+              <text id="2007:1999" name="4" x="12" y="8.5" width="10" height="17" />
+            </frame>
+            <text id="2007:2000" name="Included trading fees and assumed no additional trades during the weekend." x="48" y="0" width="300" height="40" />
+          </frame>
+          <instance id="2007:2001" name="Info Callout" x="23" y="327" width="354" height="79" />
+        </frame>
+        <frame id="2007:2007" name="Key takeaways" x="0" y="449" width="400" height="237">
+          <frame id="2007:2008" name="Frame" x="23" y="23" width="173" height="23">
+            <instance id="2007:2009" name="Icon" x="0" y="0.5" width="22" height="22" />
+            <text id="2007:2011" name="Key takeaways" x="34" y="0" width="139" height="23" />
+          </frame>
+          <instance id="2007:2012" name="Check Item" x="23" y="62" width="354" height="40" />
+          <instance id="2007:2017" name="Check Item" x="23" y="118" width="354" height="40" />
+          <instance id="2007:2022" name="Check Item" x="23" y="174" width="354" height="40" />
+        </frame>
+      </frame>
+    </frame>
+    <frame id="2007:2027" name="Example" x="40" y="1046" width="1440" height="305">
+      <frame id="2007:2028" name="Frame" x="25" y="23" width="1390" height="45">
+        <frame id="2007:2031" name="Frame" x="0" y="0" width="530" height="45">
+          <text id="2007:2029" name="Example: TSLA weekend (Oct 18, 2024 – Oct 21, 2024)" x="0" y="0" width="530" height="24" />
+          <text id="2007:2030" name="LP value (indexed to 100 at Friday close)" x="0" y="28" width="268" height="17" />
+        </frame>
+        <frame id="2007:2032" name="Frame" x="877" y="0" width="513" height="16">
+          <instance id="2007:2033" name="Legend Item" x="0" y="0" width="93" height="16" />
+          <instance id="2007:2036" name="Legend Item" x="115" y="0" width="113" height="16" />
+          <instance id="2007:2039" name="Legend Item" x="250" y="0" width="127" height="16" />
+          <instance id="2007:2042" name="Legend Item" x="399" y="0" width="114" height="16" />
+        </frame>
+      </frame>
+      <frame id="2007:2045" name="Frame" x="25" y="82" width="1390" height="200">
+        <frame id="2007:2046" name="Chart" x="0" y="0" width="1060" height="200">
+          <rounded-rectangle id="2007:2047" name="Rectangle" x="93.34400177001953" y="4" width="761.8560180664062" height="160" />
+          <text id="2007:2048" name="Market closed (weekend)" x="401.2720031738281" y="8" width="146" height="15" />
+          <text id="2007:2049" name="106" x="0" y="19" width="19" height="13" />
+          <rounded-rectangle id="2007:2050" name="Rectangle" x="36" y="26" width="1024" height="1" />
+          <text id="2007:2051" name="102" x="0" y="53.5" width="19" height="13" />
+          <rounded-rectangle id="2007:2052" name="Rectangle" x="36" y="60.5" width="1024" height="1" />
+          <text id="2007:2053" name="98" x="0" y="88" width="14" height="13" />
+          <rounded-rectangle id="2007:2054" name="Rectangle" x="36" y="95" width="1024" height="1" />
+          <text id="2007:2055" name="94" x="0" y="122.5" width="14" height="13" />
+          <rounded-rectangle id="2007:2056" name="Rectangle" x="36" y="129.5" width="1024" height="1" />
+          <text id="2007:2057" name="90" x="0" y="157" width="14" height="13" />
+          <rounded-rectangle id="2007:2058" name="Rectangle" x="36" y="164" width="1024" height="1" />
+          <vector id="2007:2059" name="Vector" x="855.2000122070312" y="4" width="0" height="160" />
+          <vector id="2007:2060" name="Vector" x="36" y="77.80000305175781" width="57.29999923706055" height="0" />
+          <vector id="2007:2061" name="Vector" x="93.30000305175781" y="81.5" width="761.9000244140625" height="25.600000381469727" />
+          <vector id="2007:2062" name="Vector" x="855.2000122070312" y="107.0999984741211" width="204.8000030517578" height="8.600000381469727" />
+          <vector id="2007:2063" name="Vector" x="93.30000305175781" y="74.19999694824219" width="761.9000244140625" height="6.099999904632568" />
+          <vector id="2007:2064" name="Vector" x="855.2000122070312" y="80.30000305175781" width="204.8000030517578" height="4.300000190734863" />
+          <vector id="2007:2065" name="Vector" x="93.30000305175781" y="69.0999984741211" width="761.9000244140625" height="9" />
+          <vector id="2007:2066" name="Vector" x="855.2000122070312" y="36.400001525878906" width="204.8000030517578" height="33.400001525878906" />
+          <ellipse id="2007:2067" name="Ellipse" x="850.7000122070312" y="65.31689453125" width="9" height="9" />
+          <ellipse id="2007:2068" name="Ellipse" x="850.7000122070312" y="75.8375015258789" width="9" height="9" />
+          <ellipse id="2007:2069" name="Ellipse" x="850.7000122070312" y="102.57499694824219" width="9" height="9" />
+          <ellipse id="2007:2070" name="Ellipse" x="88.84400177001953" y="73.25" width="9" height="9" />
+          <text id="2007:2071" name="Fri 12:00
+Oct 18" x="13.5" y="170" width="45" height="26" />
+          <text id="2007:2072" name="Fri 16:00
+Close" x="70.84400177001953" y="170" width="45" height="26" />
+          <text id="2007:2073" name="Sat 00:00
+Oct 19" x="181.50799560546875" y="170" width="51" height="26" />
+          <text id="2007:2074" name="Sun 00:00
+Oct 20" x="521" y="170" width="54" height="26" />
+          <text id="2007:2075" name="Mon 09:30
+Open" x="826.7000122070312" y="170" width="57" height="26" />
+          <text id="2007:2076" name="Mon 12:00
+Oct 21" x="1005" y="170" width="55" height="26" />
+        </frame>
+        <frame id="2007:2077" name="LP value at Monday open" x="1084" y="30.5" width="306" height="139">
+          <text id="2007:2078" name="LP value at Monday open" x="17" y="17" width="182" height="18" />
+          <frame id="2007:2079" name="Frame" x="17" y="47" width="272" height="17">
+            <ellipse id="2007:2080" name="Ellipse" x="0" y="3.5" width="10" height="10" />
+            <text id="2007:2081" name="Simply hold TSLA" x="20" y="0" width="146" height="17" />
+            <text id="2007:2082" name="104.8 (+4.8%)" x="176" y="0" width="96" height="17" />
+          </frame>
+          <frame id="2007:2083" name="Frame" x="17" y="76" width="272" height="17">
+            <ellipse id="2007:2084" name="Ellipse" x="0" y="3.5" width="10" height="10" />
+            <text id="2007:2085" name="WeekendGuard LP" x="20" y="0" width="154" height="17" />
+            <text id="2007:2086" name="99.2 (−0.8%)" x="184" y="0" width="88" height="17" />
+          </frame>
+          <frame id="2007:2087" name="Frame" x="17" y="105" width="272" height="17">
+            <ellipse id="2007:2088" name="Ellipse" x="0" y="3.5" width="10" height="10" />
+            <text id="2007:2089" name="Normal pool LP" x="20" y="0" width="153" height="17" />
+            <text id="2007:2090" name="95.6 (−4.4%)" x="183" y="0" width="89" height="17" />
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+  </frame>
+  <text id="2008:1747" name="Label / 09" x="3280" y="3120" width="199" height="48" />
+  <frame id="2008:1748" name="09 · Demo" x="3280" y="3200" width="1520" height="1332">
+    <instance id="2008:1749" name="Navbar" x="40" y="24" width="1440" height="76" />
+    <frame id="2008:1781" name="Demo Banner" x="40" y="120" width="1440" height="54">
+      <instance id="2008:1782" name="Icon" x="21" y="15" width="24" height="24" />
+      <text id="2008:1786" name="Demo mode  ·  devnet only  ·  prices are simulated" x="59" y="16.5" width="1071" height="21" />
+      <text id="2008:1787" name="This is a testing tool. Not financial advice." x="1144" y="18.5" width="275" height="17" />
+    </frame>
+    <frame id="2008:1788" name="Main" x="40" y="194" width="1440" height="1090">
+      <frame id="2008:1789" name="Demo control panel" x="0" y="0" width="380" height="1090">
+        <frame id="2008:1790" name="Frame" x="23" y="25" width="334" height="31">
+          <text id="2008:1791" name="Demo control panel" x="0" y="2" width="209" height="27" />
+          <instance id="2008:1792" name="Status Pill" x="243" y="0" width="91" height="31" />
+        </frame>
+        <text id="2008:1795" name="Step through different market scenarios to see how WeekendGuard works." x="23" y="70" width="336" height="44" />
+        <instance id="2008:1796" name="Step Item" x="23" y="128" width="334" height="88" />
+        <instance id="2008:1802" name="Step Item" x="23" y="230" width="334" height="89" />
+        <instance id="2008:1808" name="Step Item" x="23" y="333" width="334" height="72" />
+        <instance id="2008:1814" name="Step Item" x="23" y="419" width="334" height="72" />
+        <instance id="2008:1820" name="Step Item" x="23" y="505" width="334" height="72" />
+        <frame id="2008:1826" name="Reset" x="23" y="591" width="334" height="48">
+          <instance id="2008:1827" name="Icon" x="129.5" y="14" width="20" height="20" />
+          <text id="2008:1829" name="Reset" x="159.5" y="14.5" width="45" height="19" />
+        </frame>
+      </frame>
+      <frame id="2008:1830" name="Simulation" x="400" y="0" width="1040" height="1090">
+        <frame id="2008:1831" name="Simulation chart" x="0" y="0" width="1040" height="679">
+          <frame id="2008:1832" name="Frame" x="23" y="23" width="994" height="71">
+            <frame id="2008:1838" name="Frame" x="0" y="0" width="406" height="57">
+              <frame id="2008:1833" name="Frame" x="0" y="0" width="316" height="31">
+                <text id="2008:1834" name="TSLAx / USDC" x="0" y="0" width="182" height="31" />
+                <instance id="2008:1835" name="Tag" x="194" y="2.5" width="122" height="26" />
+              </frame>
+              <text id="2008:1837" name="Simulated week: Mon, Sep 22, 2025 – Mon, Sep 29, 2025" x="0" y="39" width="406" height="18" />
+            </frame>
+            <frame id="2008:1845" name="Frame" x="707" y="0" width="287" height="71">
+              <text id="2008:1844" name="Start price (Mon open)" x="0" y="0" width="150" height="17" />
+              <frame id="2008:1839" name="Frame" x="0" y="25" width="287" height="46">
+                <frame id="2008:1840" name="Input" x="0" y="0" width="190" height="46">
+                  <text id="2008:1841" name="$200.00" x="15" y="13" width="74" height="22" />
+                </frame>
+                <instance id="2008:1842" name="Button" x="200" y="0" width="87" height="42" />
+              </frame>
+            </frame>
+          </frame>
+          <frame id="2008:1846" name="Chart box" x="23" y="112" width="994" height="404">
+            <frame id="2008:1847" name="Frame" x="17" y="17" width="760" height="16">
+              <instance id="2008:1848" name="Legend Item" x="0" y="0" width="139" height="16" />
+              <instance id="2008:1851" name="Legend Item" x="169" y="0" width="187" height="16" />
+              <instance id="2008:1854" name="Legend Item" x="386" y="0" width="184" height="16" />
+              <instance id="2008:1857" name="Legend Item" x="600" y="0" width="160" height="16" />
+            </frame>
+            <frame id="2008:1860" name="Chart" x="17" y="47" width="960" height="340">
+              <rounded-rectangle id="2008:1861" name="Rectangle" x="41" y="0" width="558.015625" height="22" />
+              <text id="2008:1862" name="Market open" x="286.5078125" y="4" width="67" height="13" />
+              <rounded-rectangle id="2008:1863" name="Rectangle" x="601.015625" y="0" width="325.46575927734375" height="22" />
+              <text id="2008:1864" name="Market closed (weekend)" x="696.74853515625" y="4" width="134" height="13" />
+              <rounded-rectangle id="2008:1865" name="Rectangle" x="928.4813842773438" y="0" width="30.518585205078125" height="22" />
+              <text id="2008:1866" name="Market open" x="910.24072265625" y="4" width="67" height="13" />
+              <rounded-rectangle id="2008:1867" name="Rectangle" x="600.015625" y="36" width="327.46575927734375" height="264" />
+              <text id="2008:1868" name="230" x="0" y="34.43902587890625" width="23" height="15" />
+              <rounded-rectangle id="2008:1869" name="Rectangle" x="40" y="42.43902587890625" width="920" height="1" />
+              <text id="2008:1870" name="210" x="0" y="98.82926940917969" width="21" height="15" />
+              <rounded-rectangle id="2008:1871" name="Rectangle" x="40" y="106.82926940917969" width="920" height="1" />
+              <text id="2008:1872" name="190" x="0" y="163.21951293945312" width="21" height="15" />
+              <rounded-rectangle id="2008:1873" name="Rectangle" x="40" y="171.21951293945312" width="920" height="1" />
+              <text id="2008:1874" name="170" x="0" y="227.60975646972656" width="20" height="15" />
+              <rounded-rectangle id="2008:1875" name="Rectangle" x="40" y="235.60975646972656" width="920" height="1" />
+              <text id="2008:1876" name="150" x="0" y="292" width="21" height="15" />
+              <rounded-rectangle id="2008:1877" name="Rectangle" x="40" y="300" width="920" height="1" />
+              <vector id="2008:1878" name="Allowed band" x="600.015625" y="97.17073059082031" width="359.9843444824219" height="83.70731353759766" />
+              <vector id="2008:1879" name="Vector" x="40" y="139.02438354492188" width="920" height="0" />
+              <vector id="2008:1880" name="Oracle (weekday)" x="40" y="132.5" width="560" height="13.100000381469727" />
+              <vector id="2008:1881" name="Oracle (Monday)" x="927.5" y="180.89999389648438" width="32.5" height="24" />
+              <vector id="2008:1882" name="Pool price" x="600" y="139" width="331.20001220703125" height="61.20000076293945" />
+              <vector id="2008:1883" name="Vector" x="600.015625" y="92" width="0" height="208" />
+              <frame id="2008:1884" name="Frame" x="589.015625" y="40" width="22" height="22">
+                <text id="2008:1885" name="1" x="8" y="4.5" width="6" height="13" />
+              </frame>
+              <frame id="2008:1886" name="Frame" x="558.515625" y="64" width="83" height="39">
+                <text id="2008:1887" name="Fri 16:00" x="19" y="0" width="45" height="13" />
+                <text id="2008:1888" name="Market closed" x="4" y="13" width="75" height="13" />
+                <text id="2008:1889" name="$200.00" x="18.5" y="26" width="46" height="13" />
+              </frame>
+              <ellipse id="2008:1890" name="Ellipse" x="595.015625" y="134.02438354492188" width="10" height="10" />
+              <vector id="2008:1891" name="Vector" x="690.01171875" y="92" width="0" height="208" />
+              <frame id="2008:1892" name="Frame" x="679.01171875" y="40" width="22" height="22">
+                <text id="2008:1893" name="2" x="7.5" y="4.5" width="7" height="13" />
+              </frame>
+              <frame id="2008:1894" name="Frame" x="653.51171875" y="64" width="73" height="39">
+                <text id="2008:1895" name="Sat 10:00" x="11.5" y="0" width="50" height="13" />
+                <text id="2008:1896" name="News: −10%" x="4" y="13" width="65" height="13" />
+                <text id="2008:1897" name="$180.00" x="14" y="26" width="45" height="13" />
+              </frame>
+              <ellipse id="2008:1898" name="Ellipse" x="685.01171875" y="164.60975646972656" width="10" height="10" />
+              <vector id="2008:1899" name="Vector" x="927.4813842773438" y="92" width="0" height="208" />
+              <frame id="2008:1900" name="Frame" x="916.4813842773438" y="40" width="22" height="22">
+                <text id="2008:1901" name="5" x="7.5" y="4.5" width="7" height="13" />
+              </frame>
+              <frame id="2008:1902" name="Frame" x="886" y="64" width="74" height="39">
+                <text id="2008:1903" name="Mon 09:30" x="8.5" y="0" width="57" height="13" />
+                <text id="2008:1904" name="Re-centered" x="4" y="13" width="66" height="13" />
+                <text id="2008:1905" name="$180.00" x="14.5" y="26" width="45" height="13" />
+              </frame>
+              <ellipse id="2008:1906" name="Ellipse" x="922.4813842773438" y="164.60975646972656" width="10" height="10" />
+              <text id="2008:1907" name="Mon
+Sep 22" x="20" y="306" width="40" height="30" />
+              <text id="2008:1908" name="Tue
+Sep 23" x="139.49478149414062" y="306" width="41" height="30" />
+              <text id="2008:1909" name="Wed
+Sep 24" x="259.48956298828125" y="306" width="41" height="30" />
+              <text id="2008:1910" name="Thu
+Sep 25" x="379.9843444824219" y="306" width="40" height="30" />
+              <text id="2008:1911" name="Fri
+Sep 26" x="499.4791259765625" y="306" width="41" height="30" />
+              <text id="2008:1912" name="Sat
+Sep 27" x="619.9739379882812" y="306" width="40" height="30" />
+              <text id="2008:1913" name="Sun
+Sep 28" x="739.9686889648438" y="306" width="40" height="30" />
+              <text id="2008:1914" name="Mon
+Sep 29" x="859.4635009765625" y="306" width="41" height="30" />
+            </frame>
+          </frame>
+          <frame id="2008:1915" name="Stats" x="23" y="534" width="994" height="122">
+            <instance id="2008:1916" name="Stat Card" x="0" y="0" width="238" height="122" />
+            <instance id="2008:1927" name="Stat Card" x="252" y="0" width="238" height="122" />
+            <instance id="2008:1936" name="Stat Card" x="504" y="0" width="238" height="107" />
+            <instance id="2008:1947" name="Stat Card" x="756" y="0" width="238" height="107" />
+          </frame>
+        </frame>
+        <frame id="2008:1956" name="Event log" x="0" y="699" width="1040" height="391">
+          <frame id="2008:1957" name="Frame" x="23" y="21" width="994" height="26">
+            <text id="2008:1958" name="Event log" x="0" y="1" width="91" height="24" />
+            <frame id="2008:1959" name="Frame" x="868" y="0" width="126" height="26">
+              <text id="2008:1960" name="Auto scroll" x="0" y="4.5" width="70" height="17" />
+              <frame id="2008:1961" name="Toggle" x="82" y="0" width="44" height="26">
+                <ellipse id="2008:1962" name="Ellipse" x="21" y="3" width="20" height="20" />
+              </frame>
+            </frame>
+          </frame>
+          <frame id="2008:1963" name="Table" x="23" y="61" width="994" height="309">
+            <frame id="2008:1964" name="Frame" x="1" y="1" width="992" height="37">
+              <frame id="2008:1965" name="Frame" x="16" y="10" width="190" height="16">
+                <text id="2008:1966" name="Time" x="0" y="0" width="31" height="16" />
+              </frame>
+              <frame id="2008:1967" name="Frame" x="218" y="10" width="330" height="16">
+                <text id="2008:1968" name="Event" x="0" y="0" width="36" height="16" />
+              </frame>
+              <frame id="2008:1969" name="Frame" x="560" y="10" width="416" height="16">
+                <text id="2008:1970" name="Details" x="0" y="0" width="416" height="16" />
+              </frame>
+            </frame>
+            <frame id="2008:1971" name="Frame" x="1" y="38" width="992" height="61">
+              <frame id="2008:1972" name="Frame" x="16" y="21.5" width="190" height="17">
+                <text id="2008:1973" name="Fri, Sep 26 16:00" x="0" y="0" width="112" height="17" />
+              </frame>
+              <frame id="2008:1974" name="Frame" x="218" y="21.5" width="330" height="17">
+                <ellipse id="2008:1975" name="Ellipse" x="0" y="3.5" width="10" height="10" />
+                <text id="2008:1976" name="Market closed" x="20" y="0" width="95" height="17" />
+              </frame>
+              <frame id="2008:1977" name="Frame" x="560" y="13" width="416" height="34">
+                <text id="2008:1978" name="Friday close price set to $200.00. Weekend band activated (±1.0%)." x="0" y="0" width="416" height="34" />
+              </frame>
+            </frame>
+            <frame id="2008:1979" name="Frame" x="1" y="99" width="992" height="44">
+              <frame id="2008:1980" name="Frame" x="16" y="13" width="190" height="17">
+                <text id="2008:1981" name="Sat, Sep 27 10:00" x="0" y="0" width="117" height="17" />
+              </frame>
+              <frame id="2008:1982" name="Frame" x="218" y="13" width="330" height="17">
+                <ellipse id="2008:1983" name="Ellipse" x="0" y="3.5" width="10" height="10" />
+                <text id="2008:1984" name="Price moved to lower band" x="20" y="0" width="179" height="17" />
+              </frame>
+              <frame id="2008:1985" name="Frame" x="560" y="13" width="416" height="17">
+                <text id="2008:1986" name="Oracle price −10% to $180.00. Pool price at band edge." x="0" y="0" width="416" height="17" />
+              </frame>
+            </frame>
+            <frame id="2008:1987" name="Frame" x="1" y="143" width="992" height="61">
+              <frame id="2008:1988" name="Frame" x="16" y="21.5" width="190" height="17">
+                <text id="2008:1989" name="Sat, Sep 27 10:00" x="0" y="0" width="117" height="17" />
+              </frame>
+              <frame id="2008:1990" name="Frame" x="218" y="21.5" width="330" height="17">
+                <ellipse id="2008:1991" name="Ellipse" x="0" y="3.5" width="10" height="10" />
+                <text id="2008:1992" name="Swap rejected: outside band" x="20" y="0" width="192" height="17" />
+              </frame>
+              <frame id="2008:1993" name="Frame" x="560" y="13" width="416" height="34">
+                <text id="2008:1994" name="User tried to swap at $178.50. Rejected (outside allowed band)." x="0" y="0" width="416" height="34" />
+              </frame>
+            </frame>
+            <frame id="2008:1995" name="Frame" x="1" y="204" width="992" height="61">
+              <frame id="2008:1996" name="Frame" x="16" y="21.5" width="190" height="17">
+                <text id="2008:1997" name="Sun, Sep 28 14:20" x="0" y="0" width="121" height="17" />
+              </frame>
+              <frame id="2008:1998" name="Frame" x="218" y="21.5" width="330" height="17">
+                <ellipse id="2008:1999" name="Ellipse" x="0" y="3.5" width="10" height="10" />
+                <text id="2008:2000" name="Swap executed" x="20" y="0" width="103" height="17" />
+              </frame>
+              <frame id="2008:2001" name="Frame" x="560" y="13" width="416" height="34">
+                <text id="2008:2002" name="Swapped 1,000 USDC for 5.19 TSLAx at $192.40 (band edge). Fee: 0.62%." x="0" y="0" width="416" height="34" />
+              </frame>
+            </frame>
+            <frame id="2008:2003" name="Frame" x="1" y="265" width="992" height="43">
+              <frame id="2008:2004" name="Frame" x="16" y="13" width="190" height="17">
+                <text id="2008:2005" name="Mon, Sep 29 09:30" x="0" y="0" width="127" height="17" />
+              </frame>
+              <frame id="2008:2006" name="Frame" x="218" y="13" width="330" height="17">
+                <ellipse id="2008:2007" name="Ellipse" x="0" y="3.5" width="10" height="10" />
+                <text id="2008:2008" name="Re-centered to Monday open" x="20" y="0" width="196" height="17" />
+              </frame>
+              <frame id="2008:2009" name="Frame" x="560" y="13" width="416" height="17">
+                <text id="2008:2010" name="Oracle price $180.00. Band removed. Trading resumed." x="0" y="0" width="416" height="17" />
+              </frame>
+            </frame>
+          </frame>
+        </frame>
+      </frame>
+    </frame>
+  </frame>
+</canvas>IMPORTANT: After you call this tool, you MUST call get_design_context if trying to implement the design, since this tool only returns metadata. If you do not call get_design_context, the agent will not be able to implement the design.
