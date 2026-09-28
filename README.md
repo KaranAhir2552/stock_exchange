@@ -1,8 +1,32 @@
 # Afterbell
 
-An oracle-anchored swap pool on Solana that keeps tokenized-stock trading fair for traders and safe for LPs when the real market is closed: the price is anchored to an oracle, a widening band and rising fees apply while the market is closed, halts pause trading (withdrawals always work), and the pool jumps straight to the new price at the open. See [CLAUDE.md](CLAUDE.md) for the full brief and [docs/DECISIONS.md](docs/DECISIONS.md) for versions, verified facts and design decisions.
+An oracle-anchored swap pool on Solana that keeps tokenized-stock trading fair for traders and safe for LPs when the real market is closed: the price is anchored to an oracle, a widening band and rising fees apply while the market is closed, halts pause trading (withdrawals always work), and the pool jumps straight to the new price at the open. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how the pieces fit, [CLAUDE.md](CLAUDE.md) for the full brief and [docs/DECISIONS.md](docs/DECISIONS.md) for versions, verified facts and design decisions.
 
-## Prerequisites
+## Quickstart (about 5 minutes): the web app on devnet
+
+Needs only Node 24+ and pnpm 11 (`corepack enable` gives you pnpm). The program, pools and test tokens are already deployed on devnet.
+
+```sh
+git clone https://github.com/KaranAhir2552/stock_exchange.git afterbell && cd afterbell
+pnpm install
+pnpm build
+NETWORK=devnet pnpm --filter @afterbell/web dev      # open http://localhost:3000
+```
+
+Optional, in a git-ignored `.env.devnet` at the repo root:
+
+```sh
+RPC_URL=https://devnet.helius-rpc.com/?api-key=...   # a private devnet RPC (the public one rate-limits)
+HERMES_API_KEY=...                                   # Pyth key (https://pythdata.app): Live data page, keeper
+```
+
+Pools stay fresh only while a keeper runs somewhere (the team runs one; see [the 60-second demo](#the-60-second-demo-devnet)). Without it, pools show "Paused": that is the program's fail-safe for a stale price, not a bug.
+
+## Full local stack
+
+Everything on your machine: a local validator, the program, test tokens, pools, keeper and web app. Installing the Rust and Solana toolchain below takes longer than 15 minutes the first time (Anchor builds from source); after that, a fresh stack is up in a few minutes.
+
+### Prerequisites
 
 - Node 24+, pnpm 11
 - Rust stable (`rustup`)
@@ -15,7 +39,7 @@ An oracle-anchored swap pool on Solana that keeps tokenized-stock trading fair f
   ```
 - A local keypair: `solana-keygen new -o ~/.config/solana/id.json` (skip if you have one)
 
-## Build and test
+### Build and test
 
 ```sh
 pnpm install
@@ -27,7 +51,7 @@ pnpm lint
 
 `anchor build` without features is the mainnet build (no mock code; the deploy script refuses the wrong build for a network).
 
-## Run everything locally
+### Run everything locally
 
 Three terminals:
 
@@ -41,6 +65,7 @@ node scripts/src/cli.ts setup --network localnet --mode demo --hours 72
 NETWORK=localnet KEEPER_INTERVAL_SECS=5 KEEPER_MOCK_HEARTBEAT=true node services/keeper/src/main.ts
 
 # 3. look and play
+NETWORK=localnet pnpm --filter @afterbell/web dev             # http://localhost:3000 (Demo page included)
 node scripts/src/cli.ts status --network localnet            # mode, prices, band, fee per pool
 node scripts/src/cli.ts smoke --network localnet             # SDK quote vs a real swap
 curl localhost:9464/health
@@ -70,10 +95,15 @@ Pages: Dashboard, Swap, Liquidity, Pools (+ pool detail), Results (the backtest,
 
 ### The 60-second demo (devnet)
 
-1. Keep the keeper running: `NETWORK=devnet KEEPER_MOCK_HEARTBEAT=true node services/keeper/src/main.ts`.
+1. Keep the keeper running: `NETWORK=devnet KEEPER_MOCK_HEARTBEAT=true node services/keeper/src/main.ts` (the heartbeat needs the admin key; the Pyth pool needs `HERMES_API_KEY`).
 2. Open `/demo`, click **Load the devnet admin key** and pick `~/.config/solana/id.json` (the admin key; it stays in that browser tab's memory and signs the demo steps).
-3. **Start a simulated week**, then click the steps in order: Friday close, Weekend news (−10% or +10%), Trading halt, Halt ends, Monday open. Each step is a real devnet transaction on the TSLAx pool's simulated clock ([DECISIONS #59](docs/DECISIONS.md)); the whole story takes about 30 seconds.
+3. **Start a simulated week**, then click the steps in order: Friday close, Weekend news (−10% or +10%), Trading halt, Halt ends, Monday open. Each step is a real devnet transaction on the TSLAx pool's simulated clock ([DECISIONS #59](docs/DECISIONS.md)); the whole story takes about 30-40 seconds.
 4. **Send test tokens** (with your own wallet connected) mints test USDC/TSLAx/SOL so you can swap and add liquidity yourself.
+5. Automated check of the same story: `BASE_URL=http://localhost:3000 pnpm --filter @afterbell/web demo:e2e` (headless Chrome).
+
+### Real Pyth prices
+
+`pSOL-test/USDC` on devnet is priced by the live Pyth SOL/USD feed: the keeper pulls the signed price from Hermes, pushes it into Pyth's on-chain feed account and refreshes the pool; swaps read that same account. The **Live data** page shows Pyth's TSLA and SOL prices; TSLA keeps moving before the US open, which Afterbell's stock pools ignore until the official open. Details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), DECISIONS #71-79.
 
 ## Networks
 
