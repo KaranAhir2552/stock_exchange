@@ -11,7 +11,7 @@ import idlJson from "./idl/afterbell.json" with { type: "json" };
 import type { Afterbell } from "./idl/afterbell.ts";
 import type { Direction } from "./math.ts";
 import type { Calendar, MarketContext, MarketProfile, Mode, OracleStatus, PoolParams, PoolState } from "./mode.ts";
-import { mockOraclePrice } from "./mode.ts";
+import { mockOraclePrice, refresh } from "./mode.ts";
 
 export const SEEDS = {
   config: "config",
@@ -125,6 +125,19 @@ export interface MockOracleState {
   clockOffset: bigint;
 }
 
+/** One pool as a UI sees it; see `fetchMarkets`. */
+export interface MarketSnapshot {
+  info: PoolInfo;
+  reserves: { base: bigint; quote: bigint };
+  lpSupply: bigint;
+  chainNow: bigint;
+  mock: MockOracleState | null;
+  /** Mock-oracle pools only (Pyth context needs a posted price update). `ctx.now` is the pool's clock. */
+  ctx: MarketContext | null;
+  /** The pool as the program would see it after `refresh` right now (on-chain state if `ctx` is null). */
+  live: PoolState;
+}
+
 export class AfterbellClient {
   readonly program: Program<Afterbell>;
 
@@ -146,7 +159,27 @@ export class AfterbellClient {
   // ---------- reads ----------
 
   async fetchPool(address: PublicKey): Promise<PoolInfo> {
-    const p = await this.program.account.pool.fetch(address);
+    return this.decodePool(address, await this.accountData(address));
+  }
+
+  async fetchCalendar(address: PublicKey): Promise<Calendar> {
+    return this.decodeCalendar(await this.accountData(address));
+  }
+
+  async fetchMockOracle(address: PublicKey): Promise<MockOracleState> {
+    return this.decodeMockOracle(await this.accountData(address));
+  }
+
+  private async accountData(address: PublicKey): Promise<Buffer> {
+    const acc = await this.connection.getAccountInfo(address);
+    if (!acc) throw new Error(`account ${address.toBase58()} not found`);
+    return acc.data;
+  }
+
+  // ---------- decoders (raw account data -> SDK types) ----------
+
+  decodePool(address: PublicKey, data: Buffer): PoolInfo {
+    const p = this.program.coder.accounts.decode("pool", data);
     const params = fromIdlParams(p.params);
     return {
       accounts: {
@@ -179,16 +212,18 @@ export class AfterbellClient {
     };
   }
 
-  async fetchCalendar(address: PublicKey): Promise<Calendar> {
-    const c = await this.program.account.marketCalendar.fetch(address);
+  decodeCalendar(data: Buffer): Calendar {
+    const c = this.program.coder.accounts.decode("marketCalendar", data);
     return {
-      sessions: c.sessions.slice(0, c.sessionCount).map((x) => ({ openTs: big(x.openTs), closeTs: big(x.closeTs) })),
+      sessions: c.sessions
+        .slice(0, c.sessionCount)
+        .map((x: { openTs: BN; closeTs: BN }) => ({ openTs: big(x.openTs), closeTs: big(x.closeTs) })),
       validUntil: big(c.validUntil),
     };
   }
 
-  async fetchMockOracle(address: PublicKey): Promise<MockOracleState> {
-    const m = await this.program.account.mockOracle.fetch(address);
+  decodeMockOracle(data: Buffer): MockOracleState {
+    const m = this.program.coder.accounts.decode("mockOracle", data);
     return {
       price: big(m.price),
       conf: big(m.conf),
@@ -197,6 +232,48 @@ export class AfterbellClient {
       status: variant<OracleStatus>(m.status),
       clockOffset: big(m.clockOffset),
     };
+  }
+
+  /**
+   * Everything a UI shows about some pools, in two batched RPC calls: each pool's on-chain state,
+   * reserves, and (for mock-oracle pools) the market context and the state `refresh` would produce
+   * right now (`live`), so mode/band/fee are current even between keeper updates.
+   */
+  async fetchMarkets(addresses: PublicKey[]): Promise<MarketSnapshot[]> {
+    const first = await this.connection.getMultipleAccountsInfo([this.config, SYSVAR_CLOCK_PUBKEY, ...addresses]);
+    const [cfgAcc, clockAcc, ...poolAccs] = first;
+    if (!cfgAcc || !clockAcc) throw new Error("config or clock account missing");
+    const globalPause = this.program.coder.accounts.decode("globalConfig", cfgAcc.data).globalPause as boolean;
+    const chainNow = clockAcc.data.readBigInt64LE(32);
+    const pools = poolAccs.map((a, i) => {
+      if (!a) throw new Error(`pool ${addresses[i].toBase58()} not found`);
+      return this.decodePool(addresses[i], a.data);
+    });
+    const extra = pools.flatMap((p) => [
+      p.accounts.baseVault,
+      p.accounts.quoteVault,
+      p.accounts.lpMint,
+      p.accounts.oracleKind === "Mock" ? this.mockOracle(p.accounts) : p.accounts.baseVault,
+      p.accounts.calendar ?? p.accounts.baseVault,
+    ]);
+    const second = await this.connection.getMultipleAccountsInfo(extra);
+    return pools.map((info, i) => {
+      const [bv, qv, lp, oracleAcc, calAcc] = second.slice(i * 5, i * 5 + 5);
+      const amount = (a: typeof bv) => (a ? a.data.readBigUInt64LE(64) : 0n);
+      const reserves = { base: amount(bv), quote: amount(qv) };
+      const lpSupply = lp ? lp.data.readBigUInt64LE(36) : 0n;
+      if (info.accounts.oracleKind !== "Mock" || !oracleAcc) {
+        return { info, reserves, lpSupply, chainNow, mock: null, ctx: null, live: info.state };
+      }
+      const mock = this.decodeMockOracle(oracleAcc.data);
+      const ctx: MarketContext = {
+        globalPause,
+        calendar: info.accounts.calendar && calAcc ? this.decodeCalendar(calAcc.data) : null,
+        oracle: mockOraclePrice(info.state, mock),
+        now: chainNow + mock.clockOffset,
+      };
+      return { info, reserves, lpSupply, chainNow, mock, ctx, live: refresh(info.state, ctx) };
+    });
   }
 
   async fetchGlobalPause(): Promise<boolean> {
