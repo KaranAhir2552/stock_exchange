@@ -455,6 +455,81 @@
       ]
     },
     {
+      "name": "mock_advance_clock",
+      "discriminator": [
+        241,
+        230,
+        240,
+        86,
+        127,
+        229,
+        72,
+        172
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "mock_oracle",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  111,
+                  99,
+                  107,
+                  95,
+                  111,
+                  114,
+                  97,
+                  99,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mock_oracle.feed_id",
+                "account": "MockOracle"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "seconds",
+          "type": "i64"
+        }
+      ]
+    },
+    {
       "name": "mock_set_price",
       "discriminator": [
         144,
@@ -1695,6 +1770,14 @@
           {
             "name": "bump",
             "type": "u8"
+          },
+          {
+            "name": "clock_offset",
+            "docs": [
+              "Simulated time: pools on this feed run this many seconds ahead of the real clock.",
+              "Only ever moves forward (`mock_advance_clock`)."
+            ],
+            "type": "i64"
           }
         ]
       }

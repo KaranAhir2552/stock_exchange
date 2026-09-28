@@ -47,8 +47,9 @@ pub fn handle_swap(
     direction: Direction,
 ) -> Result<()> {
     let a = ctx.accounts;
-    let now = Clock::get()?.unix_timestamp;
-    let oracle = read_oracle(&a.pool, &a.oracle, &a.base_mint.to_account_info(), now)?;
+    let real_now = Clock::get()?.unix_timestamp;
+    let oracle = read_oracle(&a.pool, &a.oracle, &a.base_mint.to_account_info(), real_now)?;
+    let now = oracle.pool_now(real_now)?;
     let pool_key = a.pool.key();
     refresh(
         &mut a.pool,

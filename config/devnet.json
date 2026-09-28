@@ -5,15 +5,15 @@
   "programId": "AUkfc1YB8AB1BSno52xnsPvKcXYCbnHyySDxhrkmwp9x",
   "mints": {
     "USDC": {
-      "address": "D2h2EkeKXC6K9uqrbTYh5vLZAfeFFLsHj85pT6DwvSkW",
+      "address": null,
       "decimals": 6
     },
     "TSLAx": {
-      "address": "2dprKBNFiwobbhihhUZABJsvBYFYoDXjCyViSKbUXmU1",
+      "address": null,
       "decimals": 8
     },
     "SOL": {
-      "address": "8ft49mHscLmR64FPWsknjcdbcoyMzjPzYNS373wESG3F",
+      "address": null,
       "decimals": 9
     }
   },
@@ -32,7 +32,7 @@
       "quote": "USDC",
       "profile": "UsEquity",
       "oracleKind": "Mock",
-      "feedId": "0x57a2c58098e0fe18e13e3b3e2c49062af69f104020f5b3d38965aac859e06f11",
+      "feedId": "0x5034fda5c7c0585194f139ea4c5b0d879bddc07d20b9dce08b2dbd1ebfaeb5d3",
       "maxStalenessSecs": 120,
       "maxConfBps": 100,
       "params": {
@@ -55,7 +55,7 @@
       "quote": "USDC",
       "profile": "AlwaysOpen",
       "oracleKind": "Mock",
-      "feedId": "0xcbc66920cf647fc93735a4fcf7afdb0090a28df0390d602be01a03bd100a50e2",
+      "feedId": "0xa31d8d59f25ddf31a03352f67a40eded400cd631277e04abcfa0fbf17aa78b4d",
       "maxStalenessSecs": 120,
       "maxConfBps": 100,
       "params": {

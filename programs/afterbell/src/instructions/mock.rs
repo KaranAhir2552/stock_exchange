@@ -18,7 +18,7 @@ pub struct MockSetPrice<'info> {
     pub system_program: Program<'info, System>,
 }
 
-/// Publishes a price stamped with the current clock time.
+/// Publishes a price stamped with the feed's clock time (real time plus its simulated offset).
 pub fn handle_mock_set_price(
     ctx: Context<MockSetPrice>,
     feed_id: [u8; 32],
@@ -35,7 +35,10 @@ pub fn handle_mock_set_price(
     m.price = price;
     m.conf = conf;
     m.expo = expo;
-    m.publish_ts = Clock::get()?.unix_timestamp;
+    m.publish_ts = Clock::get()?
+        .unix_timestamp
+        .checked_add(m.clock_offset)
+        .ok_or(ErrorCode::MathOverflow)?;
     Ok(())
 }
 
@@ -50,5 +53,17 @@ pub struct MockSetStatus<'info> {
 
 pub fn handle_mock_set_status(ctx: Context<MockSetStatus>, status: MockStatus) -> Result<()> {
     ctx.accounts.mock_oracle.status = status;
+    Ok(())
+}
+
+/// Moves the simulated clock of every pool on this feed forward (the demo's compressed week).
+/// Forward-only, so oracle publish times and pool timestamps never go backwards.
+pub fn handle_mock_advance_clock(ctx: Context<MockSetStatus>, seconds: i64) -> Result<()> {
+    require!(seconds > 0, ErrorCode::InvalidParams);
+    let m = &mut ctx.accounts.mock_oracle;
+    m.clock_offset = m
+        .clock_offset
+        .checked_add(seconds)
+        .ok_or(ErrorCode::MathOverflow)?;
     Ok(())
 }

@@ -150,8 +150,9 @@ pub fn handle_create_pool(ctx: Context<CreatePool>, args: CreatePoolArgs) -> Res
         lp_mint_bump: ctx.bumps.lp_mint,
     });
 
-    let now = Clock::get()?.unix_timestamp;
-    let oracle = read_oracle(&a.pool, &a.oracle, &a.base_mint.to_account_info(), now)?;
+    let real_now = Clock::get()?.unix_timestamp;
+    let oracle = read_oracle(&a.pool, &a.oracle, &a.base_mint.to_account_info(), real_now)?;
+    let now = oracle.pool_now(real_now)?;
     refresh(
         &mut a.pool,
         pool_key,
@@ -188,8 +189,9 @@ pub struct UpdateReference<'info> {
 
 pub fn handle_update_reference(ctx: Context<UpdateReference>) -> Result<()> {
     let a = ctx.accounts;
-    let now = Clock::get()?.unix_timestamp;
-    let oracle = read_oracle(&a.pool, &a.oracle, &a.base_mint.to_account_info(), now)?;
+    let real_now = Clock::get()?.unix_timestamp;
+    let oracle = read_oracle(&a.pool, &a.oracle, &a.base_mint.to_account_info(), real_now)?;
+    let now = oracle.pool_now(real_now)?;
     let key = a.pool.key();
     refresh(
         &mut a.pool,

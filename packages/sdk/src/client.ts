@@ -121,6 +121,8 @@ export interface MockOracleState {
   expo: number;
   publishTs: bigint;
   status: OracleStatus;
+  /** Seconds this feed's pools run ahead of real time (devnet demo week; 0 otherwise). */
+  clockOffset: bigint;
 }
 
 export class AfterbellClient {
@@ -193,6 +195,7 @@ export class AfterbellClient {
       expo: m.expo,
       publishTs: big(m.publishTs),
       status: variant<OracleStatus>(m.status),
+      clockOffset: big(m.clockOffset),
     };
   }
 
@@ -219,7 +222,7 @@ export class AfterbellClient {
     return mockOraclePda(this.programId, pool.feedId);
   }
 
-  /** Everything `refresh` reads, for mock-oracle pools. */
+  /** Everything `refresh` reads, for mock-oracle pools. `now` is the pool's clock (chain time + offset). */
   async mockMarketContext(pool: PoolInfo): Promise<MarketContext> {
     const [globalPause, calendar, oracle, now] = await Promise.all([
       this.fetchGlobalPause(),
@@ -227,7 +230,7 @@ export class AfterbellClient {
       this.fetchMockOracle(this.mockOracle(pool.accounts)),
       this.chainTime(),
     ]);
-    return { globalPause, calendar, oracle: mockOraclePrice(pool.state, oracle), now };
+    return { globalPause, calendar, oracle: mockOraclePrice(pool.state, oracle), now: now + oracle.clockOffset };
   }
 
   // ---------- instruction builders (unsigned) ----------
@@ -433,6 +436,14 @@ export class AfterbellClient {
   mockSetStatus(admin: PublicKey, feedId: Uint8Array, status: OracleStatus) {
     return this.m()
       .mockSetStatus(enumArg(status))
+      .accountsPartial({ admin, config: this.config, mockOracle: mockOraclePda(this.programId, feedId) })
+      .instruction();
+  }
+
+  /** Demo week: moves this feed's simulated clock forward (admin, devnet-mock builds only). */
+  mockAdvanceClock(admin: PublicKey, feedId: Uint8Array, seconds: bigint) {
+    return this.m()
+      .mockAdvanceClock(bn(seconds))
       .accountsPartial({ admin, config: this.config, mockOracle: mockOraclePda(this.programId, feedId) })
       .instruction();
   }

@@ -561,6 +561,35 @@ impl H {
         self.send(&[ix], &[&admin])
     }
 
+    /// Moves the mock feed's simulated clock forward (demo week); `signer` must be the admin.
+    pub fn advance_clock_as(&mut self, signer: &Keypair, seconds: i64) -> TxResult {
+        let ix = Instruction::new_with_bytes(
+            afterbell::ID,
+            &afterbell::instruction::MockAdvanceClock { seconds }.data(),
+            afterbell::accounts::MockSetStatus {
+                admin: signer.pubkey(),
+                config: self.config(),
+                mock_oracle: self.oracle(),
+            }
+            .to_account_metas(None),
+        );
+        self.send(&[ix], &[signer])
+    }
+
+    pub fn advance_clock(&mut self, seconds: i64) -> TxResult {
+        let admin = self.admin.insecure_clone();
+        self.advance_clock_as(&admin, seconds)
+    }
+
+    /// The pool's clock: real time plus the mock feed's simulated offset.
+    pub fn sim_now(&self) -> i64 {
+        let acc = self.svm.get_account(&self.oracle()).unwrap();
+        self.now()
+            + MockOracle::try_deserialize(&mut &acc.data[..])
+                .unwrap()
+                .clock_offset
+    }
+
     pub fn create_pool_as(
         &mut self,
         signer: &Keypair,

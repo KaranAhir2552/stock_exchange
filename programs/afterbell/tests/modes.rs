@@ -336,3 +336,64 @@ fn calendar_validation() {
     h.set_sessions(full, later).unwrap(); // a full calendar fits in one transaction
     h.set_sessions(october(), later).unwrap();
 }
+
+/// Demo week (brief 8.6): the mock feed's simulated clock runs a Friday close -> Monday open story
+/// while the real clock stands still. Band, fee and calendar all follow the simulated time.
+#[test]
+fn simulated_clock_runs_a_weekend_without_real_time() {
+    let (mut h, atas) = equity(utc(2026, 10, 2, 15, 0), october(), utc(2026, 10, 10, 0, 0));
+    let real = h.now();
+    assert_eq!(mode(&h), Mode::Open);
+
+    // Jump to Friday 15:59 ET and publish the last price of the week (stamped in simulated time).
+    h.advance_clock(utc(2026, 10, 2, 19, 59) - real).unwrap();
+    h.set_price(PRICE_100, 0).unwrap();
+    h.update_reference().unwrap();
+    assert_eq!(
+        h.pool_state().last_oracle_publish_ts,
+        utc(2026, 10, 2, 19, 59)
+    );
+
+    // Friday 16:00: Closed, band clock starts at the last trusted (simulated) price.
+    h.advance_clock(60).unwrap();
+    h.update_reference().unwrap();
+    let p = h.pool_state();
+    assert_eq!(
+        (p.mode, p.close_ts),
+        (Mode::Closed, utc(2026, 10, 2, 19, 59))
+    );
+
+    // Saturday 12:00, simulated: same band and fee as the real-clock weekend test.
+    h.advance_clock(utc(2026, 10, 3, 12, 0) - h.sim_now())
+        .unwrap();
+    h.set_price(PRICE_90, 0).unwrap(); // weekend news: ignored while Closed
+    h.update_reference().unwrap();
+    let p = h.pool_state();
+    assert_eq!((p.mode, p.pool_price), (Mode::Closed, P100));
+    let (fee, band) = trading_terms(&p, h.sim_now()).unwrap();
+    assert_eq!((band, fee.base_bps), (360, 77));
+    assert_err(h.swap(atas, 25_000, 1, B2Q), ErrorCode::OutsideBand);
+    h.swap(atas, 15_000, 1, B2Q).unwrap();
+
+    // Monday 9:30 ET, simulated: re-centre on the fresh price with no trade.
+    h.advance_clock(utc(2026, 10, 5, 13, 30) - h.sim_now())
+        .unwrap();
+    h.set_price(PRICE_90, 0).unwrap();
+    h.update_reference().unwrap();
+    let p = h.pool_state();
+    assert_eq!(
+        (p.mode, p.reference_price, p.pool_price),
+        (Mode::Open, P90, P90)
+    );
+    assert_eq!(h.now(), real, "the real clock never moved");
+}
+
+#[test]
+fn simulated_clock_only_moves_forward_and_only_for_the_admin() {
+    let (mut h, _) = equity(utc(2026, 10, 2, 15, 0), october(), utc(2026, 10, 10, 0, 0));
+    assert_err(h.advance_clock(0), ErrorCode::InvalidParams);
+    assert_err(h.advance_clock(-60), ErrorCode::InvalidParams);
+    let guardian = h.guardian.insecure_clone();
+    assert_err(h.advance_clock_as(&guardian, 60), ErrorCode::Unauthorized);
+    assert_eq!(h.sim_now(), h.now());
+}

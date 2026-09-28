@@ -461,6 +461,81 @@ export type Afterbell = {
       ]
     },
     {
+      "name": "mockAdvanceClock",
+      "discriminator": [
+        241,
+        230,
+        240,
+        86,
+        127,
+        229,
+        72,
+        172
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "mockOracle",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  111,
+                  99,
+                  107,
+                  95,
+                  111,
+                  114,
+                  97,
+                  99,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mockOracle.feedId",
+                "account": "mockOracle"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "seconds",
+          "type": "i64"
+        }
+      ]
+    },
+    {
       "name": "mockSetPrice",
       "discriminator": [
         144,
@@ -1701,6 +1776,14 @@ export type Afterbell = {
           {
             "name": "bump",
             "type": "u8"
+          },
+          {
+            "name": "clockOffset",
+            "docs": [
+              "Simulated time: pools on this feed run this many seconds ahead of the real clock.",
+              "Only ever moves forward (`mock_advance_clock`)."
+            ],
+            "type": "i64"
           }
         ]
       }

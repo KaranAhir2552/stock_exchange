@@ -209,4 +209,7 @@ pub struct MockOracle {
     pub publish_ts: i64,
     pub status: MockStatus,
     pub bump: u8,
+    /// Simulated time: pools on this feed run this many seconds ahead of the real clock.
+    /// Only ever moves forward (`mock_advance_clock`).
+    pub clock_offset: i64,
 }

@@ -25,9 +25,19 @@ pub struct OraclePrice {
     pub conf_bps: u16,
     pub publish_ts: i64,
     pub status_hint: Option<OracleStatus>,
+    /// Seconds the pool's clock runs ahead of real time. Always 0 except for a devnet mock feed
+    /// driven by `mock_advance_clock` (the demo's simulated week, DECISIONS.md #59).
+    pub clock_offset: i64,
 }
 
 impl OraclePrice {
+    /// The time this pool's mode, band and fee are computed at.
+    pub fn pool_now(&self, real_now: i64) -> Result<i64> {
+        real_now
+            .checked_add(self.clock_offset)
+            .ok_or(error!(ErrorCode::MathOverflow))
+    }
+
     pub fn is_valid(&self, pool: &Pool, now: i64) -> bool {
         now.saturating_sub(self.publish_ts) <= pool.max_staleness_secs as i64
             && self.conf_bps <= pool.max_conf_bps
@@ -78,6 +88,7 @@ fn read_pyth(pool: &Pool, oracle: &AccountInfo, multiplier: u128) -> Result<Orac
         publish_ts: m.publish_time,
         // Pyth price updates carry no market-status field; the calendar decides market hours.
         status_hint: None,
+        clock_offset: 0,
     })
 }
 
@@ -103,6 +114,7 @@ fn read_mock(pool: &Pool, oracle: &AccountInfo, multiplier: u128) -> Result<Orac
             MockStatus::Halted => OracleStatus::Halted,
             MockStatus::Closed => OracleStatus::Closed,
         }),
+        clock_offset: m.clock_offset,
     })
 }
 

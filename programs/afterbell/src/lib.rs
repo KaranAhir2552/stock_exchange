@@ -107,4 +107,9 @@ pub mod afterbell {
     pub fn mock_set_status(ctx: Context<MockSetStatus>, status: MockStatus) -> Result<()> {
         instructions::mock::handle_mock_set_status(ctx, status)
     }
+
+    #[cfg(feature = "devnet-mock")]
+    pub fn mock_advance_clock(ctx: Context<MockSetStatus>, seconds: i64) -> Result<()> {
+        instructions::mock::handle_mock_advance_clock(ctx, seconds)
+    }
 }
