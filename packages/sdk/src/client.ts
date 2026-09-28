@@ -517,6 +517,14 @@ export class AfterbellClient {
       .instruction();
   }
 
+  /** Devnet keeper heartbeat: marks the current mock price fresh without rewriting it (admin, devnet-mock only). */
+  mockHeartbeat(admin: PublicKey, feedId: Uint8Array) {
+    return this.m()
+      .mockHeartbeat()
+      .accountsPartial({ admin, config: this.config, mockOracle: mockOraclePda(this.programId, feedId) })
+      .instruction();
+  }
+
   /** Demo week: moves this feed's simulated clock forward (admin, devnet-mock builds only). */
   mockAdvanceClock(admin: PublicKey, feedId: Uint8Array, seconds: bigint) {
     return this.m()

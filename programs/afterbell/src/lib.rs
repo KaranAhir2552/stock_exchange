@@ -112,4 +112,9 @@ pub mod afterbell {
     pub fn mock_advance_clock(ctx: Context<MockSetStatus>, seconds: i64) -> Result<()> {
         instructions::mock::handle_mock_advance_clock(ctx, seconds)
     }
+
+    #[cfg(feature = "devnet-mock")]
+    pub fn mock_heartbeat(ctx: Context<MockSetStatus>) -> Result<()> {
+        instructions::mock::handle_mock_heartbeat(ctx)
+    }
 }

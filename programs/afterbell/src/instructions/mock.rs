@@ -67,3 +67,14 @@ pub fn handle_mock_advance_clock(ctx: Context<MockSetStatus>, seconds: i64) -> R
         .ok_or(ErrorCode::MathOverflow)?;
     Ok(())
 }
+
+/// Keeper heartbeat on devnet: re-stamps the current price as fresh. Price, status and clock are untouched,
+/// so it can't undo a concurrent `mock_set_price` the way re-posting a price read a moment earlier can.
+pub fn handle_mock_heartbeat(ctx: Context<MockSetStatus>) -> Result<()> {
+    let m = &mut ctx.accounts.mock_oracle;
+    m.publish_ts = Clock::get()?
+        .unix_timestamp
+        .checked_add(m.clock_offset)
+        .ok_or(ErrorCode::MathOverflow)?;
+    Ok(())
+}

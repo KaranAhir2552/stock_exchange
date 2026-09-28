@@ -115,9 +115,8 @@ export class Keeper {
   private async ixsFor(c: AfterbellClient, pool: (typeof this.pools)[number]): Promise<TransactionInstruction[]> {
     const ixs: TransactionInstruction[] = [];
     if (this.opts.mockHeartbeat) {
-      // Same price, fresh timestamp: keeps a demo oracle "live" without changing what it says.
-      const m = await c.fetchMockOracle(c.mockOracle(pool.accounts));
-      ixs.push(await c.mockSetPrice(this.payer.publicKey, pool.feedId, m.price, m.conf, m.expo));
+      // Fresh timestamp, price untouched: keeps a demo oracle "live" without racing the demo panel's price changes.
+      ixs.push(await c.mockHeartbeat(this.payer.publicKey, pool.feedId));
     }
     ixs.push(await c.updateReference(pool.accounts));
     return ixs;

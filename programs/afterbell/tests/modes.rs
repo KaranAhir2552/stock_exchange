@@ -397,3 +397,23 @@ fn simulated_clock_only_moves_forward_and_only_for_the_admin() {
     assert_err(h.advance_clock_as(&guardian, 60), ErrorCode::Unauthorized);
     assert_eq!(h.sim_now(), h.now());
 }
+
+/// The keeper's devnet heartbeat keeps the mock price fresh without writing a price, so it can't undo a
+/// demo step that changed the price between the keeper's read and its write.
+#[test]
+fn heartbeat_refreshes_the_timestamp_but_never_the_price() {
+    let (mut h, _) = equity(utc(2026, 10, 2, 15, 0), october(), utc(2026, 10, 10, 0, 0));
+    h.set_price(PRICE_90, 0).unwrap();
+    h.warp(90);
+    h.heartbeat().unwrap();
+    let m = h.mock_state();
+    assert_eq!((m.price, m.publish_ts), (PRICE_90, h.now()));
+    h.advance_clock(600).unwrap();
+    h.heartbeat().unwrap();
+    assert_eq!(
+        h.mock_state().publish_ts,
+        h.sim_now(),
+        "stamped in simulated time"
+    );
+    assert_eq!(h.mock_state().price, PRICE_90);
+}

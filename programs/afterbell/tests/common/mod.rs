@@ -581,6 +581,26 @@ impl H {
         self.advance_clock_as(&admin, seconds)
     }
 
+    pub fn heartbeat(&mut self) -> TxResult {
+        let ix = Instruction::new_with_bytes(
+            afterbell::ID,
+            &afterbell::instruction::MockHeartbeat {}.data(),
+            afterbell::accounts::MockSetStatus {
+                admin: self.admin.pubkey(),
+                config: self.config(),
+                mock_oracle: self.oracle(),
+            }
+            .to_account_metas(None),
+        );
+        let admin = self.admin.insecure_clone();
+        self.send(&[ix], &[&admin])
+    }
+
+    pub fn mock_state(&self) -> MockOracle {
+        let acc = self.svm.get_account(&self.oracle()).unwrap();
+        MockOracle::try_deserialize(&mut &acc.data[..]).unwrap()
+    }
+
     /// The pool's clock: real time plus the mock feed's simulated offset.
     pub fn sim_now(&self) -> i64 {
         let acc = self.svm.get_account(&self.oracle()).unwrap();

@@ -4,7 +4,7 @@ import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { DEMO, networkName } from "@/lib/config";
+import { networkName } from "@/lib/config";
 import { Button, cx } from "./ui";
 
 const TABS = [
@@ -12,7 +12,7 @@ const TABS = [
   { href: "/liquidity", label: "Liquidity" },
   { href: "/pools", label: "Pools" },
   { href: "/results", label: "Results" },
-  ...(DEMO ? [{ href: "/demo", label: "Demo" }] : []),
+  ...(process.env.NEXT_PUBLIC_DEMO === "true" ? [{ href: "/demo", label: "Demo" }] : []), // literal: see app/demo/page.tsx
 ];
 
 export function Navbar() {
