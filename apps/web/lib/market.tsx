@@ -83,6 +83,9 @@ export function useTick(ms = 1_000): number {
   return t;
 }
 
+/** Is this pool running on the devnet demo's simulated clock (DECISIONS.md #59)? */
+export const simulated = (m: Market) => (m.mock?.clockOffset ?? 0n) > 0n;
+
 /** The pool's clock (chain time + demo offset), advanced by local time since the snapshot. */
 export function poolNow(m: Market, localNow = Date.now()): bigint {
   const base = m.ctx?.now ?? m.chainNow;

@@ -54,7 +54,7 @@ export default function ResultsPage() {
         />
       </div>
 
-      <div className="grid items-start gap-5 lg:grid-cols-[1fr_400px]">
+      <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-[minmax(0,1fr)_400px]">
         <Card className="p-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>

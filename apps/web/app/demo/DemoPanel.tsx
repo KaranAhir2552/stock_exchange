@@ -285,7 +285,7 @@ export default function DemoPanel() {
         <span className="text-[18px] font-semibold">Demo mode · devnet only · prices are simulated</span>
         <span className="ml-auto text-[15px]">This is a testing tool. Not financial advice.</span>
       </div>
-      <div className="grid items-start gap-5 lg:grid-cols-[380px_1fr]">
+      <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-[380px_minmax(0,1fr)]">
         <Card className="flex flex-col gap-4 p-6">
           <div className="flex items-center justify-between">
             <h1 className="text-[22px] font-bold">Demo control panel</h1>

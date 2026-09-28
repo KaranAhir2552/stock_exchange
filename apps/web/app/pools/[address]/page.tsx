@@ -80,7 +80,7 @@ function Detail({ m }: { m: Market }) {
         </div>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-[1fr_380px]">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_380px]">
         <Card className="p-6">
           <h2 className="text-[20px] font-bold">Price (recent on-chain updates)</h2>
           <p className="mb-3 text-[14px] text-ink-2">

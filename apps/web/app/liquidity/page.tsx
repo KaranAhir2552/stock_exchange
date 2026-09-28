@@ -33,7 +33,7 @@ function Liquidity() {
     <>
       <WeekTimeline market={m?.meta.kind === "Stock" ? m : undefined} />
       {m ? (
-        <div className="grid items-start gap-5 lg:grid-cols-[1fr_460px]">
+        <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-[minmax(0,1fr)_460px]">
           <Position m={m} setPool={setPool} />
           <Manage m={m} />
         </div>

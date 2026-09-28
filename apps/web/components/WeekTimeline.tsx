@@ -1,7 +1,7 @@
 "use client";
 import { nyDate, nyToUnix } from "@afterbell/sdk";
 import { duration, nyTime } from "@/lib/format";
-import { type Market, poolNow, useMarkets, useTick } from "@/lib/market";
+import { type Market, poolNow, simulated, useMarkets, useTick } from "@/lib/market";
 import { Card, cx } from "./ui";
 
 const DAY = 86_400;
@@ -29,11 +29,11 @@ export function WeekTimeline({ market }: { market?: Market | null }) {
   const tone = mode === "Paused" ? "bg-warning" : mode === "Open" ? "bg-positive" : "bg-brand";
   const since = mode === "Closed" ? Number(now - m.live.closeTs) : 0;
   const label =
-    mode === "Paused"
+    (mode === "Paused"
       ? `${nyTime(now, false)} · Trading halted`
       : mode === "Open"
         ? `${nyTime(now, false)} · Market open`
-        : `Now ${nyTime(now, false)} · Closed ${duration(since)}`;
+        : `Now ${nyTime(now, false)} · Closed ${duration(since)}`) + (simulated(m) ? " · simulated clock" : "");
 
   // Hours come from the on-chain calendar (the devnet demo calendar has one long session instead).
   const first = cal.sessions.find((x) => x.closeTs > days[0].start);

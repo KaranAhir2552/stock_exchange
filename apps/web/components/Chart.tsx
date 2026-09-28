@@ -99,7 +99,7 @@ export function Chart({
   const xt = xTicks ?? Array.from({ length: 5 }, (_, i) => x0 + ((x1 - x0) * i) / 4);
 
   return (
-    <div ref={ref} className="w-full">
+    <div ref={ref} className="w-full min-w-0 overflow-hidden">
       <svg width={W} height={height} className="block" role="img" aria-label={series.map((s) => s.label).join(", ")}>
         {ranges.map((r) => (
           <g key={r.from}>
