@@ -238,7 +238,18 @@ export class Keeper {
     while (!signal.aborted) {
       const started = Date.now();
       await this.tick();
-      await new Promise((r) => setTimeout(r, Math.max(0, this.opts.intervalMs - (Date.now() - started))));
+      // Sleep until the next round, but wake immediately on SIGTERM/SIGINT so shutdown is prompt.
+      await new Promise<void>((resolve) => {
+        const t = setTimeout(resolve, Math.max(0, this.opts.intervalMs - (Date.now() - started)));
+        signal.addEventListener(
+          "abort",
+          () => {
+            clearTimeout(t);
+            resolve();
+          },
+          { once: true },
+        );
+      });
     }
   }
 }

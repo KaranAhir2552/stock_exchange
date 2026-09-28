@@ -69,3 +69,18 @@ test("metrics are Prometheus text", () => {
   assert.match(text, /afterbell_keeper_failures_total\{pool="P"\} 3/);
   assert.match(text, /afterbell_keeper_last_success_seconds\{pool="P"\} 1\n/);
 });
+
+test("run() stops promptly when aborted mid-sleep", async () => {
+  const k = new Keeper(loadConfig("localnet"), Keypair.generate(), {
+    intervalMs: 60_000,
+    mockHeartbeat: false,
+    maxPriorityMicroLamports: 0,
+    alertAfterMs: 60_000,
+  });
+  const stop = new AbortController();
+  const t0 = Date.now();
+  const done = k.run(stop.signal); // no pools initialised: each round is instant, then it sleeps 60 s
+  setTimeout(() => stop.abort(), 50);
+  await done;
+  assert.ok(Date.now() - t0 < 2_000, "should not wait out the interval");
+});
