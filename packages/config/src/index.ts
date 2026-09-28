@@ -60,6 +60,10 @@ export const configSchema = z
     explorerCluster: z.enum(["custom", "devnet", "mainnet-beta"]),
     features: z.object({ demoControls: z.boolean(), mockOracle: z.boolean() }),
     pools: z.array(pool),
+    /** Pyth feeds shown for reference (e.g. the real stock behind a test token); not traded. */
+    referenceFeeds: z
+      .array(z.object({ label: z.string().min(1), feedId, profile: z.enum(["AlwaysOpen", "UsEquity"]) }))
+      .default([]),
   })
   .superRefine((cfg, ctx) => {
     for (const p of cfg.pools) {

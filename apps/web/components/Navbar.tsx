@@ -12,6 +12,7 @@ const TABS = [
   { href: "/liquidity", label: "Liquidity" },
   { href: "/pools", label: "Pools" },
   { href: "/results", label: "Results" },
+  { href: "/live", label: "Live data" },
   ...(process.env.NEXT_PUBLIC_DEMO === "true" ? [{ href: "/demo", label: "Demo" }] : []), // literal: see app/demo/page.tsx
 ];
 

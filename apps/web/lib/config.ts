@@ -7,6 +7,11 @@ export const cfg: AfterbellConfig = JSON.parse(process.env.NEXT_PUBLIC_AFTERBELL
 
 export const programId = new PublicKey(cfg.programId || PublicKey.default);
 
+export const pythPrograms = {
+  pushOracle: new PublicKey(cfg.pythPushOracleProgramId),
+  receiver: new PublicKey(cfg.pythReceiverProgramId),
+};
+
 export type PoolConfig = AfterbellConfig["pools"][number];
 
 export interface PoolMeta {
@@ -20,7 +25,12 @@ export interface PoolMeta {
   label: string;
 }
 
-const LABELS: Record<string, string> = { TSLAx: "Tokenized Tesla", SOL: "Solana", USDC: "USD Coin" };
+const LABELS: Record<string, string> = {
+  TSLAx: "Tokenized Tesla",
+  SOL: "Solana",
+  pSOL: "Solana · live Pyth price",
+  USDC: "USD Coin",
+};
 
 /** Configured pools whose mints exist on this network. */
 export const pools: PoolMeta[] = cfg.pools.flatMap((p) => {

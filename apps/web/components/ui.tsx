@@ -91,7 +91,7 @@ export function Tag({ children }: { children: ReactNode }) {
   return <span className="rounded-md bg-brand-subtle px-3 py-1 text-[13px] font-medium text-ink-2">{children}</span>;
 }
 
-const AVATAR: Record<string, string> = { USDC: "#4346e0", TSLAx: "#e5484d", SOL: "#8b5cf6" };
+const AVATAR: Record<string, string> = { USDC: "#4346e0", TSLAx: "#e5484d", SOL: "#8b5cf6", pSOL: "#0f766e" };
 
 /** Circular token avatar with the symbol's first letter (Figma: Token Avatar). */
 export function TokenAvatar({ symbol, size = 40 }: { symbol: string; size?: number }) {

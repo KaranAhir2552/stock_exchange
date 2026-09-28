@@ -4,7 +4,7 @@ import { AnchorProvider } from "@anchor-lang/core";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey, type Transaction, type VersionedTransaction } from "@solana/web3.js";
 import { createContext, type ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { type PoolMeta, pools, programId } from "./config";
+import { type PoolMeta, pools, programId, pythPrograms } from "./config";
 import { uiPrice } from "./format";
 
 const POLL_MS = 5_000;
@@ -34,7 +34,12 @@ const Ctx = createContext<MarketsValue | null>(null);
 export function MarketProvider({ children }: { children: ReactNode }) {
   const { connection } = useConnection();
   const client = useMemo(
-    () => new AfterbellClient(new AnchorProvider(connection, readOnlyWallet, { commitment: "confirmed" }), programId),
+    () =>
+      new AfterbellClient(
+        new AnchorProvider(connection, readOnlyWallet, { commitment: "confirmed" }),
+        programId,
+        pythPrograms,
+      ),
     [connection],
   );
   const [markets, setMarkets] = useState<Market[] | null>(null);

@@ -74,5 +74,17 @@
         "maxTvlQuote": "100000000000"
       }
     }
+  ],
+  "referenceFeeds": [
+    {
+      "label": "TSLA (US stock, Pyth Equity.US.TSLA/USD)",
+      "feedId": "0x16dad506d7db8da01c87581c87ca897a012a153557d4d578c3b9c9e1bc0632f1",
+      "profile": "UsEquity"
+    },
+    {
+      "label": "SOL (Pyth Crypto.SOL/USD)",
+      "feedId": "0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d",
+      "profile": "AlwaysOpen"
+    }
   ]
 }

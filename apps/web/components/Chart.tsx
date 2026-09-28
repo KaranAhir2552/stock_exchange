@@ -96,7 +96,10 @@ export function Chart({
         .map((b) => `${X(b.t)},${Y(b.low)}`)
         .join("L")}Z`
     : null;
-  const xt = xTicks ?? Array.from({ length: 5 }, (_, i) => x0 + ((x1 - x0) * i) / 4);
+  // Unique ticks: a zero-width domain (one sample) would otherwise repeat one value (and one React key).
+  const xt = [...new Set(xTicks ?? Array.from({ length: 5 }, (_, i) => x0 + ((x1 - x0) * i) / 4))];
+  // Tiny ranges can round neighbouring y ticks to the same label; keep one of each.
+  const yt = ticks(y0, y1).filter((v, i, a) => i === 0 || yFmt(v) !== yFmt(a[i - 1]));
 
   return (
     <div ref={ref} className="w-full min-w-0 overflow-hidden">
@@ -111,7 +114,7 @@ export function Chart({
             )}
           </g>
         ))}
-        {ticks(y0, y1).map((v) => (
+        {yt.map((v) => (
           <g key={v}>
             <line x1={L} x2={W - R} y1={Y(v)} y2={Y(v)} stroke="#e6e9f2" />
             <text x={L - 8} y={Y(v) + 4} textAnchor="end" className="fill-muted text-[11px]">

@@ -7,7 +7,9 @@
     "dev": "NETWORK=${NETWORK:-localnet} next dev",
     "build": "NETWORK=${NETWORK:-localnet} next build",
     "start": "NETWORK=${NETWORK:-localnet} next start",
-    "test": "node --test lib/*.test.ts"
+    "test": "node --test lib/*.test.ts",
+    "demo:e2e": "node scripts/demo.mjs",
+    "shot": "node scripts/shot.mjs"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.3",

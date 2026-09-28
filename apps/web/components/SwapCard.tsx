@@ -372,7 +372,10 @@ function StatusBanner({ market, v, refLabel }: { market: Market; v: ReturnType<t
         <span className="font-semibold text-positive">
           {market.meta.kind === "Crypto" ? "Trading 24/7" : "Market open"}
         </span>
-        <span className="text-ink-2"> · price follows the oracle</span>
+        <span className="text-ink-2">
+          {" "}
+          · price follows {market.info.accounts.oracleKind === "Pyth" ? "the live Pyth price" : "the oracle"}
+        </span>
       </span>
       {v.oracleAgeSecs !== null && (
         <span className="ml-auto flex items-center gap-2 text-[14px] text-ink-2">

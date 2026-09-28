@@ -1,11 +1,7 @@
 {
   "network": "devnet",
-  "rpcUrls": [
-    "https://api.devnet.solana.com"
-  ],
-  "wsUrls": [
-    "wss://api.devnet.solana.com"
-  ],
+  "rpcUrls": ["https://api.devnet.solana.com"],
+  "wsUrls": ["wss://api.devnet.solana.com"],
   "programId": "AUkfc1YB8AB1BSno52xnsPvKcXYCbnHyySDxhrkmwp9x",
   "mints": {
     "USDC": {
@@ -29,9 +25,7 @@
   "pythPushOracleProgramId": "pyt2F414BA6dPttK6RddPZUdHfapoBN24GL5wbrPCou",
   "pythWormholeProgramId": "HDw2E7P8X1SkCyjvoGsfBGAVUutKcj874bXjHrpVYrVL",
   "hermesUrl": "https://pyth.dourolabs.app/hermes",
-  "calendarProfileIds": [
-    1
-  ],
+  "calendarProfileIds": [1],
   "explorerCluster": "devnet",
   "features": {
     "demoControls": true,
@@ -106,6 +100,18 @@
         "depthBps": 10000,
         "maxTvlQuote": "100000000000"
       }
+    }
+  ],
+  "referenceFeeds": [
+    {
+      "label": "TSLA (US stock, Pyth Equity.US.TSLA/USD)",
+      "feedId": "0x16dad506d7db8da01c87581c87ca897a012a153557d4d578c3b9c9e1bc0632f1",
+      "profile": "UsEquity"
+    },
+    {
+      "label": "SOL (Pyth Crypto.SOL/USD)",
+      "feedId": "0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d",
+      "profile": "AlwaysOpen"
     }
   ]
 }

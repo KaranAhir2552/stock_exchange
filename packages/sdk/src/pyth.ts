@@ -19,27 +19,26 @@ export interface PriceUpdate {
  * feed_id (32), price i64, conf u64, exponent i32, publish_time i64, ...
  */
 export function decodePriceUpdate(data: Uint8Array): PriceUpdate {
-  const b = Buffer.from(data);
+  // DataView, not Buffer: browsers' Buffer polyfills may lack the 64-bit readers.
+  const v = new DataView(data.buffer, data.byteOffset, data.byteLength);
   let o = 40;
-  const level = b[o];
+  const level = data[o];
   o += level === 0 ? 2 : 1;
-  const feedId = Uint8Array.from(b.subarray(o, o + 32));
+  const feedId = data.slice(o, o + 32);
   o += 32;
   return {
     fullyVerified: level === 1,
     feedId,
-    price: b.readBigInt64LE(o),
-    conf: b.readBigUInt64LE(o + 8),
-    expo: b.readInt32LE(o + 16),
-    publishTs: b.readBigInt64LE(o + 20),
+    price: v.getBigInt64(o, true),
+    conf: v.getBigUint64(o + 8, true),
+    expo: v.getInt32(o + 16, true),
+    publishTs: v.getBigInt64(o + 20, true),
   };
 }
 
 /** The price feed account the Pyth push oracle keeps for `feedId` (PDA of [shard u16 LE, feed id]). */
 export function pythFeedAccount(pushOracleProgramId: PublicKey, feedId: Uint8Array, shard = 0): PublicKey {
-  const s = Buffer.alloc(2);
-  s.writeUInt16LE(shard);
-  return PublicKey.findProgramAddressSync([s, Buffer.from(feedId)], pushOracleProgramId)[0];
+  return PublicKey.findProgramAddressSync([Uint8Array.of(shard & 0xff, shard >> 8), feedId], pushOracleProgramId)[0];
 }
 
 const sameBytes = (a: Uint8Array, b: Uint8Array) => a.length === b.length && a.every((x, i) => x === b[i]);
